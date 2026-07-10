@@ -105,14 +105,9 @@ the CCPP capgen script will document this with a log message as in the following
    DJS: THERE ARE NO MESSAGES MADE BY CAPGEN WHEN REGISTERING VARIABLE CONVERSION.
 
 The CCPP framework is performing only the minimum unit conversions necessary, depending on the
-intent information of the variable in the :term:`parameterization`\'s metadata table. In the above example,
-the cloud effective radii are ``intent(out)`` variables, which means that no unit conversion is required
-before entering the subroutine ``mp_thompson_run``. Therefore, it is imperative to use the correct value for
-the ``intent`` attribute in the metadata. A common pitfall is to declare a variable as ``intent(out)``, and
-then fail to guarantee to completely overwrite the contents of the variable in the file. Below are examples
-for auto-generated code performing
-automatic unit conversions from ``m`` to ``um`` or back, depending on the intent of the variable. The conversions
-are performed in the individual physics scheme caps for the dynamic build, or the group caps for the build.
+intent information of the variable in the :term:`parameterization`\'s metadata table. Below are examples
+for auto-generated code performing automatic unit conversions from ``m`` to ``um`` or back, depending on the intent of the variable. The conversions
+are performed in the individual Suite caps, before and after calling the Scheme.
 
 .. code-block:: fortran
 
@@ -124,7 +119,7 @@ are performed in the individual physics scheme caps for the dynamic build, or th
    ! re_cloud is intent(inout) or intent(out)
            real(kind=kind_phys), dimension(lb:ub, levs)  :: re_cloud_l
            re_cloud_l = 1.0E-6_kind_phys*re_cloud
-           call mp_thompson_run(...,re_cloud=re_cloud_l,...,errmsg=cdata%errmsg,errflg=cdata%errflg)
+           call mp_thompson_run(...,re_cloud=re_cloud_l,...,errmsg=errmsg,errflg=errflg)
            re_cloud = 1.0E+6_kind_phys* re_cloud_l
 
 If a required unit conversion has not been implemented the CCPP capgen script will generate an error message as follows:
