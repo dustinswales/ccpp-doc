@@ -130,6 +130,7 @@ are performed in the individual physics scheme caps for the dynamic build, or th
 If a required unit conversion has not been implemented the CCPP capgen script will generate an error message as follows:
 
 .. code-block:: console
+
    Variable 'prsl' (standard_name='air_pressure'): host units 'Pa' differ from scheme 'mp_thompson' units 'PaPaPa' but no unit conversion is known; add a conversion to metadata/unit_conversion.py or fix the metadata
 
 All automatic unit conversions are implemented in ``ccpp-framework/capgen/metadata/unit_conversion.py``,
