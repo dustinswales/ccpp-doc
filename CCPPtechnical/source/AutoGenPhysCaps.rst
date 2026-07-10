@@ -112,15 +112,15 @@ are performed in the individual Suite caps, before and after calling the Scheme.
 .. code-block:: fortran
 
    ! re_cloud is intent(in)
-           real(kind=kind_phys), dimension(lb:ub, levs)  :: re_cloud_l
-           re_cloud_l=1.0E-6_kind_phys*re_cloud,
-           call mp_thompson_run(...,re_cloud=re_cloud_l,...,errmsg=errmsg,errflg=errflg)
+   real(kind=kind_phys), dimension(lb:ub, levs)  :: re_cloud_l
+   re_cloud_l=1.0E-6_kind_phys*re_cloud,
+   call mp_thompson_run(...,re_cloud=re_cloud_l,...,errmsg=errmsg,errflg=errflg)
 
    ! re_cloud is intent(inout) or intent(out)
-           real(kind=kind_phys), dimension(lb:ub, levs)  :: re_cloud_l
-           re_cloud_l = 1.0E-6_kind_phys*re_cloud
-           call mp_thompson_run(...,re_cloud=re_cloud_l,...,errmsg=errmsg,errflg=errflg)
-           re_cloud = 1.0E+6_kind_phys* re_cloud_l
+   real(kind=kind_phys), dimension(lb:ub, levs)  :: re_cloud_l
+   re_cloud_l = 1.0E-6_kind_phys*re_cloud
+   call mp_thompson_run(...,re_cloud=re_cloud_l,...,errmsg=errmsg,errflg=errflg)
+   re_cloud = 1.0E+6_kind_phys* re_cloud_l
 
 If a required unit conversion has not been implemented the CCPP capgen script will generate an error message as follows:
 
@@ -141,10 +141,10 @@ For Scheme's with optional arguments, the CCPP framework generates local pointer
 
 .. code-block:: fortran
 
-   module ccpp_(suite_name)
-     use ccpp_(suite_name)_types, only:real_kind_phys_rank1_ptr_type
+   module ccpp_\{suite_name\}
+     use ccpp_\{suite_name\}_types, only:real_kind_phys_rank1_ptr_type
       ...
-   subroutine phys_ts_init( &
+   subroutine phys_ts_run(lb, ub, ..., errmsg, errflg)
      ...
      type(real_kind_phys_rank1_ptr_type) :: nwfa2d_p
      ...
