@@ -68,7 +68,7 @@ Consider the simplest case, in which all physics schemes are to be called togeth
 
    <?xml version="1.0" encoding="UTF-8"?>
 
-   <suite name="Suite_A" ver="1">
+   <suite name="Suite_A" version="1.0">
      ...
      <group name="physics">
        <subcycle loop="1">
@@ -100,7 +100,7 @@ Some models require that the physics be called in groups, with non-physics compu
 
    <?xml version="1.0" encoding="UTF-8"?>
 
-   <suite name="Suite_B" ver="1">
+   <suite name="Suite_B" version="1.0">
      <group name="g1">
        <subcycle loop="1">
          <scheme>SchemeX</scheme>
@@ -127,7 +127,7 @@ Consider the case where a model requires that some subset of physics be called o
 
    <?xml version="1.0" encoding="UTF-8"?>
 
-   <suite name="Suite_C" ver="1">
+   <suite name="Suite_C" version="1.0">
      <group name="g1">
        <subcycle loop="1">
          <scheme>scheme_1</scheme>
@@ -151,7 +151,7 @@ Here is the SDF for the physics suite equivalent to the GFS v16 in the Single-Co
 
    <?xml version="1.0" encoding="UTF-8"?>
 
-   <suite name="SCM_GFS_v16" version="1">
+   <suite name="SCM_GFS_v16" version="1.0">
      <group name="time_vary">
        <subcycle loop="1">
          <scheme>GFS_time_vary_pre</scheme>
