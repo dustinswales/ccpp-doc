@@ -87,25 +87,22 @@ or to call the entire suite. For example, ``ufs_ccpp_cap.F90`` would contain mod
 with subroutines ``ccpp_physics_{register, init, physics_init, timestep_init, run, timestep_final, final}``.  Interested users
 should run ``ccpp_capgen.py`` as appropriate for their model and inspect these auto-generated files.
 
-.. _AutomaticUnitConversions:
+.. _AutomaticVariableConversions:
 
-Automatic unit conversions
+Automatic variable conversions
 ==========================
 
 The CCPP framework is capable of performing automatic unit conversions if a mismatch of
 units between the host model and a physics scheme is detected, provided that the required
-unit conversion has been implemented.
+unit conversion has been implemented. Similarly, the framework can also perform type conversions 
+between host and scheme variables.
 
 If a mismatch of units is detected and an automatic unit conversion can be performed,
 the CCPP capgen script will document this with a log message as in the following example:
 
 .. code-block:: console
 
-   INFO: Comparing metadata for requested and provided variables ...
-   INFO: Automatic unit conversion from m to um for effective_radius_of_stratiform_cloud_ice_particle_in_um after returning from MODULE_mp_thompson SCHEME_mp_thompson SUBROUTINE_mp_thompson_run
-   INFO: Automatic unit conversion from m to um for effective_radius_of_stratiform_cloud_liquid_water_particle_in_um after returning from MODULE_mp_thompson SCHEME_mp_thompson SUBROUTINE_mp_thompson_run
-   INFO: Automatic unit conversion from m to um for effective_radius_of_stratiform_cloud_snow_particle_in_um after returning from MODULE_mp_thompson SCHEME_mp_thompson SUBROUTINE_mp_thompson_run
-   INFO: Generating schemes makefile/cmakefile snippet ...
+   DJS: THERE ARE NO MESSAGES MADE BY CAPGEN WHEN REGISTERING VARIABLE CONVERSION.
 
 The CCPP framework is performing only the minimum unit conversions necessary, depending on the
 intent information of the variable in the :term:`parameterization`\'s metadata table. In the above example,
@@ -119,31 +116,21 @@ are performed in the individual physics scheme caps for the dynamic build, or th
 
 .. code-block:: fortran
 
-   ! var1 is intent(in)
-           call mp_thompson_run(...,recloud=1.0E-6_kind_phys*re_cloud,...,errmsg=cdata%errmsg,errflg=cdata%errflg)
-           ierr=cdata%errflg
+   ! re_cloud is intent(in)
+           real(kind=kind_phys), dimension(lb:ub, levs)  :: re_cloud_l
+           re_cloud_l=1.0E-6_kind_phys*re_cloud,
+           call mp_thompson_run(...,re_cloud=re_cloud_l,...,errmsg=errmsg,errflg=errflg)
 
-   ! var1 is intent(inout)
-           allocate(tmpvar1, source=re_cloud)
-           tmpvar1 = 1.0E-6_kind_phys*re_cloud
-           call mp_thompson_run(...,re_cloud=tmpvar1,...,errmsg=cdata%errmsg,errflg=cdata%errflg)
-           ierr=cdata%errflg
-           re_cloud = 1.0E+6_kind_phys*tmpvar1
-           deallocate(tmpvar1)
-
-   ! var1 is intent(out)
-           allocate(tmpvar1, source=re_cloud)
-           call mp_thompson_run(...,re_cloud=tmpvar1,...,errmsg=cdata%errmsg,errflg=cdata%errflg)
-           ierr=cdata%errflg
-           re_cloud = 1.0E+6_kind_phys*tmpvar1
-           deallocate(tmpvar1)
+   ! re_cloud is intent(inout) or intent(out)
+           real(kind=kind_phys), dimension(lb:ub, levs)  :: re_cloud_l
+           re_cloud_l = 1.0E-6_kind_phys*re_cloud
+           call mp_thompson_run(...,re_cloud=re_cloud_l,...,errmsg=cdata%errmsg,errflg=cdata%errflg)
+           re_cloud = 1.0E+6_kind_phys* re_cloud_l
 
 If a required unit conversion has not been implemented the CCPP capgen script will generate an error message as follows:
 
 .. code-block:: console
+   Variable 'prsl' (standard_name='air_pressure'): host units 'Pa' differ from scheme 'mp_thompson' units 'PaPaPa' but no unit conversion is known; add a conversion to metadata/unit_conversion.py or fix the metadata
 
-   INFO: Comparing metadata for requested and provided variables ...
-   ERROR: Error, automatic unit conversion from m to pc for effective_radius_of_stratiform_cloud_ice_particle_in_um in MODULE_mp_thompson SCHEME_mp_thompson SUBROUTINE_mp_thompson_run not implemented
-
-All automatic unit conversions are implemented in ``ccpp-framework/scripts/conversion_tools/unit_conversion.py``,
+All automatic unit conversions are implemented in ``ccpp-framework/capgen/metadata/unit_conversion.py``,
 new unit conversions can be added to this file by following the existing examples.
