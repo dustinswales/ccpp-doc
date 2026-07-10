@@ -130,3 +130,26 @@ If a required unit conversion has not been implemented the CCPP capgen script wi
 
 All automatic unit conversions are implemented in ``ccpp-framework/capgen/metadata/unit_conversion.py``,
 new unit conversions can be added to this file by following the existing examples.
+
+
+.. _OptionalVariables:
+
+Optional Scheme variables
+==========================
+
+For Scheme's with optional arguments, the CCPP framework generates local pointers in the Group cap. These local pointers are associated within the Group cap, just prior to calling the Scheme.
+
+.. code-block:: fortran
+
+   ! re_cloud is optional in mp_thompson_run
+   use ccpp_{suite_name}_types, only:real_kind_phys_rank1_ptr_type,
+   ...
+   type(real_kind_phys_rank1_ptr_type) :: nwfa2d_p
+   ...
+    if ((do_thompson) .and. (ltaerosol .or. mraerosol)) then
+      nwfa2d_p%ptr => nwfa2d(lb:ub)
+    else
+      nullify(nwfa2d_p%ptr)
+    end if
+    call mp_thompson_run(..., nwfa2d=nwfa2d_p%ptr,...,errmsg=errmsg,errflg=errflg)
+
