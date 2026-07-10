@@ -141,15 +141,18 @@ For Scheme's with optional arguments, the CCPP framework generates local pointer
 
 .. code-block:: fortran
 
-   ! re_cloud is optional in mp_thompson_run
-   use ccpp_{suite_name}_types, only:real_kind_phys_rank1_ptr_type,
-   ...
-   type(real_kind_phys_rank1_ptr_type) :: nwfa2d_p
-   ...
-    if ((do_thompson) .and. (ltaerosol .or. mraerosol)) then
-      nwfa2d_p%ptr => nwfa2d(lb:ub)
-    else
-      nullify(nwfa2d_p%ptr)
-    end if
-    call mp_thompson_run(..., nwfa2d=nwfa2d_p%ptr,...,errmsg=errmsg,errflg=errflg)
+   module ccpp_(suite_name)
+     use ccpp_(suite_name)_types, only:real_kind_phys_rank1_ptr_type
+      ...
+   subroutine phys_ts_init( &
+     ...
+     type(real_kind_phys_rank1_ptr_type) :: nwfa2d_p
+     ...
+     if ((do_thompson) .and. (ltaerosol .or. mraerosol)) then
+       nwfa2d_p%ptr => nwfa2d(lb:ub)
+     else
+       nullify(nwfa2d_p%ptr)
+     end if
+     ! re_cloud is optional in mp_thompson_run
+     call mp_thompson_run(..., nwfa2d=nwfa2d_p%ptr,...,errmsg=errmsg,errflg=errflg)
 
