@@ -111,16 +111,21 @@ are performed in the individual Suite caps, before and after calling the Scheme.
 
 .. code-block:: fortran
 
-   subroutine phys_ts_run(lb, ub, ..., errmsg, errflg)
+   module ccpp_suite_name
+     ...
+   subroutine physics_run(lb, ub, ..., errmsg, errflg)
      ...
      real(kind=kind_phys), dimension(lb:ub, levs)  :: re_cloud_l
      real(kind=kind_phys), dimension(lb:ub, levs)  :: re_cloudice_l
+     real(kind=kind_dbl),  dimension(lb:ub, levs)  :: re_cloudsnow_1
      ...
-     re_cloud_l    = 1.0E-6_kind_phys*re_cloud
-     re_cloudice_l = 1.0E-6_kind_phys*re_cloud_ice
-     ! re_cloud is intent(in) re_cloudice is intent(inout)
-     call mp_thompson_run(...,re_cloud=re_cloud_l,re_cloudice=re_cloudice_l ...,errmsg=errmsg,errflg=errflg)
+     ! re_cloud is intent(in), re_cloudice is intent(inout), re_cloudsnow has intent(out) and is of type R8.
+     re_cloud_l     = 1.0E-6_kind_phys*re_cloud
+     re_cloudice_l  = 1.0E-6_kind_phys*re_cloud_ice
+     re_cloudsnow_1 = real(re_cloudsnow, type=R8)
+     call mp_thompson_run(...,re_cloud=re_cloud_l,re_cloudice=re_cloudice_l,re_cloudliq=re_cloudliq_l...,errmsg=errmsg,errflg=errflg)
      re_cloudice = 1.0E+6_kind_phys* re_cloudice_l
+     re_cloudsnow = real(re_cloudsnow_1,type=kind_phys)
 
 If a required unit conversion has not been implemented the CCPP capgen script will generate an error message as follows:
 
