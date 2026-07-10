@@ -12,6 +12,7 @@ For both SCM and UFS the ``ccpp_capgen.py`` script is run automatically as a ste
 although it can be run manually for debugging purposes.
 
 Lists containing scheme and host metadata files, along with a list of Suite Definition Files, must be provided to ``ccpp_capgen.py``. For the ccpp-scm and ufs-weather-model repositories, these file lists are defined within the CMakeLists, just prior to the call the ``ccpp_capgen.py``. When calling ``ccpp_capgen.py``, the following sequence is performed:
+
 * Parse metadata and corresponding source file lists and check for consistency. This is the CCPP validation stage.
 * Using Suite Definition File(s), autogenerate CCPP physics Group and Host Caps (a.k.a. physics drivers).
 * ``ccpp_capgen.py`` creates a ``datatable`` that contains source and dependency files lists. These lists are added to the build target within CMakeLists.txt
