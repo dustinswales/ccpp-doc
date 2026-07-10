@@ -689,7 +689,7 @@ In summary, there are two ways to pass constants to a physics scheme.  The first
 
 Suite Variables
 ==========================
-The CCPP framework can handle memory management (e.g., definition/allocation) for interstitial variables that are not visible to the host model. For fields that are computed in one scheme (e.g., ``intent(out/inout)``) and requested by another (e.g., ``intent(in)``), the CCPP framework will define, allocate and deallocate these variables in the Suite data module for communication across schemes. There is no need to define ephemeral physics variables within the host model.
+The CCPP framework can handle memory management (e.g., definition/allocation/deallocation) for interstitial variables that are not visible to the host model. For fields that are computed in one scheme (e.g., ``intent(out/inout)``) and requested by another (e.g., ``intent(in)``), the CCPP framework will define, allocate and deallocate these variables in the Suite data module for communication across schemes. There is no need to define ephemeral physics variables within the host model.
 
 .. _ParallelProgramming:
 
