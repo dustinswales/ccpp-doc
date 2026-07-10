@@ -131,7 +131,7 @@ If a required unit conversion has not been implemented the CCPP capgen script wi
 
 .. code-block:: console
 
-   Variable 'prsl' (standard_name='air_pressure'): host units 'Pa' differ from scheme 'mp_thompson' units 'PaPaPa' but no unit conversion is known; add a conversion to metadata/unit_conversion.py or fix the metadata
+      Variable 'prsl' (standard_name='air_pressure'): host units 'Pa' differ from scheme 'mp_thompson' units 'PaPaPa' but no unit conversion is known; add a conversion to metadata/unit_conversion.py or fix the metadata
 
 All automatic unit conversions are implemented in ``ccpp-framework/capgen/metadata/unit_conversion.py``,
 new unit conversions can be added to this file by following the existing examples.
