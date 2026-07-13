@@ -308,15 +308,17 @@ Mandatory variables required by the CCPP framework are stored in a ``control`` m
     implicit none
 
     ! CCPP control variables                                                                                                                                                                  
+    character(len=256) :: suite_name='undefined'
+    character(len=256) :: group_name='undefined'
+    integer :: lb
+    integer :: ub
+    integer :: reflag
     integer :: mythread
     integer :: nthreads
     integer :: nphys_threads
-    integer :: lb
-    integer :: ub
-    integer :: errflg
     character(len=512) :: errmsg
-    character(len=256) :: ccpp_suite='undefined'
-    character(len=256) :: group_name='undefined'
+    nteger :: errflg
+
   end module ccpp_driver
 
 *Listing 6.3: Example host model file containing mandatory CCPP control variables.
