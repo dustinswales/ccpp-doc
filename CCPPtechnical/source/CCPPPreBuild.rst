@@ -1,20 +1,20 @@
-.. _CCPPPreBuild:
+.. _CCPPCapgen:
 
 **************************************************
-Technical Aspects of the CCPP *Prebuild*
+Technical Aspects of the CCPP *Capgen*
 **************************************************
 
 =============================
-*Prebuild* Script Function
+*Capgen* Script Function
 =============================
 
-The :term:`CCPP` *prebuild* script ``ccpp-framework/scripts/ccpp_prebuild.py`` is the central piece of code in the :term:`CCPP Framework` that
+The :term:`CCPP` *capgen* script ``ccpp-framework/capgen/ccpp_capgen.py`` is the central piece of code in the :term:`CCPP Framework` that
 connects the :term:`host model` with the :term:`CCPP Physics` schemes (see :numref:`%s <ccpp_static_build>`). This script must be run
-before compiling the CCPP Physics library and the host model cap. This may be done manually or as part
-of a host model build-time script. Both the :term:`UFS` and :term:`SCM` have incorporated the calls to ``ccpp_prebuild.py`` in their build systems.
+before compiling the CCPP Physics library and the host model driver. This may be done manually or as part
+of a host model build-time script. Both the :term:`UFS` and :term:`SCM` have incorporated the calls to ``ccpp_capgen.py`` in their build systems.
 
-The CCPP *prebuild* script automates several tasks based on the information collected from the metadata
-on the host model side and from the individual physics schemes (``.meta`` files; see :numref:`Figure %s <ccpp_prebuild>`):
+The CCPP *capgen* script automates several tasks based on the information collected from the metadata
+on the host model side and from the individual physics schemes (``.meta`` files; see :numref:`Figure %s <ccpp_capgen>`):
 
  * Compiles a list of variables provided by the host model.
 
