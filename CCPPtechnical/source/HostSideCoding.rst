@@ -280,8 +280,8 @@ The CCPP Application Programming Interface (API), or Host model Cap, is comprise
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 CCPP Mandatory (control) variables for Host and Scheme Coupling
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-
-Mandatory variables required by the CCPP framework are stored in a``control`` metadata table. These variables are provided by the host model and passed directly through the CCPP API to the physics schemes. There are nine control variables:
+ 
+Mandatory variables required by the CCPP framework are stored in a ``control`` metadata table. These variables are provided by the host model and passed directly through the CCPP API into the physics schemes. There are nine control variables:
 
 * Error code for handling in CCPP (``errmsg``).
 * Error message associated with the error code (``errflg``).
@@ -297,70 +297,74 @@ Mandatory variables required by the CCPP framework are stored in a``control`` me
 
 .. code-block:: fortran
 
-  [ccpp-table-properties]
-    name = ccpp_types
-    type = module
-    dependencies =
-
-  [ccpp-arg-table]
-    name = ccpp_types
-    type = module
-  [ccpp_t]
-    standard_name = ccpp_t
-    long_name = definition of type ccpp_t
-    units = DDT
-    dimensions = ()
-    type = ccpp_t
-
   ########################################################################
   [ccpp-table-properties]
-    name = ccpp_t
-    type = ddt
+    name = CCPP_driver
+    type = control
     dependencies =
 
   [ccpp-arg-table]
-    name = ccpp_t
-    type = ddt
-  [errflg]
-    standard_name = ccpp_error_code
-    long_name = error code for error handling in CCPP
-    units = 1
+    name = CCPP_driver
+    type = control
+  [ ccpp_suite ]
+    standard_name = suite_name
+    long_name = name of the CCPP suite to dispatch to
+    units = none
+    dimensions = ()
+    type = character
+    kind = len=256
+  [ group_name ]
+    standard_name = group_name
+    long_name = name of the CCPP group to dispatch to
+    units = none
+    dimensions = ()
+    type = character
+    kind = len=256
+  [ lb ]
+    standard_name = horizontal_loop_begin
+    long_name = start of horizontal range for this phase
+    units = index
     dimensions = ()
     type = integer
-  [errmsg]
+  [ ub ]
+    standard_name = horizontal_loop_end
+    long_name = end of horizontal range for this phase
+    units = index
+    dimensions = ()
+    type = integer
+  [ mythread ]
+    standard_name = thread_number
+    long_name = current thread number
+    units = index
+    dimensions = ()
+    type = integer
+  [ nthreads ]
+    standard_name = number_of_threads
+    long_name = total number of OpenMP threads
+    units = count
+    dimensions = ()
+    type = integer
+  [ nphys_threads ]
+    standard_name = number_of_physics_threads
+    long_name = thread budget for physics-internal OpenMP
+    units = count
+    dimensions = ()
+    type = integer
+  [ errmsg ]
     standard_name = ccpp_error_message
-    long_name = error message for error handling in CCPP
+    long_name = error message for CCPP error handling
     units = none
     dimensions = ()
     type = character
     kind = len=512
-  [loop_cnt]
-    standard_name = ccpp_loop_counter
-    long_name = loop counter for subcycling loops in CCPP
-    units = index
-    dimensions = ()
-    type = integer
-  [loop_max]
-    standard_name = ccpp_loop_extent
-    long_name = loop extent for subcycling loops in CCPP
-    units = count
-    dimensions = ()
-    type = integer
-  [blk_no]
-    standard_name = ccpp_block_number
-    long_name = number of block for explicit data blocking in CCPP
-    units = index
-    dimensions = ()
-    type = integer
-  [thrd_no]
-    standard_name = ccpp_thread_number
-    long_name = number of thread for threading in CCPP
-    units = index
+  [ errflg ]
+    standard_name = ccpp_error_code
+    long_name = error flag for CCPP error handling
+    units = 1
     dimensions = ()
     type = integer
 
-*Listing 6.5: Mandatory variables provided by the CCPP Framework from* ``ccpp-framework/src/ccpp_types.meta`` *.
-These variables must not be defined by the host model.*
+*Listing 6.5: Mandatory variables that **must** be provided by the CCPP Framework from.*
 
 Two of the variables are mandatory and must be passed to every physics scheme: ``errmsg`` and ``errflg``. The variables ``loop_cnt``, ``loop_max``, ``blk_no``, and ``thrd_no`` can be passed to the schemes if required, but are not mandatory. They are, however, required for the auto-generated caps to pass the correct data to the physics and to realize the subcycling of schemes. The ``cdata`` structure is only used to hold these six variables, since the host model variables are directly passed to the physics without the need for an intermediate data structure.
 
