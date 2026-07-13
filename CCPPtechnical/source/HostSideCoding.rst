@@ -200,7 +200,7 @@ and ``qgrs`` in :ref:`Listing 6.2 <example_vardefs_meta>` for an example.
 Suite Variables
 ,,,,,,,,,,,,,,,,
 
-The CCPP framework can manage the memory (e.g., define and allocate) variables only needed within the physics. These are called **suite variables** and are created if certain conditions are met:
+The CCPP framework will manage the memory (e.g., define and allocate) variables only needed within the physics. These are called **suite variables** and are created if certain conditions are met:
 
 * Variable is not defined in host metadata
 
@@ -208,9 +208,9 @@ The CCPP framework can manage the memory (e.g., define and allocate) variables o
 
 * Another scheme has the same variable defined with ``intent(in)``
 
-.. code-block:: fortran
-
 For example, here are metadata snippets from two schemes that will create a suite variable for atmosphere_boundary_layer_thickness: 
+
+.. code-block:: fortran
 
   [PBLH]
     standard_name = atmosphere_boundary_layer_thickness
@@ -234,7 +234,7 @@ For example, here are metadata snippets from two schemes that will create a suit
     kind = kind_phys
     intent = in
 
-*Listing 6.4: Example scheme metadata snippet for scheme that requires PBL thickness as an input
+*Listing 6.4: Example scheme metadata snippet for scheme that requires PBL thickness.
 
 Within the suite cap we will have:
 
@@ -252,7 +252,7 @@ Within the suite cap we will have:
     ...
   end module ccpp_{suite_name}_{group_name}_cap
 
-*Listing 6.4: Example scheme metadata snippet for scheme that requires PBL thickness as an input
+*Listing 6.5: E
 
 ========================================================
 CCPP Variables in the SCM and UFS Atmosphere Host Models
