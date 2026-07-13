@@ -200,7 +200,7 @@ and ``qgrs`` in :ref:`Listing 6.2 <example_vardefs_meta>` for an example.
 Suite Variables
 ,,,,,,,,,,,,,,,,
 
-The CCPP framework can define and allocate variables only needed within the physics. These are called **suite variables** and are created if certain conditions are met:
+The CCPP framework can manage the memory (e.g., define and allocate) variables only needed within the physics. These are called **suite variables** and are created if certain conditions are met:
 
 * Variable is not defined in host metadata
 
