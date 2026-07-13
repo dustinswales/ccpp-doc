@@ -27,7 +27,7 @@ The CCPP *capgen* step performs the tasks below.
   variables by ``standard_name``, and also check for any Suite variables.
 * Check units, dimensions, type. Add variable transformation if a mismatch
   of units/type is detected and the required conversion has been implemented (see
-  :numref:`Section %s <AutomaticUnitConversions>` for details).
+  :numref:`Section %s <AutomaticVariableConversions>` for details).
 * Filter unused schemes and variables.
 * Create *caps* for groups and suite(s).
 * Create Host *caps*
