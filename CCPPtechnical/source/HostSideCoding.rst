@@ -364,7 +364,7 @@ Mandatory variables required by the CCPP framework are stored in a ``control`` m
     dimensions = ()
     type = integer
 
-*Listing 6.5: Mandatory variables that **must** be provided by the CCPP Framework from.*
+*Listing 6.5: Mandatory variables that* **must** *be provided by the Host model*
 
 Two of the variables are mandatory and must be passed to every physics scheme: ``errmsg`` and ``errflg``. The variables ``loop_cnt``, ``loop_max``, ``blk_no``, and ``thrd_no`` can be passed to the schemes if required, but are not mandatory. They are, however, required for the auto-generated caps to pass the correct data to the physics and to realize the subcycling of schemes. The ``cdata`` structure is only used to hold these six variables, since the host model variables are directly passed to the physics without the need for an intermediate data structure.
 
