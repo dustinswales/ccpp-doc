@@ -62,7 +62,7 @@ or to call the entire suite. For example, ``ufs_ccpp_cap.F90`` would contain mod
 with subroutines ``ccpp_physics_{register, init, physics_init, timestep_init, run, timestep_final, final}``.  Interested users
 should run ``ccpp_capgen.py`` as appropriate for their model and inspect these auto-generated files.
 
-The capgen *datatable* step will produce the following file lists for any host model. Note that the location of these files varies between the host models and whether an in-source or out-of-source build is used.
+The capgen *datatable* step will produce the following file lists for any host model. Note that the location of these files varies between the host models.
 
 * List of CCPP Scheme files: SCHEME_FORTRAN_FILES
 
