@@ -401,7 +401,7 @@ Mandatory variables required by the CCPP framework are stored in a ``control`` m
 
   end module ccpp_driver
 
-*Listing 6.10: Example host model file containing mandatory CCPP control variables.
+*Listing 6.10: Example host model file containing mandatory CCPP control variables.*
 
 .. code-block:: fortran
 
@@ -597,7 +597,7 @@ The purpose of the host model *driver* is to abstract away the communication bet
 
 * Providing interfaces to call the CCPP
 
-  * The *drvier* must provide functions or subroutines that can be called at the appropriate places in the host model time integration loop and that internally call ``ccpp_register``,  ``ccpp_init``, ``ccpp_physics_init``, ``ccpp_physics_timestep_init``, ``ccpp_physics_run``, ``ccpp_physics_timestep_final``, ``ccpp_physics_final``, and ``ccpp_final``, and handle any errors returned. :ref:`Listing 6.7 <example_ccpp_host_driver>` provides an example where the host driver consists of three subroutines ``physics_init`` (which consists of the suite initialization and CCPP physics init phase), ``physics_run`` (which internally performs the CCPP time step init, run, and time step final phases), and ``physics_final`` (which consists of the suite finalization and CCPP physics final phase).
+  * The *drvier* must provide functions or subroutines that can be called at the appropriate places in the host model time integration loop and that internally call ``ccpp_register``,  ``ccpp_init``, ``ccpp_physics_init``, ``ccpp_physics_timestep_init``, ``ccpp_physics_run``, ``ccpp_physics_timestep_final``, ``ccpp_physics_final``, and ``ccpp_final``, and handle any errors returned. :ref:`Listing 6.18 <example_ccpp_host_driver>` provides an example where the host driver consists of three subroutines ``physics_init`` (which consists of the suite initialization and CCPP physics init phase), ``physics_run`` (which internally performs the CCPP time step init, run, and time step final phases), and ``physics_final`` (which consists of the suite finalization and CCPP physics final phase).
 
 .. _example_ccpp_host_driver:
 
