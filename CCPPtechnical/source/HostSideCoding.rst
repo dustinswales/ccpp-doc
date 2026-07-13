@@ -11,8 +11,6 @@ Variable Requirements on the Host Model Side
 ==================================================
 
 All variables required to communicate between the host model and the physics must be allocated by the host model. Variables needed to communicate between physics schemes can be allocated by the framework (e.g., Suite Variables); However, host models can still choose to allocate physics interstitial variables if they desire. The framework also controls several mandatory (control) variables ``errflg``, ``errmsg``, ``ccpp_suite``, ``group_name``, ``lb``, ``ub``, ``mythread``, ``nthreads``, and ``nphys_thread``, as explained in :numref:`Section %s <DataStructureTransfer>`
- 
-An exception is variables ``errflg``, ``errmsg``, ``loop_cnt``, ``loop_max``, ``blk_no``, and ``thrd_no``, which are allocated by the CCPP Framework, as explained in :numref:`Section %s <DataStructureTransfer>`. See :numref:`Section %s <StandardNames>` for information about the variables required for the current pool of CCPP physics.
 
 At present, only two types of variable definitions are supported by the CCPP Framework:
 
@@ -41,7 +39,8 @@ The following requirements must be met when defining metadata for variables in t
 and :ref:`Listing 6.2 <example_vardefs_meta>` for examples of host model metadata).
 
 * The ``standard_name`` must match that of the target variable in the physics scheme.
-* The type, kind, shape and size of the variable (as defined in the host model Fortran code) must match that of the target variable.
+* The shape and size of the variable (as defined in the host model Fortran code) must match that of the target variable. 
+* The type and kind may differ between host-model and scheme, as the framework will automatically add these conversions.
 * The attributes ``units``, ``dimensions``, ``type`` and ``kind`` in the host model metadata must match those in the physics scheme metadata.
 * The attribute ``active`` is used to allocate variables under certain conditions.  It must be written as a Fortran expression that equates to ``.true.`` or ``.false.``, using the CCPP standard names of variables. ``active`` attributes for all variables are ``.true.`` by default. See :numref:`Section %s <ActiveAttribute>` for details.
 * The ``intent`` attribute is not a valid attribute for host model metadata and will be ignored, if present.
@@ -65,8 +64,6 @@ and :ref:`Listing 6.2 <example_vardefs_meta>` for examples of host model metadat
          integer, parameter           :: r15 = selected_real_kind(15)
          integer                      :: ex_int
          real(kind=8), dimension(:,:) :: ex_real1
-         character(len=64)            :: errmsg
-         logical                      :: errflg
 
    !!> \section arg_table_example_ddt
    !! \htmlinclude example_ddt.html
@@ -91,11 +88,12 @@ and :ref:`Listing 6.2 <example_vardefs_meta>` for examples of host model metadat
    ########################################################################
    [ccpp-table-properties]
      name = arg_table_example_vardefs
-     type = module
+     type = host
+     dependencies =
 
    [ccpp-arg-table]
      name = arg_table_example_vardefs
-     type = module
+     type = host
    [ex_int]
      standard_name = example_int
      long_name = ex. int
@@ -106,39 +104,15 @@ and :ref:`Listing 6.2 <example_vardefs_meta>` for examples of host model metadat
      standard_name = example_real
      long_name = ex. real
      units = m
-     dimensions = (horizontal_loop_extent,vertical_layer_dimension)
+     dimensions = (horizontal_dimension,vertical_layer_dimension)
      type = real
      kind = kind=8
-   [ex_ddt]
-     standard_name = example_ddt
-     long_name = ex. ddt
-     units = DDT
-     dimensions = ()
-     type = ex_ddt
-   [ext]
-     standard_name = example_ddt_instance
-     long_name = ex. ddt inst
-     units = DDT
-     dimensions = ()
-     type = ex_ddt
-   [errmsg]
-     standard_name = ccpp_error_message
-     long_name = error message for error handling in CCPP
-     units = none
-     dimensions = ()
-     type = character
-     kind = len=64
-   [errflg]
-     standard_name = ccpp_error_code
-     long_name = error code for error handling in CCPP
-     units = 1
-     dimensions = ()
-     type = integer
 
    ########################################################################
    [ccpp-table-properties]
      name = arg_table_example_ddt
      type = ddt
+     dependencies =
 
    [ccpp-arg-table]
      name = arg_table_example_ddt
@@ -150,35 +124,20 @@ and :ref:`Listing 6.2 <example_vardefs_meta>` for examples of host model metadat
      dimensions =
      type = logical
    [ext%r]
-     standard_name = example_real3
+     standard_name = example_real
      long_name = ex. real
      units = kg
-     dimensions = (horizontal_loop_extent,vertical_layer_dimension)
+     dimensions = (horizontal_dimension,vertical_layer_dimension)
      type = real
      kind = r15
    [ext%r(;,1)]
      standard_name = example_slice
      long_name = ex. slice
      units = kg
-     dimensions = (horizontal_loop_extent,vertical_layer_dimension)
+     dimensions = (horizontal_dimension)
      type = real
      kind = r15
-   [nwfa2d]
-     standard_name = tendency_of_water_friendly_aerosols_at_surface
-     long_name = instantaneous water-friendly sfc aerosol source
-     units = kg-1 s-1
-     dimensions = (horizontal_loop_extent)
-     type = real
-     kind = kind_phys
-     active = (flag_for_microphysics_scheme == flag_for_thompson_microphysics_scheme .and. flag_for_aerosol_physics)
-   [qgrs(:,:,index_for_water_friendly_aerosols)]
-     standard_name = water_friendly_aerosol_number_concentration
-     long_name = number concentration of water-friendly aerosols
-     units = kg-1
-     dimensions = (horizontal_loop_extent,vertical_layer_dimension)
-     active = (index_for_water_friendly_aerosols > 0)
-     type = real
-     kind = kind_phys
+
 
 *Listing 6.2: Example host model metadata file (* ``.meta`` *).*
 
