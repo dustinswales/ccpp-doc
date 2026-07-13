@@ -155,7 +155,7 @@ Active Attribute
 
 The CCPP must be able to detect when arrays need to be allocated, and when certain tracers must be
 present in order to perform operations or tests in the auto-generated caps (e.g. unit conversions,
-blocked data structure copies, etc.). This is accomplished with the attribute ``active`` in the
+Association checks for optional scheme variables, etc.). This is accomplished with the attribute ``active`` in the
 metadata for the host model variables (e.g., ``GFS_typedefs.meta`` for the :term:`UFS Atmosphere` or the :term:`SCM`).
 
 Several arrays in the host model (e.g., ``GFS_typedefs.F90`` in the UFS Atmosphere or the SCM) are
@@ -187,6 +187,9 @@ index being larger than zero. For example:
 The ``active`` attribute is a conditional statement that, if true, will allow the corresponding variable
 to be allocated.  It must be written as a Fortran expression that equates to ``.true.`` or ``.false.``,
 using the CCPP standard names of variables. Active attributes for all variables are ``.true.`` by default.
+
+To see how the active attribute is deployed with the group caps for an optional scheme variable, see :numref:`Section %s <OptionalVariables>`.
+
 
 If a developer adds a new variable that is only allocated under certain conditions, or changes the conditions
 under which an existing variable is allocated, a corresponding change must be made in the metadata for the
