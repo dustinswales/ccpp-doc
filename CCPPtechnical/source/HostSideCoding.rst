@@ -45,7 +45,6 @@ and :ref:`Listing 6.2 <example_vardefs_meta>` for examples of host model metadat
 * The attribute ``active`` is used to allocate variables under certain conditions.  It must be written as a Fortran expression that equates to ``.true.`` or ``.false.``, using the CCPP standard names of variables. ``active`` attributes for all variables are ``.true.`` by default. See :numref:`Section %s <ActiveAttribute>` for details.
 * The ``intent`` attribute is not a valid attribute for host model metadata and will be ignored, if present.
 * The ``local_name`` of the variable must be set to the name the host model cap uses to refer to the variable.
-* The metadata section that exposes a DDT to the CCPP (as opposed to the section that describes the components of a DDT) must be in the same module where the memory for the DDT is allocated. If the DDT is a module variable, then it must be exposed via the module’s metadata section, which must have the same name as the module.
 * Metadata sections describing module variables must be placed inside the module.
 * Metadata sections describing components of DDTs must be placed immediately before the type definition and have the same name as the DDT.
 
@@ -70,8 +69,8 @@ and :ref:`Listing 6.2 <example_vardefs_meta>` for examples of host model metadat
    !!
 
          type ex_ddt
-           logical              :: l
-           real, dimension(:,:) :: r
+           logical                   :: l
+           real(r15), dimension(:,:) :: r
          end type ex_ddt
 
          type(ex_ddt) :: ext
@@ -79,7 +78,7 @@ and :ref:`Listing 6.2 <example_vardefs_meta>` for examples of host model metadat
        end module example_vardefs
 
 
-*Listing 6.1: Example host model file with reference to metadata. In this example, both the definition and the declaration (memory allocation) of a DDT* ``ext`` *(of type* ``ex_ddt`` *) are in the same module.*
+*Listing 6.1: Example host model file with reference to metadata. In this example, only the definition of a DDT* ``ex_ddt`` is included. The allocation of a variable of type ``ex_ddt`` occurs externally, see See :numref:`Section %s <DJS TODO>`.*
 
 .. _example_vardefs_meta:
 
@@ -94,6 +93,12 @@ and :ref:`Listing 6.2 <example_vardefs_meta>` for examples of host model metadat
    [ccpp-arg-table]
      name = arg_table_example_vardefs
      type = host
+   [r15]
+     standard_name = working_precision 
+     long_name = working precision
+     units = none
+     dimensions = ()
+     type = integer
    [ex_int]
      standard_name = example_int
      long_name = ex. int
