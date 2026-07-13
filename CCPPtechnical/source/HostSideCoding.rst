@@ -283,8 +283,6 @@ CCPP Mandatory (control) variables for Host and Scheme Coupling
  
 Mandatory variables required by the CCPP framework are stored in a ``control`` metadata table. These variables are provided by the host model and passed directly through the CCPP API into the physics schemes. There are nine control variables:
 
-* Error code for handling in CCPP (``errmsg``).
-* Error message associated with the error code (``errflg``).
 * CCPP suite name (``suite_name``)
 * CCPP group name (``group_name``)
 * Lower bound of horizontal_dimension (``lb``)
@@ -292,19 +290,21 @@ Mandatory variables required by the CCPP framework are stored in a ``control`` m
 * Number of openMP threads(``nthreads``)
 * Current openMP thread number(``mythread``)
 * Number of openMP threads used by physics(``nphys_threads``)
+* Error code for handling in CCPP (``errmsg``).
+* Error message associated with the error code (``errflg``).
 
 .. code-block:: fortran
 
   module ccpp_driver
 
     use {host_name}_ccpp_cap, only: ccpp_register,               &
-                                     ccpp_init,                   &
-                                     ccpp_physics_init,           &
-                                     ccpp_physics_timestep_init,  &
-                                     ccpp_physics_run,            &
-                                     ccpp_physics_timestep_final, &
-                                     ccpp_physics_final,          &
-                                     ccpp_final
+                                    ccpp_init,                   &
+                                    ccpp_physics_init,           &
+                                    ccpp_physics_timestep_init,  &
+                                    ccpp_physics_run,            &
+                                    ccpp_physics_timestep_final, &
+                                    ccpp_physics_final,          &
+                                    ccpp_final
     implicit none
 
     ! CCPP control variables                                                                                                                                                                  
@@ -317,7 +317,7 @@ Mandatory variables required by the CCPP framework are stored in a ``control`` m
     integer :: nthreads
     integer :: nphys_threads
     character(len=512) :: errmsg
-    nteger :: errflg
+    integer :: reflag
 
   end module ccpp_driver
 
@@ -393,6 +393,9 @@ Mandatory variables required by the CCPP framework are stored in a ``control`` m
     type = integer
 
 *Listing 6.4: Mandatory variables that* **must** **be** **provided** *by the Host model*
+
+For the ``ccpp_register``, ``ccpp_init``, and ``ccpp_final`` phases, ``suite_name``, ``errmsg``, and ``errflg` are the only required variables. For all other phases, ccpp_physics_init,  ccpp_physics_timestep_init, ccpp_physics_run, ccpp_physics_timestep_final, **all nine variables** are required.
+
 
 Two of the variables are mandatory and must be passed to every physics scheme: ``errmsg`` and ``errflg``. The variables ``loop_cnt``, ``loop_max``, ``blk_no``, and ``thrd_no`` can be passed to the schemes if required, but are not mandatory. They are, however, required for the auto-generated caps to pass the correct data to the physics and to realize the subcycling of schemes. The ``cdata`` structure is only used to hold these six variables, since the host model variables are directly passed to the physics without the need for an intermediate data structure.
 
