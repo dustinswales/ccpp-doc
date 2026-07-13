@@ -171,6 +171,8 @@ allocated based on certain conditions, for example:
       Coupling%nifa2d   = clear_val
     endif
 
+*Listing 6.3: Example Fortran code to allocate optional scheme variables.*
+
 Other examples are the elements in the tracer array, where their presence depends on the corresponding
 index being larger than zero. For example:
 
@@ -183,6 +185,8 @@ index being larger than zero. For example:
     if (Model%ntwa>0) then
       ! do something with qgrs(:,:,Model%ntwa)
     end if
+
+*Listing 6.4: Example Fortran code to allocate tracer arrays.*
 
 The ``active`` attribute is a conditional statement that, if true, will allow the corresponding variable
 to be allocated.  It must be written as a Fortran expression that equates to ``.true.`` or ``.false.``,
@@ -223,7 +227,7 @@ Below are metadata snippets from two schemes that will create a suite variable f
     kind = kind_phys
     intent = out
 
-*Listing 6.3: Example scheme metadata snippet for scheme that computes PBL thickness*
+*Listing 6.5: Example scheme metadata snippet for scheme that computes PBL thickness*
 
 .. code-block:: fortran
 
@@ -236,7 +240,7 @@ Below are metadata snippets from two schemes that will create a suite variable f
     kind = kind_phys
     intent = in
 
-*Listing 6.4: Example scheme metadata snippet for scheme that requires PBL thickness.*
+*Listing 6.6: Example scheme metadata snippet for scheme that requires PBL thickness.*
 
 Within the suite cap we will have the following code:
 
@@ -254,7 +258,7 @@ Within the suite cap we will have the following code:
     ...
   end module ccpp_{suite_name}_{group_name}_cap
 
-*Listing 6.5: In this example, the variable* ``PBLH`` *was added to the suite data module. Variables in the suite data module are allocated during the suite initialization step.*
+*Listing 6.7: In this example, the variable* ``PBLH`` *was added to the suite data module. Variables in the suite data module are allocated during the suite initialization step.*
 
 ,,,,,,,,,,,,,,,,
 Suite Data
@@ -307,6 +311,8 @@ Each DDT contains a create method that allocates the data defined using the meta
       procedure :: create  => stateout_create  !<   allocate array data
   end type GFS_stateout_type
 
+*Listing 6.8: Example Fortran code containing a UFS/SCM data container.*
+
 In this example, ``gu0``, ``gv0``, ``gt0``, and ``gq0`` are defined in the host-side metadata section, and when the subroutine ``stateout_create`` is called, these arrays are allocated and initialized to zero.  With the CCPP, it is possible to not only refer to components of DDTs, but also to slices of arrays with provided metadata as long as these are contiguous in memory. An example of an array slice from the ``GFS_stateout_type`` looks like:
 
 .. code-block:: fortran
@@ -336,6 +342,8 @@ In this example, ``gu0``, ``gv0``, ``gt0``, and ``gq0`` are defined in the host-
      dimensions = (horizontal_dimension,vertical_layer_dimension)
      type = real
      kind = kind_phys
+
+*Listing 6.9: Metadata file snippet for UFS/SCM data container.*
 
 Array slices can be used by physics schemes that only require certain values from an array.
 
@@ -393,7 +401,7 @@ Mandatory variables required by the CCPP framework are stored in a ``control`` m
 
   end module ccpp_driver
 
-*Listing 6.3: Example host model file containing mandatory CCPP control variables.
+*Listing 6.10: Example host model file containing mandatory CCPP control variables.
 
 .. code-block:: fortran
 
@@ -464,7 +472,7 @@ Mandatory variables required by the CCPP framework are stored in a ``control`` m
     dimensions = ()
     type = integer
 
-*Listing 6.4: Mandatory variables that* **must** **be** **provided** *by the Host model*
+*Listing 6.11: Mandatory variables that* **must** **be** **provided** *by the Host model*
 
 For the ``ccpp_register``, ``ccpp_init``, and ``ccpp_final`` phases, ``suite_name``, ``errmsg``, and ``errflg`` are the only required variables. For all other phases, ccpp_physics_init,  ccpp_physics_timestep_init, ccpp_physics_run, ccpp_physics_timestep_final, **all nine variables** are required.
 
@@ -490,7 +498,7 @@ The physics is invoked by calling subroutine ``ccpp_physics_run``. This subrouti
                         mythread=mythread, nthreads=nthreads,         &
                         nphys_threads= nphys_threads)
 
-*Listing 6.5: Example call to ccpp_physics_run*
+*Listing 6.12: Example call to ccpp_physics_run.*
 
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 Initializing and Finalizing the Physics
@@ -513,7 +521,7 @@ This subroutine is part of the CCPP API and is auto-generated. A typical call to
                          mythread=mythread, nthreads=nthreads,         &
                          nphys_threads= nphys_threads)
 
-*Listing 6.6: Example call to ccpp_physics_init for specified group*
+*Listing 6.13: Example call to ccpp_physics_init for specified group.*
 
 ``group_name`` could be set to ``all`` to call all groups using the ordering defined in the suite definition file:
 
@@ -524,7 +532,7 @@ This subroutine is part of the CCPP API and is auto-generated. A typical call to
                          mythread=mythread, nthreads=nthreads,         &
                          nphys_threads= nphys_threads)
 
-*Listing 6.7: Example call to ccpp_physics_init for* ***all*** *groups*
+*Listing 6.14: Example call to ccpp_physics_init for* **all** *groups*.
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Subroutine ``ccpp_physics_final``
@@ -539,7 +547,7 @@ This subroutine is part of the CCPP API and is auto-generated. A typical call to
                           mythread=mythread, nthreads=nthreads,         &
                           nphys_threads= nphys_threads)
 
-*Listing 6.8: Example call to ccpp_physics_final for specified group.*
+*Listing 6.15: Example call to ccpp_physics_final for specified group.*
 
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 Initializing and Finalizing the time step
@@ -560,8 +568,7 @@ This subroutine is part of the CCPP API and is auto-generated.A typical call to 
                                   mythread=mythread, nthreads=nthreads,         &
                                   nphys_threads= nphys_threads)
 
-*Listing 6.9: Example call to ccpp_physics_timestep_init for specified group.*
-
+*Listing 6.16: Example call to ccpp_physics_timestep_init for specified group.*
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Subroutine ``ccpp_physics_timestep_final``
@@ -576,7 +583,7 @@ This subroutine is part of the CCPP API and is auto-generated.  A typical call t
                                    mythread=mythread, nthreads=nthreads,         &
                                    nphys_threads= nphys_threads)
 
-*Listing 6.10: Example call to ccpp_physics_timestep_final for specified group.*
+*Listing 6.17: Example call to ccpp_physics_timestep_final for specified group.*
 
 ========================================================
 Host Driver
@@ -669,7 +676,7 @@ The purpose of the host model *driver* is to abstract away the communication bet
 
   end module ccpp_driver
 
-*Listing 6.11: Fortran template for a CCPP host model driver. After each call to ``ccpp_physics_*``, the host model should check the return code ``errflg`` and handle any errors (omitted for readability).*
+*Listing 6.18: Fortran template for a CCPP host model driver. After each call to ``ccpp_physics_*``, the host model should check the return code ``errflg`` and handle any errors (omitted for readability).*
 
 Readers are referred to the actual implementations of the driver functions in the CCPP-SCM and the UFS for further information. For the SCM, the cap functions are implemented in:
 
