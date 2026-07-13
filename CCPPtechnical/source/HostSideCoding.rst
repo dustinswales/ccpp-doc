@@ -298,15 +298,15 @@ Mandatory variables required by the CCPP framework are stored in a ``control`` m
   module ccpp_driver
 
     use {host_name}_ccpp_cap, only: ccpp_register,               &
-                                    ccpp_init,                   &
-                                    ccpp_physics_init,           &
-                                    ccpp_physics_timestep_init,  &
-                                    ccpp_physics_run,            &
-                                    ccpp_physics_timestep_final, &
-                                    ccpp_physics_final,          &
-                                    ccpp_final
-    use iso_fortran_env,    only: error_unit
+                                     ccpp_init,                   &
+                                     ccpp_physics_init,           &
+                                     ccpp_physics_timestep_init,  &
+                                     ccpp_physics_run,            &
+                                     ccpp_physics_timestep_final, &
+                                     ccpp_physics_final,          &
+                                     ccpp_final
     implicit none
+
     ! CCPP control variables                                                                                                                                                                  
     integer :: mythread
     integer :: nthreads
@@ -320,6 +320,8 @@ Mandatory variables required by the CCPP framework are stored in a ``control`` m
   end module ccpp_driver
 
 *Listing 6.3: Example host model file containing mandatory CCPP control variables.
+
+.. code-block:: fortran
 
   ########################################################################
   [ccpp-table-properties]
