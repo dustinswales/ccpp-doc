@@ -10,7 +10,9 @@ This chapter describes the connection of a host model with the pool of :term:`CC
 Variable Requirements on the Host Model Side
 ==================================================
 
-All variables required to communicate between the host model and the physics, as well as to communicate between physics schemes, need to be allocated by the host model. An exception is variables ``errflg``, ``errmsg``, ``loop_cnt``, ``loop_max``, ``blk_no``, and ``thrd_no``, which are allocated by the CCPP Framework, as explained in :numref:`Section %s <DataStructureTransfer>`. See :numref:`Section %s <StandardNames>` for information about the variables required for the current pool of CCPP physics.
+All variables required to communicate between the host model and the physics must be allocated by the host model. Variables needed to communicate between physics schemes can be allocated by the framework (e.g., Suite Variables); However, host models can still choose to allocate physics interstitial variables if they desire. The framework also controls several mandatory (control) variables ``errflg``, ``errmsg``, ``ccpp_suite``, ``group_name``, ``lb``, ``ub``, ``mythread``, ``nthreads``, and ``nphys_thread``, as explained in :numref:`Section %s <DataStructureTransfer>`
+ 
+An exception is variables ``errflg``, ``errmsg``, ``loop_cnt``, ``loop_max``, ``blk_no``, and ``thrd_no``, which are allocated by the CCPP Framework, as explained in :numref:`Section %s <DataStructureTransfer>`. See :numref:`Section %s <StandardNames>` for information about the variables required for the current pool of CCPP physics.
 
 At present, only two types of variable definitions are supported by the CCPP Framework:
 

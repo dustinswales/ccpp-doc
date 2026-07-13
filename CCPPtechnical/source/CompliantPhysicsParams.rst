@@ -137,7 +137,7 @@ The ``[ccpp-table-properties]`` section is required in every metadata file and h
 #. ``type``:  In the CCPP Physics, ``type`` can be ``scheme``, ``module``, or ``ddt`` (derived data type) and must match the
    ``type`` in the associated ``[ccpp-arg-table]`` section(s).
 
-#. ``type``:  In the Host mode, ``type`` can be ``host``, ``control``, or ``ddt`` (derived data type) and must match the
+#. ``type``:  In the Host model, ``type`` can be ``host``, ``control``, or ``ddt`` (derived data type) and must match the
    ``type`` in the associated ``[ccpp-arg-table]`` section(s). See :numref:`Section %s <VariableTablesHostModel>` for more details regarding Host model metadata requirements.
 
 #. ``name``:  This depends on the ``type``. For types ``ddt`` and ``module`` (for
