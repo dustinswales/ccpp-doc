@@ -196,6 +196,42 @@ under which an existing variable is allocated, a corresponding change must be ma
 host model variables (``GFS_typedefs.meta`` for the UFS Atmosphere or the SCM). See variables ``nwfa2d``
 and ``qgrs`` in :ref:`Listing 6.2 <example_vardefs_meta>` for an example.
 
+,,,,,,,,,,,,,,,,
+Suite Variables
+,,,,,,,,,,,,,,,,
+
+The CCPP framework can define and allocate variables only needed within the physics. These are called **suite variables** and are created if certain conditions are met:
+
+* Variable is not defined in host metadata
+
+* One scheme has a variable defined with ``intent(inout)`` or ``intent(out)``
+
+* Another scheme has the same variable defined with ``intent(in)``
+
+.. code-block:: fortran
+
+[PBLH]
+  standard_name = atmosphere_boundary_layer_thickness
+  long_name = PBL thickness
+  units = m
+  dimensions = (horizontal_dimension)
+  type = real
+  kind = kind_phys
+  intent = out
+
+
+.. code-block:: fortran
+
+[PBLH]
+  standard_name = atmosphere_boundary_layer_thickness
+  long_name = PBL thickness
+  units = m
+  dimensions = (horizontal_dimension)
+  type = real
+  kind = kind_phys
+  intent = in
+
+
 ========================================================
 CCPP Variables in the SCM and UFS Atmosphere Host Models
 ========================================================
@@ -439,11 +475,11 @@ This subroutine is part of the CCPP API and is auto-generated. A typical call to
                          mythread=mythread, nthreads=nthreads,         &
                          nphys_threads= nphys_threads)
 
-To initialize all groups following the ordering defined in the suite definition file:
+``group_name`` could be set to ``all`` to call all groups using the ordering defined in the suite definition file:
 
 .. code-block:: fortran
 
-  call ccpp_physics_init(ccpp_suite=ccpp_suite, **group_name="all"**,     &
+  call ccpp_physics_init(ccpp_suite=ccpp_suite, group_name="all",      &
                          errmsg=errmsg, errflg=errflg, lb=lb, ub=ub,   &
                          mythread=mythread, nthreads=nthreads,         &
                          nphys_threads= nphys_threads)
@@ -501,7 +537,7 @@ The purpose of the host model *cap* is to abstract away the communication betwee
 
 * Allocating memory for variables needed by physics
 
-  * All variables needed to communicate between the host model and the physics, and all variables needed to communicate among physics schemes, need to be allocated by the host model. The latter, for example for interstitial variables used exclusively for communication between the physics schemes, are typically allocated in the *cap*.
+  * All variables needed to communicate between the host model and the physics need to be allocated by the host model. The latter, for example for interstitial variables used exclusively for communication between the physics schemes, are typically allocated in the *cap*.
 
 * Allocating and initializing the ``cdata`` structure(s) and setting the suite name (suite initialization)
 
