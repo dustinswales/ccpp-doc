@@ -138,7 +138,7 @@ The ``[ccpp-table-properties]`` section is required in every metadata file and h
    ``type`` in the associated ``[ccpp-arg-table]`` section(s).
 
 #. ``type``:  In the Host mode, ``type`` can be ``host``, ``control``, or ``ddt`` (derived data type) and must match the
-   ``type`` in the associated ``[ccpp-arg-table]`` section(s). See :numref:`Section %s <_Host-side>` for more details regarding Host model metadata requirements.
+   ``type`` in the associated ``[ccpp-arg-table]`` section(s). See :numref:`Section %s <_VariableTablesHostModel>` for more details regarding Host model metadata requirements.
 
 #. ``name``:  This depends on the ``type``. For types ``ddt`` and ``module`` (for
    variable/type/kind definitions), ``name`` must match the name of the **single** associated
