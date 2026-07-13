@@ -439,6 +439,12 @@ This subroutine is part of the CCPP API and is auto-generated. A typical call to
                          mythread=mythread, nthreads=nthreads,         &
                          nphys_threads= nphys_threads)
 
+To initialize all groups using the ordering defined in the suite definition file:
+  call ccpp_physics_init(ccpp_suite=ccpp_suite, **group_name="all"**,     &
+                         errmsg=errmsg, errflg=errflg, lb=lb, ub=ub,   &
+                         mythread=mythread, nthreads=nthreads,         &
+                         nphys_threads= nphys_threads)
+
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Subroutine ``ccpp_physics_final``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
