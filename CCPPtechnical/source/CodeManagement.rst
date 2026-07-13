@@ -28,21 +28,28 @@ The following is the directory structure for the ``ccpp-framework`` repository:
    │   ├── DevelopersGuide
    │   ├── HelloWorld         # Toy model to use of the CCPP Framework
    │   └── img
-   ├── logging                # Logging handler for future capgen.py
-   ├── schema                 # XML scheme for suite definition files
-   ├── scripts                # Scripts for ccpp_prebuild.py, metadata parser, etc.
-   │   ├── conversion_tools
-   │   ├── fortran_tools
-   │   └── parse_tools
-   ├── src                    # CCPP framework source code
-   ├── stub                   # CCPP stub build directory¹
-   ├── test                   # Unit/system testing framework for future capgen.py
-   │   ├── advection_test
-   │   ├── capgen_test
-   │   ├── hash_table_tests
-   │   └── unit_tests
-   └── tests                  # System testing framework for ccpp_prebuild.py
-
+   ├── capgen
+   │   ├── generator          # CCPP code validator and generator
+   │   ├── metadata           # CCPP metadata parsing
+   │       └── parse_tools.   # Parse utilities shared between parsing and validator
+   │   ├── schema             # XML scheme for suite definition files
+   │   ├── src                # CCPP framework source code
+   ├── end-to-end-tests       # System testing framework for ccpp_capgen.py
+   │       └── advection
+   │       └── advection_auto_clone
+   │       └── capgen
+   │       └── chunked_data
+   │       └── cmake
+   │       └── constituents_dim
+   │       └── ddthost
+   │       └── instances
+   │       └── instances_advection
+   │       └── nested_suite
+   │       └── opt_arg
+   │       └── suite_allocate
+   │       └── var_compat
+   │       └── utils
+   └── unit-tests
 
 ¹ see :numref:`Section %s <CCPP Stub Build>`
 
