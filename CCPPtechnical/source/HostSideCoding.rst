@@ -221,7 +221,7 @@ For example, here are metadata snippets from two schemes that will create a suit
     kind = kind_phys
     intent = out
 
-*Listing 6.3: Example scheme metadata snippet for scheme that computes PBL thickness
+*Listing 6.3: Example scheme metadata snippet for scheme that computes PBL thickness*
 
 .. code-block:: fortran
 
@@ -234,7 +234,7 @@ For example, here are metadata snippets from two schemes that will create a suit
     kind = kind_phys
     intent = in
 
-*Listing 6.4: Example scheme metadata snippet for scheme that requires PBL thickness.
+*Listing 6.4: Example scheme metadata snippet for scheme that requires PBL thickness.*
 
 Within the suite cap we will have:
 
@@ -252,7 +252,7 @@ Within the suite cap we will have:
     ...
   end module ccpp_{suite_name}_{group_name}_cap
 
-*Listing 6.5: E
+*Listing 6.5: In this example, the variable ``PBLH`` was added to the suite data module. Variables in the suite data module are allocated during the suite initialization step.
 
 ========================================================
 CCPP Variables in the SCM and UFS Atmosphere Host Models
