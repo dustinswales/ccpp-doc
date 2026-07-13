@@ -147,8 +147,6 @@ and :ref:`Listing 6.2 <example_vardefs_meta>` for examples of host model metadat
 *Listing 6.2: Example host model metadata file (* ``.meta`` *).*
 
 
-
-
 .. _ActiveAttribute:
 
 ,,,,,,,,,,,,,,,,
