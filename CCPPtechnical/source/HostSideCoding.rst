@@ -208,29 +208,32 @@ The CCPP framework can manage the memory (e.g., define and allocate) variables o
 
 * Another scheme has the same variable defined with ``intent(in)``
 
-.. code-block:: fortran
-
-[PBLH]
-  standard_name = atmosphere_boundary_layer_thickness
-  long_name = PBL thickness
-  units = m
-  dimensions = (horizontal_dimension)
-  type = real
-  kind = kind_phys
-  intent = out
-
 
 .. code-block:: fortran
 
-[PBLH]
-  standard_name = atmosphere_boundary_layer_thickness
-  long_name = PBL thickness
-  units = m
-  dimensions = (horizontal_dimension)
-  type = real
-  kind = kind_phys
-  intent = in
+  [PBLHa]
+    standard_name = atmosphere_boundary_layer_thickness
+    long_name = PBL thickness
+    units = m
+    dimensions = (horizontal_dimension)
+    type = real
+    kind = kind_phys
+    intent = out
 
+*Listing 6.3: Example scheme metadata snippet for scheme that computes PBL thickness
+
+.. code-block:: fortran
+
+  [PBLHb]
+    standard_name = atmosphere_boundary_layer_thickness
+    long_name = PBL thickness
+    units = m
+    dimensions = (horizontal_dimension)
+    type = real
+    kind = kind_phys
+    intent = in
+
+*Listing 6.4: Example scheme metadata snippet for scheme that requires PBL thickness as an input
 
 ========================================================
 CCPP Variables in the SCM and UFS Atmosphere Host Models
