@@ -524,7 +524,7 @@ This subroutine is part of the CCPP API and is auto-generated. A typical call to
                          mythread=mythread, nthreads=nthreads,         &
                          nphys_threads= nphys_threads)
 
-*Listing 6.7: Example call to ccpp_physics_init for **all** groups*
+*Listing 6.7: Example call to ccpp_physics_init for* ***all*** *groups*
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Subroutine ``ccpp_physics_final``
@@ -643,7 +643,7 @@ The purpose of the host model *driver* is to abstract away the communication bet
         call ccpp_physics_run( suite_name=trim(suite_name), group_name=group,           &
                                errmsg=errmsg, errflg=errflg, lb=1, ub=nCol,             &
                                mythread=1, nthreads=1, nphys_threads=1)
-        call ccpp_physics_timestep_final( suite_name=trim(suite_name), group_name='all',&
+        call ccpp_physics_timestep_final( suite_name=trim(suite_name), group_name=group,&
                                errmsg=errmsg, errflg=errflg, lb=1, ub=nCol,             &
                                mythread=1, nthreads=1, nphys_threads=1)
       else
