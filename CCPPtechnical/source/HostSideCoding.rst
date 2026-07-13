@@ -579,20 +579,20 @@ This subroutine is part of the CCPP API and is auto-generated.  A typical call t
 *Listing 6.10: Example call to ccpp_physics_timestep_final for specified group.*
 
 ========================================================
-Host Caps
+Host Driver
 ========================================================
 
-The purpose of the host model *cap* is to abstract away the communication between the host model and the CCPP Physics schemes. While CCPP calls can be placed directly inside the host model code (as is done for the relatively simple SCM), it is recommended to separate the *cap* in its own module for clarity and simplicity (as is done for the UFS Atmosphere). While the details of implementation will be specific to each host model, the host model *cap* is responsible for the following general functions:
+The purpose of the host model *driver* is to abstract away the communication between the host model and the CCPP Physics schemes. While CCPP calls can be placed directly inside the host model code (as is done for the relatively simple SCM), it is recommended to separate the *driver* in its own module for clarity and simplicity (as is done for the UFS Atmosphere). While the details of implementation will be specific to each host model, the host model *driver* is responsible for the following general functions:
 
 * Allocating memory for variables needed by physics
 
-  * This excludes variables used exclusively for communication between the physics schemes. For these instances, **suite variables** are created for the *cap* (see :numref:`Section %s <SuiteVariables>`).
+  * This excludes variables used exclusively for communication between the physics schemes. For these instances, **suite variables** are created for the *suite cap* (see :numref:`Section %s <SuiteVariables>`).
 
 * Providing interfaces to call the CCPP
 
-  * The *cap* must provide functions or subroutines that can be called at the appropriate places in the host model time integration loop and that internally call ``ccpp_register``,  ``ccpp_init``, ``ccpp_physics_init``, ``ccpp_physics_timestep_init``, ``ccpp_physics_run``, ``ccpp_physics_timestep_final``, ``ccpp_physics_final``, and ``ccpp_final``, and handle any errors returned. :ref:`Listing 6.7 <example_ccpp_host_cap>` provides an example where the host cap consists of three subroutines ``physics_init`` (which consists of the suite initialization and CCPP physics init phase), ``physics_run`` (which internally performs the CCPP time step init, run, and time step final phases), and ``physics_final`` (which consists of the suite finalization and CCPP physics final phase).
+  * The *drvier* must provide functions or subroutines that can be called at the appropriate places in the host model time integration loop and that internally call ``ccpp_register``,  ``ccpp_init``, ``ccpp_physics_init``, ``ccpp_physics_timestep_init``, ``ccpp_physics_run``, ``ccpp_physics_timestep_final``, ``ccpp_physics_final``, and ``ccpp_final``, and handle any errors returned. :ref:`Listing 6.7 <example_ccpp_host_driver>` provides an example where the host driver consists of three subroutines ``physics_init`` (which consists of the suite initialization and CCPP physics init phase), ``physics_run`` (which internally performs the CCPP time step init, run, and time step final phases), and ``physics_final`` (which consists of the suite finalization and CCPP physics final phase).
 
-.. _example_ccpp_host_cap:
+.. _example_ccpp_host_driver:
 
 .. code-block:: fortran
 
@@ -618,100 +618,66 @@ The purpose of the host model *cap* is to abstract away the communication betwee
     integer :: nthreads
     integer :: nphys_threads
     character(len=512) :: errmsg
-    integer :: reflag
+    integer :: errflag
 
-  end module ccpp_driver
-
-
-.. _example_ccpp_host_cap:
-
-.. code-block:: fortran
-
- module example_ccpp_host_cap
-
-  use ccpp_types,         only: ccpp_t
-  use ccpp_static_api,    only: ccpp_physics_init,              &
-                                ccpp_physics_timestep_init,     &
-                                ccpp_physics_run,               &
-                                ccpp_physics_timestep_final, &
-                                ccpp_physics_final
-
-   implicit none
-   ! CCPP data structure
-   type(ccpp_t), save, target :: cdata
    public :: physics_init, physics_run, physics_final
  contains
 
-  subroutine physics_init(ccpp_suite_name)
-    character(len=*), intent(in) :: ccpp_suite_name
-    integer :: ierr
-    ierr = 0
+    subroutine physics_init(nCol)       integer, intent(in) :: nCol
+      
+      call ccpp_physics_init( suite_name=trim(suite_name), group_name='all', &
+                              errmsg=errmsg, errflg=errflg, lb=1, ub=nCol,   &
+                              mythread=1, nthreads=1, nphys_threads=1)
 
-    ! Initialize cdata
-    cdata%blk_no = 1
-    cdata%thrd_no = 1
+    end subroutine physics_init
 
-    ! Initialize CCPP physics (run all _init routines)
-    call ccpp_physics_init(cdata, suite_name=trim(ccpp_suite_name),      &
-                           ierr=ierr)
+    subroutine physics_run(nCol, group)       integer, intent(in) :: nCol
+      ! Optional argument group can be used to run a group of schemes      &
+      ! defined in the SDF. Otherwise, run entire suite.
+      character(len=*), optional, intent(in) :: group
 
-  end subroutine physics_init
+      if (present(group)) then
+        call ccpp_physics_timestep_init( suite_name=trim(suite_name), group_name=group, &
+                               errmsg=errmsg, errflg=errflg, lb=1, ub=nCol,             &
+                               mythread=1, nthreads=1, nphys_threads=1)
+        call ccpp_physics_run( suite_name=trim(suite_name), group_name=group,           &
+                               errmsg=errmsg, errflg=errflg, lb=1, ub=nCol,             &
+                               mythread=1, nthreads=1, nphys_threads=1)
+        call ccpp_physics_timestep_final( suite_name=trim(suite_name), group_name='all',&
+                               errmsg=errmsg, errflg=errflg, lb=1, ub=nCol,             &
+                               mythread=1, nthreads=1, nphys_threads=1)
+      else
+        call ccpp_physics_timestep_init( suite_name=trim(suite_name), group_name='all', &
+                               errmsg=errmsg, errflg=errflg, lb=1, ub=nCol,             &
+                               mythread=1, nthreads=1, nphys_threads=1)
+        call ccpp_physics_run( suite_name=trim(suite_name), group_name='all',           &
+                               errmsg=errmsg, errflg=errflg, lb=1, ub=nCol,             &
+                               mythread=1, nthreads=1, nphys_threads=1)
+        call ccpp_physics_timestep_final( suite_name=trim(suite_name), group_name='all',&
+                               errmsg=errmsg, errflg=errflg, lb=1, ub=nCol,             &
+                               mythread=1, nthreads=1, nphys_threads=1)
+      end if
+    end subroutine physics_run
 
-  subroutine physics_run(ccpp_suite_name, group)
-    ! Optional argument group can be used to run a group of schemes      &
-    ! defined in the SDF. Otherwise, run entire suite.
-    character(len=*),           intent(in) :: ccpp_suite_name
-    character(len=*), optional, intent(in) :: group
+    subroutine physics_final(nCol)       integer, intent(in) :: nCol
 
-    integer :: ierr
-    ierr = 0
+      call ccpp_physics_final( suite_name=trim(suite_name), group_name='all', &
+                               errmsg=errmsg, errflg=errflg, lb=1, ub=nCol,   &
+                               mythread=1, nthreads=1, nphys_threads=1)
 
-    if (present(group)) then
-       call ccpp_physics_timestep_init(cdata,                            &
-                             suite_name=trim(ccpp_suite_name),           &
-                             group_name=group, ierr=ierr)
-       call ccpp_physics_run(cdata, suite_name=trim(ccpp_suite_name),    &
-                             group_name=group, ierr=ierr)
-       call ccpp_physics_timestep_final(cdata,                        &
-                             suite_name=trim(ccpp_suite_name),           &
-                             group_name=group, ierr=ierr)
-    else
-       call ccpp_physics_timestep_init(cdata,                            &
-                             suite_name=trim(ccpp_suite_name), ierr=ierr)
-       call ccpp_physics_run(cdata, suite_name=trim(ccpp_suite_name),    &
-                             ierr=ierr)
-       call ccpp_physics_timestep_final(cdata,                        &
-                             suite_name=trim(ccpp_suite_name), ierr=ierr)
-    end if
+    end subroutine physics_final
 
-  end subroutine physics_run
+  end module ccpp_driver
 
-  subroutine physics_final(ccpp_suite_name)
-    character(len=*), intent(in) :: ccpp_suite_name
-    integer :: ierr
-    ierr = 0
+*Listing 6.11: Fortran template for a CCPP host model driver. After each call to ``ccpp_physics_*``, the host model should check the return code ``errflg`` and handle any errors (omitted for readability).*
 
-    ! final CCPP physics (run all _final routines)
-    call ccpp_physics_final(cdata, suite_name=trim(ccpp_suite_name),  &
-                               ierr=ierr)
-
-    ! Reset cdata
-    cdata%blk_no = -999
-    cdata%thrd_no = -999
-
-  end subroutine physics_final
-
- end module example_ccpp_host_cap
-
-*Listing 6.7: Fortran template for a CCPP host model cap. After each call to ``ccpp_physics_*``, the host model should check the return code ``ierr`` and handle any errors (omitted for readability).*
-
-Readers are referred to the actual implementations of the cap functions in the CCPP-SCM and the UFS for further information. For the SCM, the cap functions are implemented in:
+Readers are referred to the actual implementations of the driver functions in the CCPP-SCM and the UFS for further information. For the SCM, the cap functions are implemented in:
 
 * ``ccpp-scm/scm/src/scm.F90``
 * ``ccpp-scm/scm/src/scm_type_defs.F90``
 * ``ccpp-scm/scm/src/scm_setup.F90``
 * ``ccpp-scm/scm/src/scm_time_integration.F90``
 
-For the UFS, the cap functions can be found in ``ufs-weather-model/FV3/ccpp/driver/CCPP_driver.F90``.
+For the UFS, the driver functions can be found in ``ufs-weather-model/FV3/ccpp/driver/CCPP_driver.F90``.
 
 
