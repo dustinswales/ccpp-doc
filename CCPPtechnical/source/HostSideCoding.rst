@@ -401,7 +401,7 @@ Registering, Initializing and Finalizing the CCPP
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 
-At the beginning of each run, any required suite or constituent data needs to be set allocated. Similarly, at the end of each run, it needs to be deallocated. This is done with subroutines ``ccpp_init`` and ``ccpp_final``. These subroutines should not be confused with ``ccpp_physics_init`` and ``ccpp_physics_final``, which were described in :numref:`Chapter %s <SuiteGroupCaps>`.
+At the beginning of each run, any required suite or constituent data needs to be allocated. Similarly, at the end of each run, it needs to be deallocated. This is done with subroutines ``ccpp_init`` and ``ccpp_final``. These subroutines should not be confused with ``ccpp_physics_init`` and ``ccpp_physics_final``, which were described in :numref:`Chapter %s <SuiteGroupCaps>`.
 
 To obtain runtime information that is need by the physics (e.g., Number of constituents), the subroutine ``ccpp_register`` can be called prior to ``ccpp_init`` and ``ccpp_physics_init`` to query for this information.
 
@@ -439,7 +439,10 @@ This subroutine is part of the CCPP API and is auto-generated. A typical call to
                          mythread=mythread, nthreads=nthreads,         &
                          nphys_threads= nphys_threads)
 
-To initialize all groups using the ordering defined in the suite definition file:
+To initialize all groups following the ordering defined in the suite definition file:
+
+.. code-block:: fortran
+
   call ccpp_physics_init(ccpp_suite=ccpp_suite, **group_name="all"**,     &
                          errmsg=errmsg, errflg=errflg, lb=lb, ub=ub,   &
                          mythread=mythread, nthreads=nthreads,         &
@@ -471,6 +474,7 @@ Subroutine ``ccpp_physics_timestep_init``
 This subroutine is part of the CCPP API and is auto-generated.A typical call to ``ccpp_physics_timestep_init`` is:
 
 .. code-block:: fortran
+
   call ccpp_physics_timestep_init(ccpp_suite=ccpp_suite, group_name=group_name, &
                                   errmsg=errmsg, errflg=errflg, lb=lb, ub=ub,   &
                                   mythread=mythread, nthreads=nthreads,         &
@@ -483,6 +487,7 @@ Subroutine ``ccpp_physics_timestep_final``
 This subroutine is part of the CCPP API and is auto-generated.  A typical call to ``ccpp_physics_timestep_final`` is:
 
 .. code-block:: fortran
+
   call ccpp_physics_timestep_final(ccpp_suite=ccpp_suite, group_name=group_name, &
                                    errmsg=errmsg, errflg=errflg, lb=lb, ub=ub,   &
                                    mythread=mythread, nthreads=nthreads,         &
