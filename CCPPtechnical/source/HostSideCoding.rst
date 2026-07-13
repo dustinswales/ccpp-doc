@@ -403,82 +403,20 @@ Registering, Initializing and Finalizing the CCPP
 
 At the beginning of each run, any required suite or constituent data needs to be set allocated. Similarly, at the end of each run, it needs to be deallocated. This is done with subroutines ``ccpp_init`` and ``ccpp_final``. These subroutines should not be confused with ``ccpp_physics_init`` and ``ccpp_physics_final``, which were described in :numref:`Chapter %s <SuiteGroupCaps>`.
 
-To obtain runtime information that is need by the physics (e.g., Number of constituents), the subroutine ``ccpp_register`` can be called prior to ``ccpp_init`` and ``ccpp_physics_init`` to query this information.
-
-
-
-.. _SuiteInitSubroutine:
-
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Suite Initialization
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The :term:`suite` initialization step consists of allocating (if required) and initializing the ``cdata`` structure(s), it does not call the CCPP Physics or any auto-generated code. The simplest example is a suite initialization step that consists of initializing a scalar ``cdata`` instance with ``cdata%blk_no = 1`` and ``cdata%thrd_no = 1``.
-
-A more complicated example is when multiple ``cdata`` structures are in use, namely one for the the CCPP phases that require access to all data of an MPI task (a scalar that is initialized in the same way as above), and one for the ``run`` phase, where chunks of blocked data are processed in parallel by multiple OpenMP threads, as shown in Listing :ref:`Listing 6.6 <SuiteInitComplicated>`.
-
-.. _SuiteInitComplicated:
-
-.. code-block:: fortran
-
-   ...
-
-   type(ccpp_t),                              target :: cdata_domain
-   type(ccpp_t), dimension(:,:), allocatable, target :: cdata_block
-
-   ! ccpp_suite is set during the namelist read by the host model
-   character(len=256) :: ccpp_suite
-   integer            :: nthreads
-
-   ...
-
-   ! Get and set number of OpenMP threads (module
-   ! variable) that are available to run physics
-   nthreads = omp_get_max_threads()
-
-   ! For physics running over the entire domain,
-   ! block and thread number are not used
-   cdata_domain%blk_no  = 1
-   cdata_domain%thrd_no = 1
-
-   ! Allocate cdata structure for blocks and threads
-   allocate(cdata_block(1:nblks,1:nthreads))
-
-   ! Assign the correct block and thread numbers
-   do nt=1,nthreads
-     do nb=1,nblks
-       cdata_block(nb,nt)%blk_no = nb
-       cdata_block(nb,nt)%thrd_no = nt
-     end do
-   end do
-
-*Listing 6.6: A more complex suite initialization step that consists of allocating and initializing multiple ``cdata`` structures.*
-
-Depending on the implementation of CCPP in the host model, the suite name for the suite to be executed must be set in this step as well (omitted in Listing :ref:`Listing 6.6 <SuiteInitComplicated>`).
-
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Suite Finalization
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The suite finalization consists of deallocating any ``cdata`` structures, if applicable, and optionally resetting scalar ``cdata`` instances as in the following example for the UFS:
-
-.. code-block:: fortran
-
- deallocate(cdata_block)
- ! Optional
- cdata_domain%blk_no = -999
- cdata_domain%thrd_no = -999
- ...
+To obtain runtime information that is need by the physics (e.g., Number of constituents), the subroutine ``ccpp_register`` can be called prior to ``ccpp_init`` and ``ccpp_physics_init`` to query for this information.
 
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 Running the Physics
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
-The physics is invoked by calling subroutine ``ccpp_physics_run``. This subroutine is part of the CCPP API and is auto-generated. This subroutine is capable of executing the physics with varying granularity, that is, a single group, or an entire suite can be run with a single subroutine call. Typical calls to ``ccpp_physics_run`` are below,where ``suite_name`` is mandatory and ``group_name`` is optional:
+The physics is invoked by calling subroutine ``ccpp_physics_run``. This subroutine is part of the CCPP API and is auto-generated. This subroutine is capable of executing the physics with varying granularity, that is, a single group, or an entire suite can be run with a single subroutine call. Typical calls to ``ccpp_physics_run`` are below:
 
 .. code-block:: fortran
 
- call ccpp_physics_run(cdata, suite_name, [group_name], ierr=ierr)
+  call ccpp_physics_run(ccpp_suite=ccpp_suite, group_name=group_name, &
+                        errmsg=errmsg, errflg=errflg, lb=lb, ub=ub,   &
+                        mythread=mythread, nthreads=nthreads,         &
+                        nphys_threads= nphys_threads)
 
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 Initializing and Finalizing the Physics
@@ -496,7 +434,10 @@ This subroutine is part of the CCPP API and is auto-generated. A typical call to
 
 .. code-block:: fortran
 
- call ccpp_physics_init(cdata, suite_name, [group_name], ierr=ierr)
+  call ccpp_physics_init(ccpp_suite=ccpp_suite, group_name=group_name, &
+                         errmsg=errmsg, errflg=errflg, lb=lb, ub=ub,   &
+                         mythread=mythread, nthreads=nthreads,         &
+                         nphys_threads= nphys_threads)
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Subroutine ``ccpp_physics_final``
@@ -506,7 +447,10 @@ This subroutine is part of the CCPP API and is auto-generated. A typical call to
 
 .. code-block:: fortran
 
- call ccpp_physics_final(cdata, suite_name, [group_name], ierr=ierr)
+  call ccpp_physics_final(ccpp_suite=ccpp_suite, group_name=group_name, &
+                          errmsg=errmsg, errflg=errflg, lb=lb, ub=ub,   &
+                          mythread=mythread, nthreads=nthreads,         &
+                          nphys_threads= nphys_threads)
 
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 Initializing and Finalizing the time step
@@ -521,8 +465,10 @@ Subroutine ``ccpp_physics_timestep_init``
 This subroutine is part of the CCPP API and is auto-generated.A typical call to ``ccpp_physics_timestep_init`` is:
 
 .. code-block:: fortran
-
- call ccpp_physics_timestep_init(cdata, suite_name, [group_name], ierr=ierr)
+  call ccpp_physics_timestep_init(ccpp_suite=ccpp_suite, group_name=group_name, &
+                                  errmsg=errmsg, errflg=errflg, lb=lb, ub=ub,   &
+                                  mythread=mythread, nthreads=nthreads,         &
+                                  nphys_threads= nphys_threads)
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Subroutine ``ccpp_physics_timestep_final``
@@ -531,8 +477,10 @@ Subroutine ``ccpp_physics_timestep_final``
 This subroutine is part of the CCPP API and is auto-generated.  A typical call to ``ccpp_physics_timestep_final`` is:
 
 .. code-block:: fortran
-
- call ccpp_physics_timestep_final(cdata, suite_name, [group_name], ierr=ierr)
+  call ccpp_physics_timestep_final(ccpp_suite=ccpp_suite, group_name=group_name, &
+                                   errmsg=errmsg, errflg=errflg, lb=lb, ub=ub,   &
+                                   mythread=mythread, nthreads=nthreads,         &
+                                   nphys_threads= nphys_threads)
 
 ========================================================
 Host Caps
