@@ -208,10 +208,11 @@ The CCPP framework can manage the memory (e.g., define and allocate) variables o
 
 * Another scheme has the same variable defined with ``intent(in)``
 
-
 .. code-block:: fortran
 
-  [PBLHa]
+For example, here are metadata snippets from two schemes that will create a suite variable for atmosphere_boundary_layer_thickness: 
+
+  [PBLH]
     standard_name = atmosphere_boundary_layer_thickness
     long_name = PBL thickness
     units = m
@@ -224,7 +225,7 @@ The CCPP framework can manage the memory (e.g., define and allocate) variables o
 
 .. code-block:: fortran
 
-  [PBLHb]
+  [PBLH]
     standard_name = atmosphere_boundary_layer_thickness
     long_name = PBL thickness
     units = m
@@ -232,6 +233,24 @@ The CCPP framework can manage the memory (e.g., define and allocate) variables o
     type = real
     kind = kind_phys
     intent = in
+
+*Listing 6.4: Example scheme metadata snippet for scheme that requires PBL thickness as an input
+
+Within the suite cap we will have:
+
+.. code-block:: fortran
+
+  module ccpp_{suite_name}_{group_name}_cap
+    use ccpp_{suite_name}_data, only: ccpp_suite_data
+    ...
+  contains
+    subroutine phys_{group_name}_run(...)
+       Call physics_schemeA(..., ccpp_suite_data(1)%PBLH(lb:ub))
+       ...
+       Call physics_schemeB(..., ccpp_suite_data(1)%PBLH(lb:ub))
+    end subroutine phys_{group_name}_run
+    ...
+  end module ccpp_{suite_name}_{group_name}_cap
 
 *Listing 6.4: Example scheme metadata snippet for scheme that requires PBL thickness as an input
 
