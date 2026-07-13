@@ -128,7 +128,7 @@ new unit conversions can be added to this file by following the existing example
 Optional Scheme variables
 ==========================
 
-For Scheme's with optional arguments, the CCPP framework will generate local pointers in the Group cap. These local pointers are associated within the Group cap, just prior to calling the Scheme.
+For scheme's with optional arguments, the CCPP framework will generate local pointers in the Group cap. These local pointers are associated within the Group cap, just prior to calling the Scheme. This is only done if the ``active`` condition set in the host model metadata is met (see :numref:`Section %s <ActiveAttribute>`
 
 .. code-block:: fortran
 
