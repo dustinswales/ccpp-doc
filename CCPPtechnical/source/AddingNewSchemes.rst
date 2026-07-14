@@ -64,7 +64,7 @@ This section gives guidance on adding new variables to the CCPP, which is often 
 
      .. note:: The instructions in this chapter assume the user is implementing this scheme for use in the CCPP Single-Column model (SCM). Other host model variables can be found in different files; see :numref:`Chapter %s <Host-side Coding>` for details
 
-The first step is to be absolutely sure that a new variable is required: the desired variable may already be included in the CCPP for use by other schemes. Check the metadata information in ``CCPP_typedefs.meta`` or query the *capgen* data table to get a list of all the required variable ``standard_names`` (see :numref:`%s <ccpp_datatable>`).
+The first step is to be absolutely sure that a new variable is required: the desired variable may already be included in the CCPP for use by other schemes. Check the metadata information in ``CCPP_typedefs.meta`` or query the *capgen* data table to get a list of all the required variable ``standard_names`` (see  :numref:`Chapter %s <ccpp_datatable>` ).
 
 If an input variable needed by the scheme is not available, first consider if it can be calculated from the existing CCPP variables. If so, an :term:`interstitial scheme` (such as ``schemename_pre``; see  :numref:`Chapter %s <CompliantPhysParams>` for more details) can be created to calculate the variable(s). If this path is taken, **there is no need to allocate this field in the host-model**, as  the variable will be allocated by the framework as a Suite Variable (see :numref:`Section %s <SuiteVariables>`)
 
