@@ -151,10 +151,16 @@ Below is an abbreviated example of how to include the three primary *capgen* scr
   set(SUITE_FILES "${SUITE_FILES_DIR}/suite_FV3_GFS_v17_p8_rrtmgp.xml")
 
   # Run ccpp_validator
-  
+  ${CMAKE_SOURCE_DIR}/ccpp-framework/capgen/ccpp_validator.py 
+
   # Run ccpp_capgen.py
+  ${CMAKE_SOURCE_DIR}/ccpp-framework/capgen/ccpp_capgen.py 
 
   # Run ccpp_datafile.py
+  ${CMAKE_SOURCE_DIR}/ccpp-framework/capgen/ccpp_datafile.py --capgen-files CAPGEN_FILES
+  ${CMAKE_SOURCE_DIR}/ccpp-framework/capgen/ccpp_datafile.py --scheme-files SCHEME_FILES
+  ${CMAKE_SOURCE_DIR}/ccpp-framework/capgen/ccpp_datafile.py --dependencies DEPENDENCY_FILES
+
 
   # Build CCPP driver
 
