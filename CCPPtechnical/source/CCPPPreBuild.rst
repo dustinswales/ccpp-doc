@@ -133,22 +133,23 @@ Below is an abbreviated example of how to include the three primary *capgen* scr
 
   # Scheme files  
   set(SCHEME_METADATA_FILES 
-      "${CMAKE_SOURCE_DIR}/ccpp-physics/physics/Radiation/RRTMGP/rrtmgp_sw_main.meta"
-      "${CMAKE_SOURCE_DIR}/ccpp-physics/physics/Radiation/RRTMGP/rrtmgp_lw_main.meta")
+      "${CMAKE_SOURCE_DIR}/ccpp/physics/Radiation/RRTMGP/rrtmgp_sw_main.meta"
+      "${CMAKE_SOURCE_DIR}/ccpp/physics/Radiation/RRTMGP/rrtmgp_lw_main.meta")
   set(SCHEME_FORTRAN_FILES 
-      "${CMAKE_SOURCE_DIR}/ccpp-physics/physics/Radiation/RRTMGP/rrtmgp_sw_main.F90"
-      "${CMAKE_SOURCE_DIR}/ccpp-physics/physics/Radiation/RRTMGP/rrtmgp_lw_main.F90")
+      "${CMAKE_SOURCE_DIR}/ccpp/physics/Radiation/RRTMGP/rrtmgp_sw_main.F90"
+      "${CMAKE_SOURCE_DIR}/ccpp/physics/Radiation/RRTMGP/rrtmgp_lw_main.F90")
 
   # Host files
   set(HOST_METADATA_FILES
-      "${CMAKE_SOURCE_DIR}/data/CCPP_typedefs.meta"
-      "${CMAKE_SOURCE_DIR}/data/GFS_typedefs.meta")
+      "${CMAKE_SOURCE_DIR}/ccpp/data/CCPP_typedefs.meta"
+      "${CMAKE_SOURCE_DIR}/ccpp/data/GFS_typedefs.meta")
   set(HOST_FORTRAN_FILES
-      "${CMAKE_SOURCE_DIR}/data/CCPP_typedefs.F90"
-      "${CMAKE_SOURCE_DIR}/data/GFS_typedefs.F90")
+      "${CMAKE_SOURCE_DIR}/ccpp/data/CCPP_typedefs.F90"
+      "${CMAKE_SOURCE_DIR}/ccpp/data/GFS_typedefs.F90")
 
   # Suite Definition File(s)
-  set(SUITE_FILES "${SUITE_FILES_DIR}/suite_FV3_GFS_v17_p8_rrtmgp.xml")
+  set(SUITE_FILES 
+      "${CMAKE_SOURCE_DIR}/ccpp/suites/suite_FV3_GFS_v17_p8_rrtmgp.xml")
 
   # Run ccpp_validator
   ${CMAKE_SOURCE_DIR}/ccpp-framework/capgen/ccpp_validator.py 
