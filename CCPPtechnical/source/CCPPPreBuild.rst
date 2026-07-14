@@ -4,15 +4,14 @@
 Technical Aspects of CCPP *Capgen*
 **************************************************
 
-CCPP *capgen* consists of three primary scripts:
+:term:`CCPP` *capgen* consists of three primary scripts:
 
-.. code-block:: console
+* ccpp_validator.py           - Validate metadata files against source files
 
-  ccpp_validator.py           - Validate metadata files against source files
-  ccpp_capgen.py              - Autogenerate physics driver(s)
-  ccpp_datafile.py            - Query information on Capgen files/variables/groups
+* ccpp_capgen.py              - Autogenerate physics driver(s)
 
-*Listing 8.1: Three primary :term:`CCPP` *capgen* scripts.*
+* ccpp_datafile.py            - Query information on Capgen files/variables/groups
+
 
 =============================
 *ccpp_validator*
