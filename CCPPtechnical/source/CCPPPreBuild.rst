@@ -6,11 +6,11 @@ Technical Aspects of CCPP *Capgen*
 
 :term:`CCPP` *capgen* consists of three primary scripts:
 
-* ccpp_validator.py           - Validate metadata files against source files
+* ccpp_validator.py           - Compare metadata files against Fortran source files
 
-* ccpp_capgen.py              - Autogenerate physics driver(s)
+* ccpp_capgen.py              - Autogenerate physics cap(s)
 
-* ccpp_datafile.py            - Query information on Capgen files/variables/groups
+* ccpp_datafile.py            - Query information on Capgen files, variables, and groups
 
 
 =============================
@@ -34,6 +34,17 @@ The ``ccpp_validator.py`` script can be used to validate both *Scheme files* and
 
 **Host files** are part of the host model and are defined with a metadata table of **type = host** or **type = DDT**.
 
+
+The ``ccpp_validator.py`` script will return the following exit codes:
+
+.. code-block:: console
+
+  0 — all checks passed
+  1 — one or more validation errors found
+  2 — internal / usage error
+
+*Listing 8.2: Exit codes from* ``ccpp_validator.py``.
+
 =============================
 *ccpp_capgen.py*
 =============================
@@ -53,7 +64,7 @@ of a host model build-time script. Both the :term:`UFS` and :term:`SCM` have inc
   --kind-type                  - Map a CCPP kind name to a Fortran precision constant
   --verbose                    - Increase verbosity.  Use once for INFO messages, twice (-vv) for DEBUG messages
 
-*Listing 8.1: Options for* **ccpp_capgen** *script.*
+*Listing 8.3: Options for* ``ccpp_capgen.py`` *script.*
 
 The *ccpp_capgen* script reads host-model metadata files, physics scheme metadata files, and suite definition (XML) files, resolves all variable connections and writes:
 
@@ -109,7 +120,19 @@ Both the UFS and SCM have incorporated the calls to ccpp_datafile.py in their bu
 Script Configuration
 =============================
 
-To connect the CCPP with a host model ``XYZ``, the host-model build system must be modified to call any necessary CCPP scripts (e.g., ccpp_validator, ccpp_capgen, or ccpp_datafile). The ``ccpp_capgen.py`` script is the only mandatory script needed to generate the CCPP caps. Including the ``ccpp_validator.py`` script in any build-system workflow is strongly encouraged, as it will notify you of errors before building the model. ``The ccpp_datafile.py`` script is useful to retrieve information needed for build-time, but not required. 
+To connect the CCPP with a host model ``XYZ``, the host-model build system must be modified to call any necessary CCPP scripts (e.g., ``ccpp_validator.py``, ``ccpp_capgen.py``, or ``ccpp_datafile``). The ``ccpp_capgen.py`` script is the only mandatory script needed to generate the CCPP caps. Including the ``ccpp_validator.py`` script in any build-system workflow is strongly encouraged, as it will notify you of errors before building the model. ``The ccpp_datafile.py`` script is useful to retrieve information needed by the build-system, but not required. 
+
+
+
+
+
+
+
+
+
+
+
+
 
 The build-system workflow of the host model influences the connection of the CCPP to a host model is 
 
