@@ -17,8 +17,8 @@ Technical Aspects of CCPP *Capgen*
 *ccpp_validator*
 =============================
 
-The :term:`CCPP` *capgen* script ``ccpp-framework/capgen/ccpp_validator.py`` is used to validate the metadata files against the accompanying Fortran source code.
-This script can (should be) invoked prior to calling the primary *capgen* script to ensure CCPP compliance and suss out any inconsistencies.
+The :term:`CCPP` *validator* script ``ccpp-framework/capgen/ccpp_validator.py`` is used to validate the metadata files against the accompanying Fortran source code.
+This script can (should be) invoked prior to calling the primary ``ccpp_capgen.py`` script to ensure CCPP compliance and suss out any inconsistencies.
 
 .. code-block:: console
 
@@ -28,7 +28,7 @@ This script can (should be) invoked prior to calling the primary *capgen* script
 
 *Listing 8.1: Options for* **ccpp_validator** *script.*
 
-The ``ccpp_validator`` script can be used to validate both *Scheme files* and *Host files*. 
+The ``ccpp_validator.py`` script can be used to validate both *Scheme files* and *Host files*. 
 
 **Scheme files** are associated with the CCPP physics library and are defined with a metadata table of **type = scheme or type = DDT**.
 
