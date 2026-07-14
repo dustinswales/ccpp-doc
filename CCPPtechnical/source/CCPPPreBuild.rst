@@ -13,25 +13,25 @@ connects the :term:`host model` with the :term:`CCPP Physics` schemes (see :numr
 before compiling the CCPP Physics library and the host model driver. This may be done manually or as part
 of a host model build-time script. Both the :term:`UFS` and :term:`SCM` have incorporated the calls to ``ccpp_capgen.py`` in their build systems.
 
-The CCPP *capgen* script automates several tasks based on the information collected from the metadata
-on the host model side and from the individual physics schemes (``.meta`` files; see :numref:`Figure %s <ccpp_prebuild>`):
+The CCPP *capgen* script reads host-model metadata files, physics scheme metadata files, and suite definition files, resolves all variable connections and writes:
 
- * Compiles a list of variables provided by the host model.
+* ``ccpp_kinds.F90``       — kind parameter definitions
 
- * Compiles a list of variables required to run all schemes in the CCPP Physics pool.
+* ``<host>_ccpp_cap.F90``  — static dispatch API (per-host; filename and module
+  name derived from ``--host-name``)
 
- * Matches these variables by their ``standard_name``, checks for missing variables and mismatches of their
-   attributes (e.g., units, dimensions, type, kind). Performs automatic unit conversions if a mismatch of units
-   is detected between a scheme and the host model (see :numref:`Section %s <AutomaticUnitConversions>` for details).
+* ``ccpp_<suite>_cap.F90`` — suite-level cap (state machine, group dispatch)
 
- * Filters out unused variables for a given :term:`suite`.
+* ``ccpp_<suite>_<group>_cap.F90`` — group-level cap (scheme call sites)
 
- * Autogenerates software caps as appropriate:
+* ``ccpp_<suite>_data.F90``        — suite-owned interstitial data module
 
-    * The script generates :term:`caps <physics cap>` for the suite as a whole and physics :term:`groups<group>` as defined in the input
-      :term:`SDF`\ s; in addition, the CCPP API for the build is generated.
+* ``ccpp_<suite>_types.F90``       — shared types (pointer wrappers, temp locals)
 
- * Populates makefiles with kind/type definitions, schemes, caps. Statements to compile the CCPP API are included as well.
+* ``ccpp_<suite>.meta``            — generated suite metadata (for inspection)
+
+* ``datatable.xml``                — generator database for ``ccpp_datafile.py``
+
 
 .. _ccpp_prebuild:
 
