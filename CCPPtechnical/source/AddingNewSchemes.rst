@@ -69,7 +69,7 @@ The first step is to be absolutely sure that a new variable is required: the des
 If an input variable needed by the scheme is not available, first consider if it can be calculated from the existing CCPP variables. If so, an :term:`interstitial scheme` (such as ``schemename_pre``; see  :numref:`Chapter %s <CompliantPhysParams>` for more details) can be created to calculate the variable(s). If this path is taken, **there is no need to allocate this field in the host-model**, as  the variable will be allocated by the framework as a Suite Variable (see :numref:`Section %s <SuiteVariables>`)
 
 
-     .. note:: The CCPP Framework is capable of performing automatic unit, and type, conversions between variables provided by the host model and variables required by the new scheme. See :numref:`Section %s <AutomaticVariableConversions>` for details.
+     .. note:: The CCPP Framework is capable of performing automatic unit, and type, conversions between variables provided by the host model and variables required by the new scheme. See :numref:`Section %s <AutomaticVariableConversions>` for more details.
 
 If an entirely new variable needs to be added, consult the CCPP standard names dictionary and the rules for creating new :term:`standard names <standard name>` at https://github.com/escomp/CCPPStandardNames. If in doubt, use the GitHub discussions page in the CCPP Framework repository (https://github.com/ncar/ccpp-framework) to discuss the suggested new standard name(s) with the CCPP developers.
 
