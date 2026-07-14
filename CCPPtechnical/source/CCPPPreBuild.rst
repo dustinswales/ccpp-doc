@@ -151,20 +151,38 @@ Below is an abbreviated example of how to include the three primary *capgen* scr
   set(SUITE_FILES 
       "${CMAKE_SOURCE_DIR}/ccpp/suites/suite_FV3_GFS_v17_p8_rrtmgp.xml")
 
-  # Run ccpp_validator
-  ${CMAKE_SOURCE_DIR}/ccpp-framework/capgen/ccpp_validator.py 
+  # Run ccpp_validator for Scheme files
+  ${CMAKE_SOURCE_DIR}/ccpp-framework/capgen/ccpp_validator.py --source_files ${SCHEME_FORTRAN_FILES} --scheme-files ${SCHEME_METADATA_FILES} 
+
+  # Run ccpp_validator.py for Host files/
+  ${CMAKE_SOURCE_DIR}/ccpp-framework/capgen/ccpp_validator.py --source_files ${HOST_FORTRAN_FILES} --scheme-files ${HOST_METADATA_FILES}
 
   # Run ccpp_capgen.py
-  ${CMAKE_SOURCE_DIR}/ccpp-framework/capgen/ccpp_capgen.py 
+  ${CMAKE_SOURCE_DIR}/ccpp-framework/capgen/ccpp_capgen.py  --host-files   ${HOST_METADATA_FILES}
+                                                            --scheme-files ${SCHEME_METADATA_FILES}
+                                                            --suites       ${SUITE_FILES}
+                                                            --host-name    XYZXYZXYZ
+                                                            --output-root  ${CMAKE_CURRENT_BINARY_DIR}/ccpp
 
-  # Run ccpp_datafile.py
-  ${CMAKE_SOURCE_DIR}/ccpp-framework/capgen/ccpp_datafile.py --capgen-files CAPGEN_FILES
-  ${CMAKE_SOURCE_DIR}/ccpp-framework/capgen/ccpp_datafile.py --scheme-files SCHEME_FILES
-  ${CMAKE_SOURCE_DIR}/ccpp-framework/capgen/ccpp_datafile.py --dependencies DEPENDENCY_FILES
+  # Run ccpp_datafile.py to create file lists for build.
+  ${CMAKE_SOURCE_DIR}/ccpp-framework/capgen/ccpp_datafile.py --capgen-files ${CAPGEN_FILES}
+  ${CMAKE_SOURCE_DIR}/ccpp-framework/capgen/ccpp_datafile.py --scheme-files ${SCHEME_FORTRAN_FILES}
+  ${CMAKE_SOURCE_DIR}/ccpp-framework/capgen/ccpp_datafile.py --dependencies ${DEPENDENCY_FILES}
 
+  # Build CCPP library
+  set(CCPP_TARGET ccpp_capgen_example)
+  add_library(${CCPP_TARGET}
+              ${DEPENDENCY_FILES}
+              ${SCHEME_FORTRAN_FILES}
+              ${HOST_FORTRAN_FILES}
+              ${CAPGEN_FILES}
 
-  # Build CCPP driver
-
+  # Install
+  install(TARGETS ${CCPP_TARGET}
+          EXPORT ${CCPP_TARGET}-config
+          LIBRARY DESTINATION lib
+          ARCHIVE DESTINATION lib)
+)
 
 *Listing 8.7:*
 
