@@ -8,7 +8,7 @@ Technical Aspects of CCPP *Capgen*
 
 * ccpp_validator.py           - Compare metadata files against Fortran source files
 
-* ccpp_capgen.py              - Autogenerate physics cap(s)
+* ccpp_capgen.py              - Autogenerate physics caps
 
 * ccpp_datafile.py            - Query information on Capgen files, variables, and groups
 
@@ -123,7 +123,7 @@ Build system Integration
 To connect the CCPP with a host model ``XYZ``, the host-model's build system must be modified to call any necessary CCPP scripts (e.g., ``ccpp_validator.py``, ``ccpp_capgen.py``, or ``ccpp_datafile``). The ``ccpp_capgen.py`` script is the only **mandatory** script needed to generate the CCPP caps. Including the ``ccpp_validator.py`` script in any build-system workflow is strongly encouraged, as it will notify you of errors before building the model. ``The ccpp_datafile.py`` script is useful to retrieve information needed by the build-system, but not required. 
 
 
-Below is an abbreviated example of how to include the three primary *capgen* scripts within a host-model's CMake build-system.
+Below is an abbreviated example of how to invoke the three primary *capgen* scripts within a host-model's CMake build-system.
 
 .. _ccpp_capgen_cmake_example:
 
@@ -182,60 +182,8 @@ Below is an abbreviated example of how to include the three primary *capgen* scr
           EXPORT ${CCPP_TARGET}-config
           LIBRARY DESTINATION lib
           ARCHIVE DESTINATION lib)
-)
 
-*Listing 8.7:*
-
-=============================
-Running ccpp_prebuild.py
-=============================
-
-Once the configuration in ``ccpp_prebuild_config.py`` is complete, the ``ccpp_prebuild.py`` script can be run from a specific directory, dependent on the host model. For the SCM, this is the top level directory, i.e. the correct call to the script is ``./ccpp/framework/scripts/ccpp_prebuild.py``. For the :term:`UFS Atmosphere` host model, the script needs to be called from subdirectory ``FV3/ccpp``, relative to the top-level ``ufs-weather-model`` directory. In the following, we use the SCM directory structure. Note that for both SCM and UFS, the ``ccpp_prebuild.py`` script is called automatically by the build system.
-
-For developers adding a CCPP-compliant physics scheme, running ``ccpp_prebuild.py`` periodically is recommended to check that the metadata provided with the physics schemes matches what the host model provided. As alluded to above, the ``ccpp_prebuild.py`` script has six command line options, with the path to a host-model specific configuration file (``--config``) being the only required option:
-
- |  ``-h, --help``         show this help message and exit
- |  ``--config``           ``PATH_TO_CONFIG/config_file``      path to CCPP *prebuild* configuration file
- |  ``--clean``            remove files created by this script, then exit
- |  ``--verbose``          enable verbose output
- |  ``--debug``            enable additional checks on array sizes
- |  ``--suites`` SUITES    SDF(s) to use (comma-separated, without path)
-
-An example invocation of running the script (called from the SCM’s top level directory) would be:
-
-.. code-block:: console
-
-   ./ccpp/framework/scripts/ccpp_prebuild.py \
-     --config=./ccpp/config/ccpp_prebuild_config.py \
-     --suites=FV3_GFS_v16 \
-     --verbose
-
-which uses a configuration script located at the specified path. The ``--verbose`` option can be used for more verbose output from the script.
-
-The :term:`SDF`\(s) to compile into the executable can be specified using the ``--suites`` command-line argument. Such files are included with the SCM and ufs-weather-model repositories, and must be included with the code of any host model to use the CCPP.  An example of a build using two SDFs is:
-
-.. code-block:: console
-
-   ./ccpp/framework/scripts/ccpp_prebuild.py \
-     --config=./ccpp/config/ccpp_prebuild_config.py \
-     --suites=FV3_GFS_v16,FV3_GFS_v17_p8_ugwpv1
-
-.. note::
-
-   If the ``--suites`` option is omitted, all suites will be compiled into the executable.
-
-The ``--debug`` command-line argument enables additional checks on array sizes inside the auto-generated software caps, prior to entering any of the schemes.
-
-If the CCPP *prebuild* step is successful, the last output line will be:
-
-``INFO: CCPP prebuild step completed successfully.``
-
-To remove all files created by ``ccpp_prebuild.py``, for example as part of a host model’s ``make clean`` functionality, execute the same command as before, but with ``--clean`` appended:
-
-.. code-block:: console
-
-  ./ccpp/framework/scripts/ccpp_prebuild.py --config=./ccpp/config/ccpp_prebuild_config.py \
-  --suites=FV3_GFS_v16,FV3_GFS_v17_p8_ugwpv1 --clean
+*Listing 8.7: Example CMakeLists.txt file for calling the three Capgen entry points.
 
 =============================
 Troubleshooting
