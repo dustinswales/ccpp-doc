@@ -1,7 +1,7 @@
 .. _CCPPCapgen:
 
 **************************************************
-Technical Aspects of the CCPP *Capgen*
+Technical Aspects of CCPP *Capgen*
 **************************************************
 
 =============================
@@ -14,7 +14,7 @@ before compiling the CCPP Physics library and the host model driver. This may be
 of a host model build-time script. Both the :term:`UFS` and :term:`SCM` have incorporated the calls to ``ccpp_capgen.py`` in their build systems.
 
 The CCPP *capgen* script automates several tasks based on the information collected from the metadata
-on the host model side and from the individual physics schemes (``.meta`` files; see :numref:`Figure %s <ccpp_capgen>`):
+on the host model side and from the individual physics schemes (``.meta`` files; see :numref:`Figure %s <ccpp_prebuild>`):
 
  * Compiles a list of variables provided by the host model.
 
