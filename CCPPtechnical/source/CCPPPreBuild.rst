@@ -26,7 +26,7 @@ This script can (should be) invoked prior to calling the primary ``ccpp_capgen.p
   --scheme-files               - Comma-separated list of scheme scheme metadata (.meta) files
   --source-files               - Comma-separated Fortran source (.F90) files
 
-*Listing 8.1: Options for* **ccpp_validator** *script.*
+*Listing 8.1: Options for* ``ccpp_validator.py`` *script.*
 
 The ``ccpp_validator.py`` script can be used to validate both *Scheme files* and *Host files*. 
 
@@ -35,7 +35,7 @@ The ``ccpp_validator.py`` script can be used to validate both *Scheme files* and
 **Host files** are part of the host model and are defined with a metadata table of **type = host** or **type = DDT**.
 
 
-The ``ccpp_validator.py`` script will return the following exit codes:
+Upon completion, the ``ccpp_validator.py`` script will return the following exit codes:
 
 .. code-block:: console
 
@@ -123,14 +123,40 @@ Build system Integration
 To connect the CCPP with a host model ``XYZ``, the host-model's build system must be modified to call any necessary CCPP scripts (e.g., ``ccpp_validator.py``, ``ccpp_capgen.py``, or ``ccpp_datafile``). The ``ccpp_capgen.py`` script is the only **mandatory** script needed to generate the CCPP caps. Including the ``ccpp_validator.py`` script in any build-system workflow is strongly encouraged, as it will notify you of errors before building the model. ``The ccpp_datafile.py`` script is useful to retrieve information needed by the build-system, but not required. 
 
 
-Below is an abbreviated example of how to include the three primary *capgen* scripts within a host-model's CMake build-system
+Below is an abbreviated example of how to include the three primary *capgen* scripts within a host-model's CMake build-system.
 
 .. _ccpp_capgen_cmake_example:
 
 .. code-block:: console
 
+  cmake_minimum_required(VERSION 3.19)
 
+  # Scheme files  
+  set(SCHEME_METADATA_FILES 
+      "${CMAKE_SOURCE_DIR}/ccpp-physics/physics/Radiation/RRTMGP/rrtmgp_sw_main.meta"
+      "${CMAKE_SOURCE_DIR}/ccpp-physics/physics/Radiation/RRTMGP/rrtmgp_lw_main.meta")
+  set(SCHEME_FORTRAN_FILES 
+      "${CMAKE_SOURCE_DIR}/ccpp-physics/physics/Radiation/RRTMGP/rrtmgp_sw_main.F90"
+      "${CMAKE_SOURCE_DIR}/ccpp-physics/physics/Radiation/RRTMGP/rrtmgp_lw_main.F90")
 
+  # Host files
+  set(HOST_METADATA_FILES
+      "${CMAKE_SOURCE_DIR}/data/CCPP_typedefs.meta"
+      "${CMAKE_SOURCE_DIR}/data/GFS_typedefs.meta")
+  set(HOST_FORTRAN_FILES
+      "${CMAKE_SOURCE_DIR}/data/CCPP_typedefs.F90"
+      "${CMAKE_SOURCE_DIR}/data/GFS_typedefs.F90")
+
+  # Suite Definition File(s)
+  set(SUITE_FILES "${SUITE_FILES_DIR}/suite_FV3_GFS_v17_p8_rrtmgp.xml")
+
+  # Run ccpp_validator
+  
+  # Run ccpp_capgen.py
+
+  # Run ccpp_datafile.py
+
+  # Build CCPP driver
 
 
 *Listing 8.7:*
