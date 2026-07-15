@@ -610,6 +610,6 @@ Readers are referred to the actual implementations of the driver functions in th
 * ``ccpp-scm/scm/src/scm_setup.F90``
 * ``ccpp-scm/scm/src/scm_time_integration.F90``
 
-For the UFS, the driver functions can be found in ``ufs-weather-model/FV3/ccpp/driver/CCPP_driver.F90``.
+For the UFS, the driver functions can be found in ``ufs-weather-model/UFSATM/ccpp/CCPP_driver.F90``.
 
 
