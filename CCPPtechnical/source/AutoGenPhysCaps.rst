@@ -130,11 +130,43 @@ This module is imported directly into the *suite cap*.
 
 .. code-block:: fortran
 
-  module ccpp_SUITE_GROUP_cap
+  module ccpp_SUITE_data
+    ...
+    type, public :: ccpp_SUITE_data_t
+      real(kind=kind_phys), allocatable :: re_cloud(:,:)
+    end type ccpp_SUITE_data_t
 
-  end module ccpp_SUITE_GROUP_cap
+    type(ccpp_SUITE_data_t), allocatable, target, public :: ccpp_suite_data(:)
+    ....
+  contains
 
-*Listing 5.4: CCPP suite data module for example in :numref:`Section %s <SuiteVariables>` .*
+    subroutine suite_data_alloc(number_of_instances, errmsg, errflg)
+      ...
+      allocate(ccpp_suite_data(number_of_instances))
+
+    end subroutine suite_data_alloc
+
+    subroutine suite_data_dealloc(errmsg, errflg)
+      ...
+      deallocate(ccpp_suite_data)
+
+    end subroutine suite_data_dealloc
+
+    subroutine suite_data_init_fields(i, errmsg, errflg)
+      ...
+      allocate(ccpp_suite_data(i)%re_cloud(ncols, levs))
+
+    end subroutine suite_data_init_fields
+
+    subroutine suite_data_final_fields(i, errmsg, errflg)
+      ...
+      if (allocated(ccpp_suite_data(i)%re_cloud)) deallocate(ccpp_suite_data(i)%re_coud)
+
+    end subroutine suite_data_final_fields
+
+  end module ccpp_SUITE_data
+
+*Listing 5.4: CCPP suite data module associated with examples:* :numref:`Section %s <SuiteVariables>` 
 
 .. _SuiteVariables:
 
