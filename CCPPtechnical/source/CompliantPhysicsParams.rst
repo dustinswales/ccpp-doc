@@ -340,7 +340,7 @@ After the ``ccpp-arg-table``, there should be a metadata entry for every input a
    dimensions = (horizontal_dimension,vertical_dimension)
    dimensions = (horizontal_dimension,vertical_dimension_of_ozone_forcing_data,number_of_coefficients_in_ozone_forcing_data)
 
-* ``type`` indicates the variable type. Can be ``character``, ``integer``, ``real``, ``complex``, ``logical``, ``ddt``, or a custom type defined by the host. Custom types must be listed under ``TYPEDEFS_NEW_METADATA`` in the prebuild configuration file.
+* ``type`` indicates the variable type. Can be ``character``, ``integer``, ``real``, ``complex``, ``logical``, ``ddt``, or a custom type defined by the host. 
 
 * ``kind`` (*optional*) indicates the variable kind, i.e. precision. The valid kinds are defined in the file `physics/hooks/machine.F <https://github.com/NCAR/ccpp-physics/blob/main/physics/hooks/machine.F>`__.
 
@@ -386,8 +386,7 @@ additional names are used in the CCPP to cover the wide range of use cases the C
 Each hash of the CCPP Physics repository contains information in the top-level ``README.md`` file
 indicating which version of the CCPPStandardNames repository corresponds to that version of CCPP code.
 
-An up-to-date list of available standard names for a given host model can be found by running the CCPP *prebuild* script (described in :numref:`Chapter %s <CCPPPreBuild>`), which will generate a LaTeX source file that can be compiled to produce a PDF file with all variables
-defined by the host model and requested by the physics schemes.
+An up-to-date list of available standard names for a given host model can be found by running the CCPP *capgen* scripts (described in :numref:`Section %s <ccpp_datafile>`).
 
 .. _IOVariableRules:
 

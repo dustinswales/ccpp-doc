@@ -88,8 +88,6 @@ Incorporating a scheme into CCPP
 ----------------------------------
 Any new scheme metadata, and any associated interstitial metadata files, will need to be added to provided to *capgen* for validation and cap generation (see :numref:`Chapter %s <CCPPCapgen>`)
 
-the CCPP prebuild configuration file. Add the new scheme to the Python dictionary in `ccpp-scm/ccpp/config/ccpp_prebuild_config.py <https://github.com/NCAR/ccpp-scm/blob/v7.0.0/ccpp/config/ccpp_prebuild_config.py>`__ using the same path as the existing schemes:
-
 .. code-block:: console
 
   # Scheme files  
@@ -177,7 +175,8 @@ Some tips for debugging problems:
 * As mentioned above, make sure the SDF and namelist are compatible. Inconsistencies may result in segmentation faults because arrays are not allocated or in unintended scheme(s) being executed.
 * Make sure to use an uppercase suffix ``.F90`` to enable C preprocessing.
 * A scheme called GFS_debug (GFS_debug.F90) may be added to the SDF where needed to print state variables and interstitial variables. If needed, edit the scheme beforehand to add new variables that need to be printed.
-* Check the ``ccpp_prebuild.py`` script for success/failure and associated messages; run the prebuild script with the --debug and --verbose flags. See :numref:`Chapter %s <ConstructingSuite>` for more details
+* Check the ``ccpp_validator.py`` script for success/failure and associated messages.
+* Check the ``ccpp_capgen.py`` script for success/failure and associated messages.
 * Compile code in DEBUG mode (see section 4.3 of the `SCM User's Guide <https://ccpp-scm.readthedocs.io/en/latest/chap_quick.html#compiling-scm-with-ccpp>`_, run through debugger if necessary (gdb, Linaro/Arm DDT, totalview, …).
 * Use memory check utilities such as ``valgrind``.
 * Double-check the metadata file associated with your scheme to make sure that all information, including standard names and units, correspond to the correct local variables.
