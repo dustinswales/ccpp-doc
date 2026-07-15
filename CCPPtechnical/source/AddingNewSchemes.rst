@@ -113,7 +113,9 @@ It is suggested that the source code and ``.meta`` files for the new scheme shou
      type = scheme
      source_path = SOURCE_FILE_PATH
 
-**The** ``source_path`` **attribute can be useful when primary schemes reside in a submodule, whereas the corresponding metadata file is placed in the overlaying CCPP physics repository.**
+*Listing 9.1: CCPP metadata example where source file location is not the same as metadata file.*
+
+*The* ``source_path`` *attribute can be useful when primary schemes reside in a submodule and the corresponding metadata file is elsewhere.*
 
 Individual schemes are contained in their own subdirectory within the ccpp-physics repository under the ``physics/`` directory, optionally under a directory describing the type of physics scheme. For example, the Grell-Freitas convective scheme is located in the ccpp-physics repository at `physics/CONV/Grell_Freitas <https://github.com/NCAR/ccpp-physics/tree/main/physics/CONV/Grell_Freitas>`__
 
