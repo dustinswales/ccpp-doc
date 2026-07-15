@@ -84,7 +84,7 @@ are performed in the individual Suite caps, before and after calling the Scheme.
    module ccpp_SUITE_GROUP_cap
      ...
    contains
-     subroutine phys_GROUP_run(...)
+     subroutine phys_GROUP_run(lb, ub, ..., errmsg, errflg)
        ...
        real(kind=kind_phys), dimension(lb:ub, levs)  :: re_cloud_l
        real(kind=kind_phys), dimension(lb:ub, levs)  :: re_cloudice_l
@@ -94,20 +94,22 @@ are performed in the individual Suite caps, before and after calling the Scheme.
        re_cloud_l     = 1.0E-6_kind_phys*re_cloud
        re_cloudice_l  = 1.0E-6_kind_phys*re_cloud_ice
        re_cloudsnow_1 = real(re_cloudsnow, type=R8)
-       call mp_thompson_run(...,re_cloud=re_cloud_l,re_cloudice=re_cloudice_l,re_cloudliq=re_cloudliq_l...,errmsg=errmsg,errflg=errflg)
+
+       call mp_tempo_run(re_cloud=re_cloud_l,re_cloudice=re_cloudice_l,re_cloudliq=re_cloudliq_l, ..., errmsg=errmsg,errflg=errflg)
+
        re_cloudice = 1.0E+6_kind_phys* re_cloudice_l
        re_cloudsnow = real(re_cloudsnow_1,type=kind_phys)
     end subroutine phys_GROUP_run
     ...
   end module ccpp_SUITE_GROUP_cap
 
-*Listing 5.3: Suite cap code demonstrating variable transformations required by subroutine ``mp_thompson_run``.*
+*Listing 5.3: Suite cap code demonstrating variable transformations required by subroutine ``mp_tempo_run``.*
 
 If a required unit conversion has not been implemented the CCPP capgen script will generate an error message as follows:
 
 .. code-block:: console
 
-      Variable 'prsl' (standard_name='air_pressure'): host units 'Pa' differ from scheme 'mp_thompson' units 'PaPaPa' but no unit conversion is known; add a conversion to metadata/unit_conversion.py or fix the metadata
+      Variable 'prsl' (standard_name='air_pressure'): host units 'Pa' differ from scheme 'mp_tempo' units 'PaPaPa' but no unit conversion is known; add a conversion to metadata/unit_conversion.py or fix the metadata
 
 All automatic unit conversions are implemented in ``ccpp-framework/capgen/metadata/unit_conversion.py``,
 new unit conversions can be added to this file by following the existing examples.
@@ -170,13 +172,13 @@ Within the suite cap we will have the following code:
     use ccpp_SUITE_data, only: ccpp_suite_data
     ...
   contains
-    subroutine phys_GROUP_run(...)
+    subroutine phys_GROUP_run(lb, ub, ..., errmsg, errflg)
        ...
        ! ccpp_suite_data(1)%re_cloud has intent(out)
-       call mp_thompson_run(..., ccpp_suite_data(1)%re_cloud(lb:ub,:))
+       call mp_tempo_run(ccpp_suite_data(1)%re_cloud(lb:ub,:), ..., errmsg=errmsg,errflg=errflg)
        ...
        ! ccpp_suite_data(1)%re_cloud has intent(in)
-       call rrtmgp_sw_run(..., ccpp_suite_data(1)%re_cloud(lb:ub,:))        ...
+       call rrtmgp_sw_run(ccpp_suite_data(1)%re_cloud(lb:ub,:), ..., errmsg=errmsg,errflg=errflg)        ...
     end subroutine phys_GROUP_run
     ...
   end module ccpp_SUITE_GROUP_cap
@@ -205,18 +207,22 @@ For scheme's with optional arguments, the CCPP framework will generate local poi
 
 .. code-block:: fortran
 
-   module ccpp_suite_name
-     use ccpp_suite_name_types, only:real_kind_phys_rank1_ptr_type
+  module ccpp_SUITE_GROUP_cap
+    use ccpp_SUITE_data, only: real_kind_phys_rank1_ptr_type
+    ...
+  contains
+    subroutine phys_GROUP_run(lb, ub, ..., errmsg, errflg)
       ...
-   subroutine physics_run(lb, ub, ..., errmsg, errflg)
-     ...
-     type(real_kind_phys_rank1_ptr_type) :: nwfa2d_p
-     ...
-     if ((do_thompson) .and. (ltaerosol .or. mraerosol)) then
-       nwfa2d_p%ptr => nwfa2d(lb:ub)
-     else
-       nullify(nwfa2d_p%ptr)
-     end if
-     ! re_cloud is optional in mp_thompson_run
-     call mp_thompson_run(..., nwfa2d=nwfa2d_p%ptr,...,errmsg=errmsg,errflg=errflg)
-
+      type(real_kind_phys_rank1_ptr_type) :: nwfa2d_p
+      ...
+      if ((do_tempo) .and. (ltaerosol .or. mraerosol)) then
+        nwfa2d_p%ptr => nwfa2d(lb:ub)
+      else
+        nullify(nwfa2d_p%ptr)
+      end if
+      ! re_cloud is optional in mp_tempo_run
+      call mp_tempo_run(nwfa2d=nwfa2d_p%ptr, ..., errmsg=errmsg, errflg=errflg)
+      ...
+    end subroutine phys_GROUP_run
+    ...
+  end module ccpp_SUITE_GROUP_cap
