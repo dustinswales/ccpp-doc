@@ -305,14 +305,14 @@ Mandatory variables required by the CCPP framework are stored in a ``control`` m
 
   module ccpp_driver
 
-    use {host_name}_ccpp_cap, only: ccpp_register,               &
-                                    ccpp_init,                   &
-                                    ccpp_physics_init,           &
-                                    ccpp_physics_timestep_init,  &
-                                    ccpp_physics_run,            &
-                                    ccpp_physics_timestep_final, &
-                                    ccpp_physics_final,          &
-                                    ccpp_final
+    use <host_name>_ccpp_cap, only: ccpp_register
+    use <host_name>_ccpp_cap, only: ccpp_init
+    use <host_name>_ccpp_cap, only: ccpp_physics_init
+    use <host_name>_ccpp_cap, only: ccpp_physics_timestep_init
+    use <host_name>_ccpp_cap, only: ccpp_physics_run
+    use <host_name>_ccpp_cap, only: ccpp_physics_timestep_final
+    use <host_name>_ccpp_cap, only: ccpp_physics_final
+    use <host_name>_ccpp_cap, only: ccpp_final
     implicit none
 
     ! CCPP control variables                                                                                                                                                                  
@@ -533,7 +533,7 @@ The purpose of the host model *driver* is to abstract away the communication bet
 
   module ccpp_driver
 
-    use {host_name}_ccpp_cap, only: ccpp_register,               &
+    use <host_name>_ccpp_cap, only: ccpp_register,               &
                                     ccpp_init,                   &
                                     ccpp_physics_init,           &
                                     ccpp_physics_timestep_init,  &
