@@ -199,8 +199,7 @@ Below are metadata snippets from two schemes that will trigger the creation of a
     kind = kind_phys
     intent = out
 
-*Listing 5.4: Example scheme metadata for ``mp_tempo_run``*
-
+*Listing 5.4: Example scheme metadata for* ``mp_tempo_run``.
 .. code-block:: fortran
 
   [ccpp-arg-table]
