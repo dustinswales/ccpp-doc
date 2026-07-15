@@ -81,10 +81,10 @@ are performed in the individual Suite caps, before and after calling the Scheme.
 
 .. code-block:: fortran
 
-   module ccpp_<suite_name>_<group_name>_cap
+   module ccpp_SUITE_GROUP_cap
      ...
    contains
-     subroutine phys_<group_name>_run(...)
+     subroutine phys_GROUP_run(...)
        ...
        real(kind=kind_phys), dimension(lb:ub, levs)  :: re_cloud_l
        real(kind=kind_phys), dimension(lb:ub, levs)  :: re_cloudice_l
@@ -97,6 +97,9 @@ are performed in the individual Suite caps, before and after calling the Scheme.
        call mp_thompson_run(...,re_cloud=re_cloud_l,re_cloudice=re_cloudice_l,re_cloudliq=re_cloudliq_l...,errmsg=errmsg,errflg=errflg)
        re_cloudice = 1.0E+6_kind_phys* re_cloudice_l
        re_cloudsnow = real(re_cloudsnow_1,type=kind_phys)
+    end subroutine phys_GROUP_run
+    ...
+  end module ccpp_SUITE_GROUP_cap
 
 *Listing 5.3: Suite cap code demonstrating variable transformations required by subroutine ``mp_thompson_run``.*
 
@@ -163,20 +166,20 @@ Within the suite cap we will have the following code:
 
 .. code-block:: fortran
 
-  module ccpp_<suite_name>_<group_name>_cap
-    use ccpp_<suite_name>_data, only: ccpp_suite_data
+  module ccpp_SUITE_GROUP_cap
+    use ccpp_SUITE_data, only: ccpp_suite_data
     ...
   contains
-    subroutine phys_<group_name>_run(...)
+    subroutine phys_GROUP_run(...)
        ...
        ! ccpp_suite_data(1)%re_cloud has intent(out)
        call mp_thompson_run(..., ccpp_suite_data(1)%re_cloud(lb:ub,:))
        ...
        ! ccpp_suite_data(1)%re_cloud has intent(in)
        call rrtmgp_sw_run(..., ccpp_suite_data(1)%re_cloud(lb:ub,:))        ...
-    end subroutine phys_<group_name>_run
+    end subroutine phys_GROUP_run
     ...
-  end module ccpp_<suite_name>_<group_name>_cap
+  end module ccpp_SUITE_GROUP_cap
 
 *Listing 5.6: In this example, the variable* ``re_cloud`` *was added to the suite data module. All variables in the suite data module are allocated (deallocated) during the suite initialization (finalization) step.*
 
