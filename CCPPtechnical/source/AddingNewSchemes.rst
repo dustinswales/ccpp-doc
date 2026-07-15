@@ -135,9 +135,9 @@ It is a requirement that all CCPP primary schemes *provide tendencies for progno
       <scheme>schemeA</scheme>
       <scheme>state_accumulate</scheme>
       <scheme>schemeB</scheme>
-      <scheme> state_accumulate</scheme>
+      <scheme>state_accumulate</scheme>
       <scheme>schemeC</scheme>
-      <scheme> state_accumulate</scheme>
+      <scheme>state_accumulate</scheme>
       <scheme>schemeD</scheme>
       <scheme>state_update</scheme>
     </subcycle>
@@ -145,13 +145,13 @@ It is a requirement that all CCPP primary schemes *provide tendencies for progno
     <!-- Time Split Physics Group -->
     <group> time_split_phys
     <subcycle loop="2">
-      <scheme>schemeA</scheme>
-      <scheme> state_update</scheme>
-      <scheme>schemeB</scheme>
-      <scheme> state_update</scheme>
-      <scheme>schemeC</scheme>
-      <scheme> state_update</scheme>
-      <scheme>schemeD</scheme>
+      <scheme>schemeE</scheme>
+      <scheme>state_update</scheme>
+      <scheme>schemeF</scheme>
+      <scheme>state_update</scheme>
+      <scheme>schemeG</scheme>
+      <scheme>state_update</scheme>
+      <scheme>schemeH</scheme>
       <scheme>state_update</scheme>
     </subcycle>
 
