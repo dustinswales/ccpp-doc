@@ -70,12 +70,12 @@ and :ref:`Listing 6.2 <example_vardefs_meta>` for examples of host model metadat
 
      type ex_ddt
        logical                   :: l
-        real(r15), dimension(:,:) :: r
+       real(r15), dimension(:,:) :: r
      end type ex_ddt
 
    end module example_vardefs
 
-*Listing 6.1: Example host model file with reference to metadata. In this example, only the definition of a DDT* ``ex_ddt`` is included. The allocation of a variable of type ``ex_ddt`` occurs externally in the host driver.*
+*Listing 6.1: Example host model file with reference to metadata. In this example, only the definition of a DDT* ``ex_ddt`` *is included. The allocation of a variable of type* ``ex_ddt`` *<occurs externally in the host driver.*
 
 .. _example_vardefs_meta:
 
@@ -302,14 +302,14 @@ Mandatory variables required by the CCPP framework are stored in a ``control`` m
 
   module ccpp_driver
 
-    use <host_name>_ccpp_cap, only: ccpp_register
-    use <host_name>_ccpp_cap, only: ccpp_init
-    use <host_name>_ccpp_cap, only: ccpp_physics_init
-    use <host_name>_ccpp_cap, only: ccpp_physics_timestep_init
-    use <host_name>_ccpp_cap, only: ccpp_physics_run
-    use <host_name>_ccpp_cap, only: ccpp_physics_timestep_final
-    use <host_name>_ccpp_cap, only: ccpp_physics_final
-    use <host_name>_ccpp_cap, only: ccpp_final
+    use HOST_ccpp_cap, only: ccpp_register
+    use HOST_ccpp_cap, only: ccpp_init
+    use HOST_ccpp_cap, only: ccpp_physics_init
+    use HOST_ccpp_cap, only: ccpp_physics_timestep_init
+    use HOST_ccpp_cap, only: ccpp_physics_run
+    use HOST_ccpp_cap, only: ccpp_physics_timestep_final
+    use HOST_ccpp_cap, only: ccpp_physics_final
+    use HOST_ccpp_cap, only: ccpp_final
     implicit none
 
     ! CCPP control variables                                                                                                                                                                  
@@ -322,11 +322,11 @@ Mandatory variables required by the CCPP framework are stored in a ``control`` m
     integer :: nthreads
     integer :: nphys_threads
     character(len=512) :: errmsg
-    integer :: reflag
+    integer :: errflag
 
   end module ccpp_driver
 
-*Listing 6.10: Example host model file containing mandatory CCPP control variables.*
+*Listing 6.10: Example host model file containing mandatory CCPP control variables. Here* **HOST** *is set when call capgen*.
 
 .. code-block:: fortran
 
@@ -423,7 +423,7 @@ The physics is invoked by calling subroutine ``ccpp_physics_run``. This subrouti
                         mythread=mythread, nthreads=nthreads,         &
                         nphys_threads= nphys_threads)
 
-*Listing 6.12: Example call to ccpp_physics_run.*
+*Listing 6.12: Example call to* **ccpp_physics_run.**
 
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 Initializing and Finalizing the Physics
@@ -446,7 +446,7 @@ This subroutine is part of the CCPP API and is auto-generated. A typical call to
                          mythread=mythread, nthreads=nthreads,         &
                          nphys_threads= nphys_threads)
 
-*Listing 6.13: Example call to ccpp_physics_init for specified group.*
+*Listing 6.13: Example call to* **ccpp_physics_init** *for specified group.*
 
 ``group_name`` could be set to ``all`` to call all groups using the ordering defined in the suite definition file:
 
@@ -457,7 +457,7 @@ This subroutine is part of the CCPP API and is auto-generated. A typical call to
                          mythread=mythread, nthreads=nthreads,         &
                          nphys_threads= nphys_threads)
 
-*Listing 6.14: Example call to ccpp_physics_init for* **all** *groups*.
+*Listing 6.14: Example call to* **ccpp_physics_init** *for* **all** *groups*.
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Subroutine ``ccpp_physics_final``
@@ -472,7 +472,7 @@ This subroutine is part of the CCPP API and is auto-generated. A typical call to
                           mythread=mythread, nthreads=nthreads,         &
                           nphys_threads= nphys_threads)
 
-*Listing 6.15: Example call to ccpp_physics_final for specified group.*
+*Listing 6.15: Example call to* **ccpp_physics_final** *for specified group.*
 
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 Initializing and Finalizing the time step
@@ -493,7 +493,7 @@ This subroutine is part of the CCPP API and is auto-generated.A typical call to 
                                   mythread=mythread, nthreads=nthreads,         &
                                   nphys_threads= nphys_threads)
 
-*Listing 6.16: Example call to ccpp_physics_timestep_init for specified group.*
+*Listing 6.16: Example call to* **ccpp_physics_timestep_init** *for specified group.*
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Subroutine ``ccpp_physics_timestep_final``
@@ -508,7 +508,7 @@ This subroutine is part of the CCPP API and is auto-generated.  A typical call t
                                    mythread=mythread, nthreads=nthreads,         &
                                    nphys_threads= nphys_threads)
 
-*Listing 6.17: Example call to ccpp_physics_timestep_final for specified group.*
+*Listing 6.17: Example call to* **ccpp_physics_timestep_final** *for specified group.*
 
 ========================================================
 Host Driver
@@ -530,14 +530,14 @@ The purpose of the host model *driver* is to abstract away the communication bet
 
   module ccpp_driver
 
-    use <host_name>_ccpp_cap, only: ccpp_register,               &
-                                    ccpp_init,                   &
-                                    ccpp_physics_init,           &
-                                    ccpp_physics_timestep_init,  &
-                                    ccpp_physics_run,            &
-                                    ccpp_physics_timestep_final, &
-                                    ccpp_physics_final,          &
-                                    ccpp_final
+    use HOST_ccpp_cap, only: ccpp_register
+    use HOST_ccpp_cap, only: ccpp_init
+    use HOST_ccpp_cap, only: ccpp_physics_init
+    use HOST_ccpp_cap, only: ccpp_physics_timestep_init
+    use HOST_ccpp_cap, only: ccpp_physics_run
+    use HOST_ccpp_cap, only: ccpp_physics_timestep_final
+    use HOST_ccpp_cap, only: ccpp_physics_final
+    use HOST_ccpp_cap, only: ccpp_final
     implicit none
 
     ! CCPP control variables                                                                                                                                                                  
@@ -601,7 +601,7 @@ The purpose of the host model *driver* is to abstract away the communication bet
 
   end module ccpp_driver
 
-*Listing 6.18: Fortran template for a CCPP host model driver. After each call to ``ccpp_physics_*``, the host model should check the return code ``errflg`` and handle any errors (omitted for readability).*
+*Listing 6.18: Fortran template for a CCPP host model driver. After each call to* ``ccpp_physics_``, *the host model should check the return code* ``errflg`` *and handle any errors (omitted for readability).*
 
 Readers are referred to the actual implementations of the driver functions in the CCPP-SCM and the UFS for further information. For the SCM, the cap functions are implemented in:
 
