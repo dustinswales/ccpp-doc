@@ -125,7 +125,7 @@ No further modifications of the build system are required, since the :term:`CCPP
 Time-split vs. process-split schemes
 ------------------------------------
 
-It is a requirement that all CCPP primary schemes *provide tendencies for prognostic state variables (e.g., process-splitting). Modifying these state variables within the parameterization  (e.g., time-splitting) is not permitted. This process-split requirement for the parameterizations allows the **host to control how the state evolves within the physics**. For example, in a process-split physics Group, the tendencies can be accumulated and applied at the end of the Group; whereas a time-split physics Group can update the state in-between calls to the parameterizations.
+It is a requirement that all CCPP primary schemes *provide tendencies for prognostic state variables (e.g., process-splitting)*. Modifying these state variables within the parameterization  (e.g., time-splitting) is not permitted. This process-split requirement for the parameterizations allows the **host to control how the state evolves within the physics**. For example, in a process-split physics Group, the tendencies can be accumulated and applied at the end of the Group; whereas a time-split physics Group can update the state in-between calls to the parameterizations.
 
 .. code-block:: xml
 
@@ -155,7 +155,7 @@ It is a requirement that all CCPP primary schemes *provide tendencies for progno
       <scheme>state_update</scheme>
     </subcycle>
 
-*Listing 9.2: Example suite definition file containing a process-split physics group and a time-split physics group. Within the groups, in between calls to the parameterizations, there are calls to interstitial schemes ``state_accumulate`` and ``state_update``, which either accumulate or update the state, respectively.
+*Listing 9.2: Example suite definition file containing a process-split physics group and a time-split physics group. Within the groups, in between calls to the parameterizations, there are calls to interstitial schemes* ``state_accumulate`` *and* ``state_update``, *which either accumulate or update the state, respectively.
 
 Currently the UFS/SCM CCPP Physics contains a mix of process-split and time-split schemes, with the different strategies being handled by host-specific interstitial schemes. Future releases of CCPP will include a more robust system for handling these differences in the methods updating the atmospheric state.
 
