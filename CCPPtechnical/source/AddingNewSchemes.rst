@@ -31,7 +31,7 @@ Preparing a scheme for CCPP
 There are a few steps that can be taken to prepare a scheme for addition to CCPP prior to starting the process of implementing it in the CCPP Framework:
 
 1. Remove/refactor any incompatible features described in :numref:`Section %s <CodingRules>`. This includes updating Fortran code to at least Fortran 90 standards, removing ``STOP`` and ``GOTO`` statements, removing common blocks, and refactoring any other disallowed features.
-2. Make an inventory of all variables that are inputs and/or outputs to the scheme. Check the file ``ccpp-framework/doc/DevelopersGuide/CCPP_VARIABLES_SCM.pdf`` to see if each variable has already been implemented in the single column model. If there are variables that are not available, see :numref:`Section %s <Adding new variables to CCPP>`.
+2. Make an inventory of all variables that are inputs and/or outputs to the scheme. Check the metadata information in ``CCPP_typedefs.meta`` or query the *capgen* data table to get a list of all the required variable ``standard_names`` (see  :numref:`Chapter %s <ccpp_datafile>`. If there are variables that are not available, see :numref:`Section %s <Adding new variables to CCPP>`.
 
 =============================
 Implementing a scheme in CCPP
