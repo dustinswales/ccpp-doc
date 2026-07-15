@@ -688,12 +688,6 @@ In summary, there are two ways to pass constants to a physics scheme.  The first
 
    Use of the *physcons* module (``ccpp-physics/physics/hooks/physcons.F90``) is **not recommended**, since it is specific to FV3 and will be removed in the future.
 
-.. _SuiteVariables:
-
-Suite Variables
-==========================
-The CCPP framework can handle memory management (e.g., definition/allocation/deallocation) for interstitial variables that are not visible to the host model. For fields that are computed in one scheme (e.g., ``intent(out/inout)``) and requested by another (e.g., ``intent(in)``), the CCPP framework will define, allocate and deallocate these variables in the Suite data module for communication across schemes. There is no need to define ephemeral physics variables within the host model.
-
 .. _ParallelProgramming:
 
 Parallel Programming Rules
