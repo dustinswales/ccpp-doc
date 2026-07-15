@@ -1,7 +1,7 @@
 .. _ParamSpecOutput:
 
 ********************************
-Parameterization-specific Output
+Parameterization-specific Output for UFS/SCM
 ********************************
 
 ========
