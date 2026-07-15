@@ -102,7 +102,7 @@ the CCPP prebuild configuration file. Add the new scheme to the Python dictionar
       "${CMAKE_SOURCE_DIR}/ccpp/physics/Radiation/RRTMGP/rrtmgp_lw_main.F90"
       "${CMAKE_SOURCE_DIR}/ccpp/physics/Radiaiton/RRTMGP/new_scheme.F90")
 
-*Listing 9.1: Make changes for new scheme.*
+*Listing 9.1: CMakelists.txt needed to include new scheme. In cases when not using CMake for the build-system, simply append the new metadata file to the file list prior to calling* ``ccpp_capgen.py``.
 
 It is suggested that the source code and ``.meta`` files for the new scheme should be placed in the same directory, but this is not mandatory. The metadata file can be associated with a source file in another directory by setting the ``source_path`` attribute in the metadata file. For example:
 
