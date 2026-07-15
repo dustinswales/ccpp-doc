@@ -95,7 +95,7 @@ are performed in the individual Suite caps, before and after calling the Scheme.
        re_cloudice_l  = 1.0E-6_kind_phys*re_cloud_ice
        re_cloudsnow_1 = real(re_cloudsnow, type=R8)
 
-       call mp_tempo_run(re_cloud=re_cloud_l,re_cloudice=re_cloudice_l,re_cloudliq=re_cloudliq_l, ..., errmsg=errmsg,errflg=errflg)
+       call mp_tempo_run(re_cloud=re_cloud_l, re_cloudice=re_cloudice_l, re_cloudliq=re_cloudliq_l, ..., errmsg=errmsg, errflg=errflg)
 
        re_cloudice = 1.0E+6_kind_phys* re_cloudice_l
        re_cloudsnow = real(re_cloudsnow_1,type=kind_phys)
@@ -128,7 +128,7 @@ The CCPP framework will manage the memory (e.g., define and allocate) variables 
 
 * Another scheme has the same variable defined with ``intent(in)``
 
-Below are metadata snippets from two schemes that will create a suite variable for ``effective_radius_of_stratiform_cloud_liquid_water_particle``: 
+Below are metadata snippets from two schemes that will trigger the creation of a suite variable for ``effective_radius_of_stratiform_cloud_liquid_water_particle``: 
 
 .. code-block:: fortran
 
@@ -175,10 +175,10 @@ Within the suite cap we will have the following code:
     subroutine phys_GROUP_run(lb, ub, ..., errmsg, errflg)
        ...
        ! ccpp_suite_data(1)%re_cloud has intent(out)
-       call mp_tempo_run(ccpp_suite_data(1)%re_cloud(lb:ub,:), ..., errmsg=errmsg,errflg=errflg)
+       call mp_tempo_run(re_cloud=ccpp_suite_data(1)%re_cloud(lb:ub,:), ..., errmsg=errmsg, errflg=errflg)
        ...
        ! ccpp_suite_data(1)%re_cloud has intent(in)
-       call rrtmgp_sw_run(ccpp_suite_data(1)%re_cloud(lb:ub,:), ..., errmsg=errmsg,errflg=errflg)        ...
+       call rrtmgp_sw_run(re_cloud=ccpp_suite_data(1)%re_cloud(lb:ub,:), ..., errmsg=errmsg, errflg=errflg)        ...
     end subroutine phys_GROUP_run
     ...
   end module ccpp_SUITE_GROUP_cap
