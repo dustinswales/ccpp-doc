@@ -182,6 +182,8 @@ Within the suite cap we will have the following code:
 
 *Listing 5.6: In this example, the variable* ``re_cloud`` *was added to the suite data module. All variables in the suite data module are allocated (deallocated) during the suite initialization (finalization) step.*
 
+**NOTE: Suite variables are ephemeral and not available outside of the physics.** If you need to save fields for subsequent time steps, or for coupling outside the physics, the variable should be managed by the host.
+
 .. _OptionalVariables:
 
 ==========================
