@@ -52,33 +52,30 @@ and :ref:`Listing 6.2 <example_vardefs_meta>` for examples of host model metadat
 
 .. code-block:: fortran
 
-       module example_vardefs
+   module example_vardefs
 
-         implicit none
+     implicit none
 
    !!> \section arg_table_example_vardefs
    !! \htmlinclude example_vardefs.html
    !!
 
-         integer, parameter           :: r15 = selected_real_kind(15)
-         integer                      :: ex_int
-         real(kind=8), dimension(:,:) :: ex_real1
+     integer, parameter           :: r15 = selected_real_kind(15)
+     integer                      :: ex_int
+     real(kind=8), dimension(:,:) :: ex_real1
 
    !!> \section arg_table_example_ddt
    !! \htmlinclude example_ddt.html
    !!
 
-         type ex_ddt
-           logical                   :: l
-           real(r15), dimension(:,:) :: r
-         end type ex_ddt
+     type ex_ddt
+       logical                   :: l
+        real(r15), dimension(:,:) :: r
+     end type ex_ddt
 
-         type(ex_ddt) :: ext
+   end module example_vardefs
 
-       end module example_vardefs
-
-
-*Listing 6.1: Example host model file with reference to metadata. In this example, only the definition of a DDT* ``ex_ddt`` is included. The allocation of a variable of type ``ex_ddt`` occurs externally, see See :numref:`Section %s <DJS TODO>`.*
+*Listing 6.1: Example host model file with reference to metadata. In this example, only the definition of a DDT* ``ex_ddt`` is included. The allocation of a variable of type ``ex_ddt`` occurs externally in the host driver.*
 
 .. _example_vardefs_meta:
 
