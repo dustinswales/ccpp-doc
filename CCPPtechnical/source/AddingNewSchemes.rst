@@ -113,7 +113,7 @@ It is suggested that the source code and ``.meta`` files for the new scheme shou
      type = scheme
      source_path = SOURCE_FILE_PATH
 
-*Listing 9.1: CCPP metadata example where source file location is not the same as metadata file.*
+*Listing 9.2: CCPP metadata example where source file location is not the same as metadata file.*
 
 *The* ``source_path`` *attribute can be useful when primary schemes reside in a submodule and the corresponding metadata file is elsewhere.*
 
@@ -159,7 +159,7 @@ It is a requirement that all CCPP primary schemes *provide tendencies for progno
       <scheme>state_update</scheme>
     </subcycle>
 
-*Listing 9.2: Example suite definition file containing a process-split physics group and a time-split physics group. Within the groups, in between calls to the parameterizations, there are calls to interstitial schemes* ``state_accumulate`` *and* ``state_update``, *which either accumulate or update the state, respectively.*
+*Listing 9.3: Example suite definition file containing a process-split physics group and a time-split physics group. Within the groups, in between calls to the parameterizations, there are calls to interstitial schemes* ``state_accumulate`` *and* ``state_update``, *which either accumulate or update the state, respectively.*
 
 Currently the UFS/SCM CCPP Physics contains a mix of process-split and time-split schemes, with the different strategies being handled by host-specific interstitial schemes. Future releases of CCPP will include a more robust system for handling these differences in the methods updating the atmospheric state.
 
