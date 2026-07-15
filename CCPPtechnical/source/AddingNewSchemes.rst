@@ -86,20 +86,32 @@ Consider allocating the new variable only when needed (i.e. when the new scheme 
 ----------------------------------
 Incorporating a scheme into CCPP
 ----------------------------------
-The new scheme and any interstitial metadata files will need to be added to provided to *capgen* for validation and cap generation (see :numref:`Chapter %s <CCPPCapgen>`)
+Any new scheme metadata, and any associated interstitial metadata files, will need to be added to provided to *capgen* for validation and cap generation (see :numref:`Chapter %s <CCPPCapgen>`)
 
 the CCPP prebuild configuration file. Add the new scheme to the Python dictionary in `ccpp-scm/ccpp/config/ccpp_prebuild_config.py <https://github.com/NCAR/ccpp-scm/blob/v7.0.0/ccpp/config/ccpp_prebuild_config.py>`__ using the same path as the existing schemes:
 
-.. code-block::
+.. code-block:: console
 
-   SCHEME_FILES = [ ...
-   '../some_relative_path/existing_scheme.F90',
-   '../some_relative_path/new_scheme.F90',
-   ...]
+  # Scheme files  
+  set(SCHEME_METADATA_FILES 
+      "${CMAKE_SOURCE_DIR}/ccpp/physics/Radiation/RRTMGP/rrtmgp_sw_main.meta"
+      "${CMAKE_SOURCE_DIR}/ccpp/physics/Radiation/RRTMGP/rrtmgp_lw_main.meta"
+      "${CMAKE_SOURCE_DIR}/ccpp/physics/Radiaiton/RRTMGP/new_scheme.meta")
+  set(SCHEME_FORTRAN_FILES 
+      "${CMAKE_SOURCE_DIR}/ccpp/physics/Radiation/RRTMGP/rrtmgp_sw_main.F90"
+      "${CMAKE_SOURCE_DIR}/ccpp/physics/Radiation/RRTMGP/rrtmgp_lw_main.F90"
+      "${CMAKE_SOURCE_DIR}/ccpp/physics/Radiaiton/RRTMGP/new_scheme.F90")
 
-     .. note:: Different host models will have different prebuild config files. For example, the :term:`UFS Atmosphere's <UFS Atmosphere>` config file is located at `ufs-weather-model/FV3/ccpp/config/ccpp_prebuild_config.py <https://github.com/NOAA-EMC/fv3atm/blob/develop/ccpp/config/ccpp_prebuild_config.py>`__
+It is suggested that the source code and ``.meta`` files for the new scheme should be placed in the same directory, but this is not mandatory. The metadata file can be associated with a source file in another directory by setting the ``source_path`` attribute in the metadata file. For example:
 
-The source code and ``.meta`` files for the new scheme should be placed in the same directory. Individual schemes are contained in their own subdirectory within the ccpp-physics repository under the ``physics/`` directory, optionally under a directory describing the type of physics scheme. For example, the Grell-Freitas convective scheme is located in the ccpp-physics repository at `physics/CONV/Grell_Freitas <https://github.com/NCAR/ccpp-physics/tree/main/physics/CONV/Grell_Freitas>`__
+.. code-block:: console
+
+   [ccpp-arg-table]
+     name = new_scheme
+     type = scheme
+     source_path = SOURCE_FILE_PATH
+
+Individual schemes are contained in their own subdirectory within the ccpp-physics repository under the ``physics/`` directory, optionally under a directory describing the type of physics scheme. For example, the Grell-Freitas convective scheme is located in the ccpp-physics repository at `physics/CONV/Grell_Freitas <https://github.com/NCAR/ccpp-physics/tree/main/physics/CONV/Grell_Freitas>`__
 
 To add this new scheme to a suite definition file (:term:`SDF`) for running within a :term:`host model`, follow the examples found in `ccpp-scm/ccpp/suites <https://github.com/NCAR/ccpp-scm/tree/main/ccpp/suites>`__. For more information about suites and SDFs, see :numref:`Chapter %s <ConstructingSuite>`.
 
