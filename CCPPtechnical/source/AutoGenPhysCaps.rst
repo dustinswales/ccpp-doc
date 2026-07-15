@@ -123,33 +123,41 @@ The CCPP framework will manage the memory (e.g., define and allocate) variables 
 
 * Another scheme has the same variable defined with ``intent(in)``
 
-Below are metadata snippets from two schemes that will create a suite variable for atmosphere_boundary_layer_thickness: 
+Below are metadata snippets from two schemes that will create a suite variable for ``effective_radius_of_stratiform_cloud_liquid_water_particle``: 
 
 .. code-block:: fortran
 
-  [PBLH]
-    standard_name = atmosphere_boundary_layer_thickness
-    long_name = PBL thickness
-    units = m
-    dimensions = (horizontal_dimension)
+  [ccpp-arg-table]
+    name = mp_tempo_run
+    type = scheme
+  ...
+  [re_cloud]
+    standard_name = effective_radius_of_stratiform_cloud_liquid_water_particle
+    long_name = eff. radius of cloud liquid water particle in micrometer
+    units = um
+    dimensions = (horizontal_dimension,vertical_layer_dimension)
     type = real
     kind = kind_phys
     intent = out
 
-*Listing 5.4: Example scheme metadata snippet for scheme that computes PBL thickness*
+*Listing 5.4: Example scheme metadata for ``mp_tempo_run``*
 
 .. code-block:: fortran
 
-  [PBLH]
-    standard_name = atmosphere_boundary_layer_thickness
-    long_name = PBL thickness
-    units = m
-    dimensions = (horizontal_dimension)
+  [ccpp-arg-table]
+    name = rrtmgp_sw_run
+    type = scheme
+  ...
+  [re_cloud]
+    standard_name = effective_radius_of_stratiform_cloud_liquid_water_particle
+    long_name = eff. radius of cloud liquid water particle in micrometer
+    units = um
+    dimensions = (horizontal_dimension,vertical_layer_dimension)
     type = real
     kind = kind_phys
     intent = in
 
-*Listing 5.5: Example scheme metadata snippet for scheme that requires PBL thickness.*
+*Listing 5.5: Example scheme metadata for ``rrtmgp_sw_run``.*
 
 Within the suite cap we will have the following code:
 
@@ -161,14 +169,16 @@ Within the suite cap we will have the following code:
   contains
     subroutine phys_<group_name>_run(...)
        ...
-       call physics_schemeA(..., ccpp_suite_data(1)%PBLH(lb:ub))
+       ! ccpp_suite_data(1)%re_cloud has intent(out)
+       call mp_thompson_run(..., ccpp_suite_data(1)%re_cloud(lb:ub,:))
        ...
-       call physics_schemeB(..., ccpp_suite_data(1)%PBLH(lb:ub))        ...
+       ! ccpp_suite_data(1)%re_cloud has intent(in)
+       call rrtmgp_sw_run(..., ccpp_suite_data(1)%re_cloud(lb:ub,:))        ...
     end subroutine phys_<group_name>_run
     ...
   end module ccpp_<suite_name>_<group_name>_cap
 
-*Listing 5.6: In this example, the variable* ``PBLH`` *was added to the suite data module. All variables in the suite data module are allocated (deallocated) during the suite initialization (finalization) step.*
+*Listing 5.6: In this example, the variable* ``re_cloud`` *was added to the suite data module. All variables in the suite data module are allocated (deallocated) during the suite initialization (finalization) step.*
 
 ==========================
 Suite Data
