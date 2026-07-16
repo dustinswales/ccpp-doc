@@ -197,6 +197,44 @@ under which an existing variable is allocated, a corresponding change must be ma
 host model variables (``GFS_typedefs.meta`` for the UFS Atmosphere or the SCM). See variables ``nwfa2d``
 and ``qgrs`` in :ref:`Listing 6.2 <example_vardefs_meta>` for an example.
 
+.. _host-constituent-handling:
+
+=============================================
+Constituent/Tracer Handling in the Host Model
+=============================================
+The memory for host-side constituents and the associated properties is handled automatically by the framework, but the model must declare what constituents are needed. These are likely constituents/tracers needed by the dynamical core. The following example lays out how to instantiate a constituent on the host side (and where it needs to be placed in relation to the CCPP phases):
+
+.. code-block:: fortran
+
+   use ccpp_constituent_prop_mod, only: ccpp_constituent_properties_t
+   type(ccpp_constituent_properties_t),  allocatable :: host_consts(:)
+
+   ! 1  register phase — fills the scheme buffers
+   call ccpp_register(suite_name='my_suite',      &
+                      errmsg=errmsg, errcode=errcode)
+
+   ! 2  declare the HOST's OWN tracers (water vapor, …)
+   allocate(host_consts(1))      ! zero-size if none
+   call host_consts(1)%instantiate(               &
+        std_name='water_vapor_specific_humidity', &
+        units='kg kg-1', advected=.true.,         &
+        vertical_dim='vertical_layer_dimension',  &
+        errcode=errcode, errmsg=errmsg)
+
+   ! 3  merge host + scheme constituents
+   call ccpp_register_constituents(host_consts,   &
+        errmsg=errmsg, errcode=errcode)
+
+   ! 4  allocate storage + bind index_of_* symbols
+   call ccpp_initialize_constituents(ncols=ncols, &
+        num_layers=nlev, errcode=errcode, errmsg=errmsg)
+
+   ! 5  physics init  (then ccpp_physics_run per step)
+   call ccpp_init(suite_name='my_suite',          &
+                  errmsg=errmsg, errcode=errcode)
+
+*Listing 6.8: Example Fortran code showing how to instantiate/register a host-side constituent.*
+
 ========================================================
 CCPP Variables in the SCM and UFS Atmosphere Host Models
 ========================================================
@@ -236,7 +274,7 @@ Each DDT contains a create method that allocates the data defined using the meta
       procedure :: create  => stateout_create  !<   allocate array data
   end type GFS_stateout_type
 
-*Listing 6.8: Example Fortran code containing a UFS/SCM data container.*
+*Listing 6.9: Example Fortran code containing a UFS/SCM data container.*
 
 In this example, ``gu0``, ``gv0``, ``gt0``, and ``gq0`` are defined in the host-side metadata section, and when the subroutine ``stateout_create`` is called, these arrays are allocated and initialized to zero.  With the CCPP, it is possible to not only refer to components of DDTs, but also to slices of arrays with provided metadata as long as these are contiguous in memory. An example of an array slice from the ``GFS_stateout_type`` looks like:
 
@@ -268,7 +306,7 @@ In this example, ``gu0``, ``gv0``, ``gt0``, and ``gq0`` are defined in the host-
      type = real
      kind = kind_phys
 
-*Listing 6.9: Metadata file snippet for UFS/SCM data container.*
+*Listing 6.10: Metadata file snippet for UFS/SCM data container.*
 
 Array slices can be used by physics schemes that only require certain values from an array.
 
@@ -326,7 +364,7 @@ Mandatory variables required by the CCPP framework are stored in a ``control`` m
 
   end module ccpp_driver
 
-*Listing 6.10: Example host model file containing mandatory CCPP control variables. Here* **HOST** *is set when call capgen*.
+*Listing 6.11: Example host model file containing mandatory CCPP control variables. Here* **HOST** *is set when call capgen*.
 
 .. code-block:: fortran
 
@@ -397,7 +435,7 @@ Mandatory variables required by the CCPP framework are stored in a ``control`` m
     dimensions = ()
     type = integer
 
-*Listing 6.11: Mandatory variables that* **must** **be** **provided** *by the Host model*
+*Listing 6.12: Mandatory variables that* **must** **be** **provided** *by the Host model*
 
 For the ``ccpp_register``, ``ccpp_init``, and ``ccpp_final`` phases, ``suite_name``, ``errmsg``, and ``errflg`` are the only required variables. For all other phases, ccpp_physics_init,  ccpp_physics_timestep_init, ccpp_physics_run, ccpp_physics_timestep_final, **all nine variables** are required.
 
@@ -423,7 +461,7 @@ The physics is invoked by calling subroutine ``ccpp_physics_run``. This subrouti
                         mythread=mythread, nthreads=nthreads,         &
                         nphys_threads= nphys_threads)
 
-*Listing 6.12: Example call to* **ccpp_physics_run.**
+*Listing 6.13: Example call to* **ccpp_physics_run.**
 
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 Initializing and Finalizing the Physics
@@ -446,7 +484,7 @@ This subroutine is part of the CCPP API and is auto-generated. A typical call to
                          mythread=mythread, nthreads=nthreads,         &
                          nphys_threads= nphys_threads)
 
-*Listing 6.13: Example call to* **ccpp_physics_init** *for specified group.*
+*Listing 6.14: Example call to* **ccpp_physics_init** *for specified group.*
 
 ``group_name`` could be set to ``all`` to call all groups using the ordering defined in the suite definition file:
 
@@ -457,7 +495,7 @@ This subroutine is part of the CCPP API and is auto-generated. A typical call to
                          mythread=mythread, nthreads=nthreads,         &
                          nphys_threads= nphys_threads)
 
-*Listing 6.14: Example call to* **ccpp_physics_init** *for* **all** *groups*.
+*Listing 6.15: Example call to* **ccpp_physics_init** *for* **all** *groups*.
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Subroutine ``ccpp_physics_final``
@@ -472,7 +510,7 @@ This subroutine is part of the CCPP API and is auto-generated. A typical call to
                           mythread=mythread, nthreads=nthreads,         &
                           nphys_threads= nphys_threads)
 
-*Listing 6.15: Example call to* **ccpp_physics_final** *for specified group.*
+*Listing 6.16: Example call to* **ccpp_physics_final** *for specified group.*
 
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 Initializing and Finalizing the time step
@@ -493,7 +531,7 @@ This subroutine is part of the CCPP API and is auto-generated.A typical call to 
                                   mythread=mythread, nthreads=nthreads,         &
                                   nphys_threads= nphys_threads)
 
-*Listing 6.16: Example call to* **ccpp_physics_timestep_init** *for specified group.*
+*Listing 6.17: Example call to* **ccpp_physics_timestep_init** *for specified group.*
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Subroutine ``ccpp_physics_timestep_final``
@@ -508,7 +546,7 @@ This subroutine is part of the CCPP API and is auto-generated.  A typical call t
                                    mythread=mythread, nthreads=nthreads,         &
                                    nphys_threads= nphys_threads)
 
-*Listing 6.17: Example call to* **ccpp_physics_timestep_final** *for specified group.*
+*Listing 6.18: Example call to* **ccpp_physics_timestep_final** *for specified group.*
 
 ========================================================
 Host Driver
@@ -522,7 +560,7 @@ The purpose of the host model *driver* is to abstract away the communication bet
 
 * Providing interfaces to call the CCPP
 
-  * The *drvier* must provide functions or subroutines that can be called at the appropriate places in the host model time integration loop and that internally call ``ccpp_register``,  ``ccpp_init``, ``ccpp_physics_init``, ``ccpp_physics_timestep_init``, ``ccpp_physics_run``, ``ccpp_physics_timestep_final``, ``ccpp_physics_final``, and ``ccpp_final``, and handle any errors returned. :ref:`Listing 6.18 <example_ccpp_host_driver>` provides an example where the host driver consists of three subroutines ``physics_init`` (which consists of the suite initialization and CCPP physics init phase), ``physics_run`` (which internally performs the CCPP time step init, run, and time step final phases), and ``physics_final`` (which consists of the suite finalization and CCPP physics final phase).
+  * The *drvier* must provide functions or subroutines that can be called at the appropriate places in the host model time integration loop and that internally call ``ccpp_register``,  ``ccpp_init``, ``ccpp_physics_init``, ``ccpp_physics_timestep_init``, ``ccpp_physics_run``, ``ccpp_physics_timestep_final``, ``ccpp_physics_final``, and ``ccpp_final``, and handle any errors returned. :ref:`Listing 6.19 <example_ccpp_host_driver>` provides an example where the host driver consists of three subroutines ``physics_init`` (which consists of the suite initialization and CCPP physics init phase), ``physics_run`` (which internally performs the CCPP time step init, run, and time step final phases), and ``physics_final`` (which consists of the suite finalization and CCPP physics final phase).
 
 .. _example_ccpp_host_driver:
 
@@ -601,7 +639,7 @@ The purpose of the host model *driver* is to abstract away the communication bet
 
   end module ccpp_driver
 
-*Listing 6.18: Fortran template for a CCPP host model driver. After each call to* ``ccpp_physics_``, *the host model should check the return code* ``errflg`` *and handle any errors (omitted for readability).*
+*Listing 6.19: Fortran template for a CCPP host model driver. After each call to* ``ccpp_physics_``, *the host model should check the return code* ``errflg`` *and handle any errors (omitted for readability).*
 
 Readers are referred to the actual implementations of the driver functions in the CCPP-SCM and the UFS for further information. For the SCM, the cap functions are implemented in:
 
