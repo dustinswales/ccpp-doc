@@ -65,10 +65,11 @@ of a host model build-time script. Both the :term:`UFS` and :term:`SCM` have inc
   --output-root                - Output directory for all generated files
   --kind-type                  - Map a CCPP kind name to a Fortran precision constant
   --verbose                    - Increase verbosity.  Use once for INFO messages, twice (-vv) for DEBUG messages. Default logging level is WARNING.
+  --trace                      - At runtime, display CCPP configuration variables at the beginning of each auto-generated function. Useful for debugging runtime errors.
 
 *Listing 8.3: Options for* ``ccpp_capgen.py`` *script.*
 
-The *ccpp_capgen* script reads host-model metadata files, physics scheme metadata files, and suite definition (XML) files, resolves all variable connections and writes the files listed in :ref:`Listing 5.1 <SuiteGroupCaps>`
+The *ccpp_capgen.py* script reads host-model metadata files, physics scheme metadata files, and suite definition (XML) files, resolves all variable connections and writes the files listed in :ref:`Listing 5.1 <SuiteGroupCaps>`. Upon completion, this script will return a simple status code. Subsequently, the ``ccpp_datafile.py`` script can be invoked.
 
 .. _ccpp_datafile:
 
