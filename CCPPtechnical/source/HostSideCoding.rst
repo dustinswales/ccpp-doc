@@ -301,13 +301,13 @@ There are additional optional variable pairs that can be provided. These must be
 
 Support for threading:
 
-* Number of openMP threads(``nthreads``)
-* Current openMP thread number(``mythread``)
+* Number of openMP threads (``nthreads``)
+* Current openMP thread number (``mythread``)
 
 Support for multiple physics instances:
 
 * Number of instances (``ninstances``)
-* Current instance number (``minstance``)
+* Current instance number (``myinstance``)
 
 .. code-block:: fortran
 
