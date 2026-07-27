@@ -323,6 +323,7 @@ Constituent Indexes in CCPP
 The constituent array, tendency array, and object are all identically indexed. If you want to query the object for a given index, use the ``ccpp_constituent_index`` routine. For example, to get the index (returned in const_index) of water vapor:
 
 .. code-block:: fortran
+
    use ccpp_scheme_utils, only: ccpp_constituent_index
    ...
    call ccpp_constituent_index('water_vapor_mixing_ratio_wrt_moist_air_and_condensed_water', const_index, errflg, errmsg)
