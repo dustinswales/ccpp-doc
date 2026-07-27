@@ -399,7 +399,7 @@ The following are the important properties and an example of the interface to ge
 Constituent Tendencies in CCPP
 ---------------------------------
 
-A tendency array is automatically allocated by the framework for the constituents that have been registered. This is used for time-split physics. As with the constituent state array, the tendencies can be accessed as a complete array with all constituent info:
+A tendency array is automatically allocated by the framework for the constituents that have been registered. As with the constituent state array, the tendencies can be accessed as a complete array with all constituent info:
 
 .. code-block:: console
 
