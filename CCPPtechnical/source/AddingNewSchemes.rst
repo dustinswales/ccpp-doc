@@ -159,6 +159,267 @@ It is a requirement that all CCPP primary schemes *provide tendencies for progno
 
 Currently the UFS/SCM CCPP Physics contains a mix of process-split and time-split schemes, with the different strategies being handled by host-specific interstitial schemes. Future releases of CCPP will include a more robust system for handling these differences in the methods updating the atmospheric state.
 
+.. _scheme-constituent-handling:
+
+==================================
+Constituent Handling in CCPP
+==================================
+
+The CCPP Framework (capgen) automatically handles the memory management for constituents/tracers. This section outlines declaration and usage of constituents and their properties within a physics scheme.
+
+---------------------------------
+Registering constituents in CCPP
+---------------------------------
+
+If a physics scheme requires a given constituent (or tracer), that constituent must be registered during that scheme's ``register`` phase. If multiple schemes are registering the same constituent and the metadata provided is identical, the framework will add it one time; otherwise, it will throw an error at runtime. The following code shows how to register constituents read in from a file (via both Fortran and metadata modifications):
+
+.. code-block:: fortran
+
+   subroutine physics_scheme_a(dynamic_const_phys_scheme_a, filename, errmsg, errflg)
+     use ccpp_constituent_prop_mod, only: ccpp_constituent_properties_t
+
+     type(ccpp_constituent_properties_t), allocatable, intent(out) :: dynamic_const_phys_scheme_a(:)
+     character(len=256), intent(in) :: filename
+     character(len=*), intent(out) :: errmsg
+     integer, intent(out) :: errflg
+
+     integer :: const_idx, ierr
+     character(len=512), allocatable :: const_names(:)
+
+     ! Read the file and determine what constituents are needed at runtime
+     ! Allocate and populate const_names with those constituents
+
+     ! Allocate the constituents properties array
+     allocate(dynamic_const_phys_scheme_a(size(const_names)), stat=ierr)
+     if (ierr /= 0) then
+        errflag = 1
+        errmsg = 'Failed to allocate "dynamic_const_phys_scheme_a"'
+     end if
+
+     ! Instantiate each constituent
+     do const_idx = 1, size(const_names)
+        ! Instantiate call may vary based on the properties of each runtime constituent
+        call dynamic_const_phys_scheme_a(const_idx)%instantiate( &
+                std_name = const_names(const_idx), &
+                long_name = const_names(const_idx), &
+                units = 'kg kg-1', &
+                vertical_dim = 'vertical_layer_dimension', &
+                min_value = 0.0_kind_phys, &
+                advected = .true., &
+                water_species = .true., &
+                mixing_ratio_type = 'wet', &
+                diag_name = const_names(const_idx), &
+                errcode = errflg, &
+                errmsg = errmsg)
+        if (errflg /= 0) then
+           return
+        end if
+     end do
+
+   end subroutine physics_scheme_a
+
+*Listing 9.4: CCPP metadata example for a register phase that instantiates run-time constituents*
+
+.. code-block:: console
+
+   [ccpp-table-properties]
+     name = physics_scheme_a
+     type = scheme
+   [ccpp-arg-table]
+     name = physics_scheme_a_register
+     type = scheme
+   [dynamic_const_phys_scheme_a]
+     standard_name = dynamic_constituents_for_physics_scheme_a ! Standard name doesn't matter but must be unique
+     units = none
+     dimensions = (:)
+     type = ccpp_constituent_properties_t ! This is what cues the framework that this is a constituent object
+     allocatable = True
+     intent = out
+   [filename]
+     standard_name = filename_for_runtime_constituents
+     units = none
+     dimensions = ()
+     type = character | kind = len=256
+     intent = in
+   [errmsg]
+     standard_name = ccpp_error_message
+     long_name = error message for error handling in CCPP
+     units = none
+     dimensions = ()
+     type = character
+     kind = len=*
+     intent = out
+   [errflg]
+     standard_name = ccpp_error_code
+     long_name = error code for error handling in CCPP
+     units = 1
+     dimensions = ()
+     type = integer
+     intent = out
+
+*Listing 9.5: CCPP metadata example for a register phase that instantiates run-time constituents*
+
+.. note::
+   All variables passed into and out of the register phase must be scalar variables.
+
+---------------------------------
+Using Constituents in CCPP
+---------------------------------
+
+Constituents are passed in to a scheme like any other variable. A scheme can request the full constituents array, the number of constituents, as well as the full properties object, like so:
+
+.. code-block:: console
+   [ccpp-arg-table]
+     name = sample_scheme_run
+     type = scheme
+   [const_array]
+     standard_name = ccpp_constituents
+     units = none
+     type = real | kind = kind_phys
+     dimensions = (horizontal_dimension, vertical_layer_dimension, number_of_ccpp_constituents)
+     intent = in
+   [const_props]
+     standard_name = ccpp_constituent_properties
+     units = none
+     type = ccpp_constituent_prop_ptr_t
+     dimensions = (number_of_constituents)
+     intent = in
+   [nconst]
+     standard_name = number_of_ccpp_constituents
+     units = count
+     type = integer
+     dimensions = ()
+     intent = in
+
+*Listing 9.6: CCPP metadata example for passing around constituent object information.*
+
+A single constituent can also be passed into a CCPP-compliant scheme using the metadata property ``constituent = True``, as in the below example:
+
+.. code-block:: console
+   [ccpp-arg-table]
+     name = scheme_with_constituent_run
+     type = scheme
+   [water_vapor]
+     standard_name = water_vapor_mixing_ratio_wrt_moist_air_and_condensed_water
+     units = kg kg-1
+     type = real | kind = kind_phys
+     dimensions = (horizontal_dimension, vertical_layer_dimension)
+     intent = in
+     constituent = True
+
+*Listing 9.7: CCPP metadata example for passing around a single constituent.*
+
+Trying to access a constituent that has not been registered will result in a run-time error.
+
+.. note::
+   Neither specific constituents nor parts of the object can be passed into a scheme's register phase as the constituents object has not yet been initialized at that time.
+
+---------------------------------
+Constituent Indexes in CCPP
+---------------------------------
+
+The constituent array, tendency array, and object are all identically indexed. If you want to query the object for a given index, use the ``ccpp_constituent_index`` routine. For example, to get the index (returned in const_index) of water vapor:
+
+.. code-block:: fortran
+   use ccpp_scheme_utils, only: ccpp_constituent_index
+   ...
+   call ccpp_constituent_index('water_vapor_mixing_ratio_wrt_moist_air_and_condensed_water', const_index, errflg, errmsg)
+
+*Listing 9.8: CCPP Fortran example of getting a constituent index from a given standard name.*
+
+---------------------------------
+Constituent Properties in CCPP
+---------------------------------
+If, as described in the section above, you have passed the ``ccpp_constituent_properties`` object into a scheme, you can access information about a given constituent. One use case for this would be if a scheme is iterating over the constituent array and only performing an operation if the tracer is advected. That example is below:
+
+.. code-block:: fortran
+   use ccpp_constituent_prop_mod, only: ccpp_constituent_prop_ptr_t
+   ...
+   type(ccpp_constituent_prop_ptr_t), intent(in) :: const_props(:)
+   real(kind_phys), intent(in) :: const_array(:)
+   integer, intent(in) :: nconst
+   integer :: const_idx
+   logical :: advected
+   ...
+   do const_idx = 1, nconst
+      ! Determine if current constituent is advected
+      call const_props(const_idx)%is_advected(advected)
+
+      ! Use that to determine future action
+      if (advected) then
+         ! Do something
+      end if
+   end do
+
+*Listing 9.9: CCPP Fortran example of using the constituent properties object.*
+
+.. note::
+   The best way to get access a property of a single constituent is to use the ``ccpp_constituent_index`` routine described in the section above.
+
+The following are the important properties and an example of the interface to get that property from the object for the constituent at ``const_idx``.
+
+* Standard name: ``call const_props(const_idx)%standard_name(standard_name, errflag, errmsg)``
+
+* Diagnostic name: ``call const_props(const_idx)%diagnostic_name(diag_name, errflag, errmsg))``
+
+* Units: ``call const_props(const_idx)%units(units, errflag, errmsg))``
+
+* Advected: ``call const_props(const_idx)%advected(advected, errflag, errmsg))``
+
+* Thermodynamically active: ``call const_props(const_idx)%is_thermo_active(thermo_active, errflag, errmsg))``
+
+* Water species: ``call const_props(const_idx)%is_water_species(water_species, errflag, errmsg))``
+
+* Mass mixing ratio: ``call const_props(const_idx)%is_mass_mixing_ratio(mass_ratio, errflag, errmsg))``
+
+* Volume mixing ratio: ``call const_props(const_idx)%is_volume_mixing_ratio(vol_ratio, errflag, errmsg))``
+
+* Number concentration: ``call const_props(const_idx)%is_number_concentration(num_conc, errflag, errmsg))``
+
+* Dry: ``call const_props(const_idx)%is_dry(dry, errflag, errmsg))``
+
+* Wet: ``call const_props(const_idx)%is_wet(wet, errflag, errmsg))``
+
+* Moist: ``call const_props(const_idx)%is_moist(moist, errflag, errmsg))``
+
+* Minimum value: ``call const_props(const_idx)%minimum(min, errflag, errmsg))``
+
+* Whether the constituent has a default value: ``call const_props(const_idx)%has_default(has_default, errflag, errmsg))``
+
+* Default value: ``call const_props(const_idx)%default_value(default, errflag, errmsg))``
+
+* Molar mass: ``call const_props(const_idx)%molar_mass(molar_mass, errflag, errmsg))``
+
+
+---------------------------------
+Constituent Tendencies in CCPP
+---------------------------------
+
+A tendency array is automatically allocated by the framework for the constituents that have been registered. This is used for time-split physics. As with the constituent state array, the tendencies can be accessed as a complete array with all constituent info:
+
+.. code-block:: console
+   [const_tend]
+     standard_name = ccpp_constituent_tendencies
+     units = none
+     type = real | kind = kind_phys
+     dimensions = (horizontal_dimension, vertical_layer_dimension, number_of_ccpp_constituents)
+     intent = inout
+
+*Listing 9.10: CCPP metadata example for passing around the complete constituent tendency array.*
+
+OR a single constituent tendency can be passed around using the ``tendency_of`` keyword prepended to the standard_name for the constituent, along with the ``constituent = True`` property:
+
+.. code-block:: console
+   [water_vapor_tend]
+     standard_name = tendency_of_water_vapor_mixing_ratio_wrt_moist_air_and_condensed_water
+     units = kg kg-1
+     type = real | kind = kind_phys
+     dimensions = (horizontal_dimension, vertical_layer_dimension)
+     intent = in
+     constituent = True
+
+*Listing 9.11: CCPP metadata example for passing around an individual constituent tendency array.*
+
 ==================================
 Testing and debugging a new scheme
 ==================================

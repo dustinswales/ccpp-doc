@@ -325,4 +325,65 @@ These modules are imported directly into the *caps*.
 Constituents
 ==========================
 
-TODO
+Memory management for constituents/tracers is handled automatically by the CCPP Framework. The relevant generated module is ``ccpp_host_constituents``.
+
+See :ref:`scheme-constituent-handling` and :ref:`host-constituent-handling` for info and instructions on how to register and use constituents. This section describes the interfaces provided by the framework for constituent handling within CCPP-compliant schemes and hosts.
+
+The following interfaces can be called by the host model to set up or get information about constituents:
+
+------------------------------
+ccpp_register_constituents
+------------------------------
+This interface is called by the host model after ``ccpp_register`` and before ``ccpp_initialize_constituents``. It will add the tracers that have been registered by the schemes and host to the constituents object and lock it from further additions. Usage:
+
+``call ccpp_register_constituents(host_constituents, errcode, errmsg)``
+
+------------------------------
+ccpp_initialize_constituents
+------------------------------
+This interface is called by the host model after ``ccpp_initialize_constituents`` and before ``ccpp_init``. It will allocate the state and tendency arrays. Usage:
+
+``call ccpp_initialize_constituents(ncols, num_layers, errcode, errmsg)``
+
+------------------------------
+ccpp_number_constituents
+------------------------------
+This is an interface that can be used by the host model to determine how many constituents have been registered across both the host and the schemes. It includes an optional "advected" flag so the host can grab the number of advected OR non-advected constituents only if that is relevant. Usage:
+
+``call ccpp_number_constituents(num_flds, advected, errcode, errmsg)``
+
+------------------------------
+ccpp_is_scheme_constituent
+------------------------------
+This interface returns a logical that, if true, means that the supplied constituent standard name exists in the constituents object. Usage:
+
+``call ccpp_is_scheme_constituent(var_name, constituent_exists, errcode, errmsg)``
+
+------------------------------
+ccpp_constituents_array
+------------------------------
+This interface gets a pointer to the constituents array. Usage:
+
+``const_array => ccpp_constituents_array()``
+
+--------------------------------
+ccpp_advected_constituents_array
+--------------------------------
+This interface gets a pointer to the advected constituents array. Usage:
+
+``const_array => ccpp_advected_constituents_array()``
+
+------------------------------
+ccpp_model_const_properties
+------------------------------
+This interface gets a pointer to the properties object. Output variable is of type ``ccpp_constituent_prop_ptr_t``. Usage:
+
+``constituent_properties => ccpp_model_const_properties()``
+
+------------------------------
+ccpp_const_get_index
+------------------------------
+This interface can be used by the host to get the index of a constituent given its standard name. Usage:
+
+``call ccpp_const_get_index(stdname, const_index, errcode, errmsg)``
+
