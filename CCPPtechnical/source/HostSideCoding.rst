@@ -153,7 +153,7 @@ Active Attribute
 
 The CCPP must be able to detect when arrays need to be allocated, and when certain tracers must be
 present in order to perform operations or tests in the auto-generated caps (e.g. unit conversions,
-Association checks for optional scheme variables, etc.). This is accomplished with the attribute ``active`` in the
+association checks for optional scheme variables, etc.). This is accomplished with the attribute ``active`` in the
 metadata for the host model variables (e.g., ``GFS_typedefs.meta`` for the :term:`UFS Atmosphere` or the :term:`SCM`).
 
 Several arrays in the host model (e.g., ``GFS_typedefs.F90`` in the UFS Atmosphere or the SCM) are
@@ -409,7 +409,7 @@ Registering, Initializing and Finalizing the CCPP
 
 At the beginning of each run, any required suite or constituent data needs to be allocated. Similarly, at the end of each run, it needs to be deallocated. This is done with subroutines ``ccpp_init`` and ``ccpp_final``. These subroutines should not be confused with ``ccpp_physics_init`` and ``ccpp_physics_final``, which were described in :numref:`Chapter %s <SuiteGroupCaps>`.
 
-To obtain runtime information that is need by the physics (e.g., Number of constituents), the subroutine ``ccpp_register`` can be called prior to ``ccpp_init`` and ``ccpp_physics_init`` to query for this information.
+To obtain runtime information that is need by the physics (e.g., number of constituents) and to inform the framework about the number of CCPP instances (if used), the subroutine ``ccpp_register`` must be called prior to ``ccpp_init`` and ``ccpp_physics_init`` to query for this information.
 
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 Running the Physics
