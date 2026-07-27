@@ -86,7 +86,7 @@ The *_init* and *_final* subroutines may be called more than once depending
 on the host model’s parallelization strategy, and as such must be idempotent (the answer
 must be the same when the subroutine is called multiple times). This can be achieved
 by using a module variable ``is_initialized`` that keeps track whether a scheme has been
-initialized or not. 
+initialized or not.
 
 
 :ref:`Listing 2.1 <scheme_template>` contains a template for a CCPP-compliant scheme, which
