@@ -68,7 +68,7 @@ of a host model build-time script. Both the :term:`UFS` and :term:`SCM` have inc
 
 *Listing 8.3: Options for* ``ccpp_capgen.py`` *script.*
 
-The *ccpp_capgen* script reads host-model metadata files, physics scheme metadata files, and suite definition (XML) files, resolves all variable connections and writes the files listed in :ref:`Listing 5.1 <capgen_autogenerate>`
+The *ccpp_capgen* script reads host-model metadata files, physics scheme metadata files, and suite definition (XML) files, resolves all variable connections and writes the files listed in :ref:`Listing 5.1 <SuiteGroupCaps>`
 
 .. _ccpp_datafile:
 

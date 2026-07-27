@@ -32,8 +32,6 @@ The CCPP *capgen* step performs the tasks below.
 
 After invoking the *capgen* step, the following files will be available:
 
-.. _capgen_autogenerate
-
 .. code-block:: console
 
   ccpp_kinds.F90               — Kind parameter definitions
