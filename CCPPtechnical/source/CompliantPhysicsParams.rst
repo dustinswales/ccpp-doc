@@ -34,7 +34,7 @@ The implementation of a driver is reasonable under the following circumstances:
   in `ccpp-physics/physics/gfdl_cloud_microphys.F90 <https://github.com/NCAR/ccpp-physics/blob/da75531/physics/MP/GFDL/gfdl_cloud_microphys.F90>`__.
 
 Schemes in the CCPP are classified into two categories: :term:`primary schemes <primary scheme>` and :term:`interstitial schemes <interstitial scheme>`.
-A *primary* scheme is one that produces tendencies of state variables and tracers. These tendencies are then used to update the state by subsequent Interstitial scheme(s), or directly by the host model. Updating of the state variables should not occur within primary schemes. Please follow the following guidelines when creating a primary scheme:
+A *primary* scheme is one that produces tendencies of state variables and tracers. These tendencies are then used to update the state by subsequent interstitial scheme(s), or directly by the host model. Updating of the state variables should not occur within primary schemes. Please follow the following guidelines when creating a primary scheme:
 
 * All state variables provided to a CCPP primary scheme should be defined with intent IN.
 
