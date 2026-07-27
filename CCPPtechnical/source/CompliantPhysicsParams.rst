@@ -313,6 +313,7 @@ After the ``ccpp-arg-table``, there should be a metadata entry for every input a
     kind = <kind>
     intent = <intent>
     optional = <True,False>
+    top_at_one = <True,False>
 
 
 * ``[varname]`` is the local name of the variable in the subroutine.
@@ -348,6 +349,8 @@ After the ``ccpp-arg-table``, there should be a metadata entry for every input a
 * ``intent`` indicates the argument intent for the given variable. Can be ``in``, ``out``, or ``inout``.
 
 * ``optional`` (*optional*) indicates whether an argument is optional or not. If omitted, argument is assumed to be required.
+
+* ``top_at_one`` (*optional*) indicates vertical orientation of variable. By default, this is set to False for all variables. This attribute can be set accordingly by the host and physics scheme(s) if there are different ordering conventions between them.
 
 * Lines can be combined using ``|`` as a separator, e.g.,
 
