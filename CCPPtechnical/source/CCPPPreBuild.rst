@@ -29,7 +29,7 @@ This script can (should) be invoked prior to calling the primary ``ccpp_capgen.p
 
 *Listing 8.1: Options for* ``ccpp_validator.py`` *script.*
 
-The ``ccpp_validator.py`` script can be used to validate both *Scheme files* and *Host files*. 
+The ``ccpp_validator.py`` script can be used to validate either *scheme files* or *host files*. 
 
 **Scheme files** are associated with the CCPP physics library and are defined with a metadata table of **type = scheme** or **type = DDT**.
 
