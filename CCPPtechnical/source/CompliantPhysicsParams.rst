@@ -144,7 +144,7 @@ The ``[ccpp-table-properties]`` section is required in every metadata file and h
    variable/type/kind definitions), ``name`` must match the name of the **single** associated
    ``[ccpp-arg-table]`` section. For type ``scheme``, the name must match the root names of the
    ``[ccpp-arg-table]`` sections for that scheme, without the suffixes
-   ``_register``, ``_timestep_init``, ``_init``, ``_run``, ``_final``, or ``_timestep_final``.
+   ``_register``, ``_init``, ``_timestep_init``, ``_run``, ``_timestep_final``, or ``_final``.
 
 #. ``dependencies``: type/kind/variable definitions and physics schemes often depend on code in other files
    (e.g. "use machine" --> depends on ``machine.F``). These dependencies must be provided as a comma-separated list.
