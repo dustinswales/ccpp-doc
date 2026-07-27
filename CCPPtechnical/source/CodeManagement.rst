@@ -36,7 +36,6 @@ The following is the directory structure for the ``ccpp-framework`` repository:
    │   ├── src                # CCPP framework source code
    ├── end-to-end-tests       # System testing framework for ccpp_capgen.py
    │       └── advection
-   │       └── advection_auto_clone
    │       └── capgen
    │       └── chunked_data
    │       └── cmake

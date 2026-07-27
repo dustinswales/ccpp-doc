@@ -52,7 +52,8 @@ primary and interstitial schemes.
 CCPP-compliant physics parameterizations are broken down into one or more of the following five :term:`phases <phase>`:
 
 * The *register* phase, which performs actions needed before the host model grid information is known. 
-  Examples include querying other model components for information describing the active constituents.
+  Examples include querying other model components for information describing the active constituents, along with allocating internal variables needed by the CCPP framework.
+  Internal CCPP framework variables are dimensioned by the number of instances, which is set by the host. See multiple CCPP instances.
 * The *init* phase, which performs actions needed to set up the scheme before the model integration
   begins. Examples of actions needed in this phase include the reading/computation of
   lookup tables, setting of constants (as described in :numref:`Section %s <UsingConstants>`), etc.
