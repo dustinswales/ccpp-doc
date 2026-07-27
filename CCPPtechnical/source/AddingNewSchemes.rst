@@ -125,7 +125,7 @@ No further modifications of the build system are required, since the :term:`CCPP
 Time-split vs. process-split schemes
 ------------------------------------
 
-It is a requirement that all CCPP primary schemes *provide tendencies for prognostic state variables (e.g., process-splitting)*. Modifying these state variables within the parameterization  (e.g., time-splitting) is not permitted. This process-split requirement for the parameterizations allows the **host to control how the state evolves within the physics**. For example, in a process-split physics Group, the tendencies can be accumulated and applied at the end of the Group; whereas a time-split physics Group can update the state in-between calls to the parameterizations.
+It is a requirement that all CCPP primary schemes *provide tendencies for prognostic state variables. Modifying these state variables within the parameterization is not permitted. This requirement for the parameterizations allows the **host to control how the state evolves within the physics**. For example, in a process-split physics group, the tendencies can be accumulated and applied at the end of the group; a time-split physics group can update the state in-between calls to the parameterizations.
 
 .. code-block:: xml
 
