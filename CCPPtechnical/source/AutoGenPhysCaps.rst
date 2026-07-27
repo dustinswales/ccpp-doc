@@ -122,7 +122,7 @@ The CCPP framework will manage the memory (e.g., define and allocate) variables 
 
 * Variable is not defined in host metadata
 
-* One scheme has a variable defined with ``intent(inout)`` or ``intent(out)``
+* The first scheme using the variable defines it as ``intent(out)``
 
 * Another scheme has the same variable defined with ``intent(in)``
 
