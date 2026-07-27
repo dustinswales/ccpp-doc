@@ -287,17 +287,27 @@ The CCPP Application Programming Interface (API) is comprised of a set of clearl
 CCPP Mandatory (control) variables for Host and Scheme Coupling
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
  
-Mandatory variables required by the CCPP framework are stored in a ``control`` metadata table. These variables are provided by the host model and passed directly through the CCPP API into the physics schemes. There are nine control variables:
+Mandatory variables required by the CCPP framework are stored in a ``control`` metadata table. These variables are provided by the host model and passed directly through the CCPP API into the physics schemes. There are seven mandatory control variables:
 
 * CCPP suite name (``suite_name``)
 * CCPP group name (``group_name``)
 * Lower bound of horizontal_dimension (``lb``)
 * Upper bound of horizontal_dimension (``ub``)
-* Number of openMP threads(``nthreads``)
-* Current openMP thread number(``mythread``)
 * Number of openMP threads used by physics(``nphys_threads``)
 * Error code for handling in CCPP (``errmsg``).
 * Error message associated with the error code (``errflg``).
+
+There are additional optional variable pairs that can be provided. These must be provided as pairs, or not at all.
+
+Support for threading:
+
+* Number of openMP threads(``nthreads``)
+* Current openMP thread number(``mythread``)
+
+Support for multiple physics instances:
+
+* Number of instances (``ninstances``)
+* Current instance number (``minstance``)
 
 .. code-block:: fortran
 
@@ -318,9 +328,6 @@ Mandatory variables required by the CCPP framework are stored in a ``control`` m
     character(len=256) :: group_name='undefined'
     integer :: lb
     integer :: ub
-    integer :: reflag
-    integer :: mythread
-    integer :: nthreads
     integer :: nphys_threads
     character(len=512) :: errmsg
     integer :: errflag
@@ -364,18 +371,6 @@ Mandatory variables required by the CCPP framework are stored in a ``control`` m
     standard_name = horizontal_loop_end
     long_name = end of horizontal range for this phase
     units = index
-    dimensions = ()
-    type = integer
-  [ mythread ]
-    standard_name = thread_number
-    long_name = current thread number
-    units = index
-    dimensions = ()
-    type = integer
-  [ nthreads ]
-    standard_name = number_of_threads
-    long_name = total number of OpenMP threads
-    units = count
     dimensions = ()
     type = integer
   [ nphys_threads ]
