@@ -737,7 +737,7 @@ However, the following rules should be observed when including OpenMP or MPI com
 .. code-block:: fortran
 
    #ifdef MPI
-     use mai_f08
+     use mpi_f08
    #endif
    #ifdef OPENMP
      use omp_lib
