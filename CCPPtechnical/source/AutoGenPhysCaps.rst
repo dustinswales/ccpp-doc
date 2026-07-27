@@ -24,7 +24,7 @@ the specified suites are kept, requiring one or more :term:`SDF`\ s (see left si
 as arguments to the ``ccpp_capgen.py`` script.
 The CCPP *capgen* step performs the tasks below.
 
-* Parse Scheme and Host metadata and source files, validate all variable connections.
+* Parse scheme and host metadata and source files, validate all variable connections.
 * Filter unused schemes and variables.
 * Create *caps* for groups and suite(s).
 * Create Host *caps*
