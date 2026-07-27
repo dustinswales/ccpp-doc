@@ -86,7 +86,7 @@ Consider allocating the new variable only when needed (i.e. when the new scheme 
 ----------------------------------
 Incorporating a scheme into CCPP
 ----------------------------------
-Any new scheme metadata, and any associated interstitial metadata files, will need to be added to provided to *capgen* for validation and cap generation (see :numref:`Chapter %s <CCPPCapgen>`)
+Any new scheme metadata, and any associated interstitial metadata files, will need to be provided to *capgen* for validation and cap generation (see :numref:`Chapter %s <CCPPCapgen>`)
 
 .. code-block:: console
 
