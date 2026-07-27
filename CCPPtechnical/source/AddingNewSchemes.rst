@@ -269,6 +269,7 @@ Using Constituents in CCPP
 Constituents are passed in to a scheme like any other variable. A scheme can request the full constituents array, the number of constituents, as well as the full properties object, like so:
 
 .. code-block:: console
+
    [ccpp-arg-table]
      name = sample_scheme_run
      type = scheme
@@ -296,6 +297,7 @@ Constituents are passed in to a scheme like any other variable. A scheme can req
 A single constituent can also be passed into a CCPP-compliant scheme using the metadata property ``constituent = True``, as in the below example:
 
 .. code-block:: console
+
    [ccpp-arg-table]
      name = scheme_with_constituent_run
      type = scheme
@@ -333,6 +335,7 @@ Constituent Properties in CCPP
 If, as described in the section above, you have passed the ``ccpp_constituent_properties`` object into a scheme, you can access information about a given constituent. One use case for this would be if a scheme is iterating over the constituent array and only performing an operation if the tracer is advected. That example is below:
 
 .. code-block:: fortran
+
    use ccpp_constituent_prop_mod, only: ccpp_constituent_prop_ptr_t
    ...
    type(ccpp_constituent_prop_ptr_t), intent(in) :: const_props(:)
@@ -398,6 +401,7 @@ Constituent Tendencies in CCPP
 A tendency array is automatically allocated by the framework for the constituents that have been registered. This is used for time-split physics. As with the constituent state array, the tendencies can be accessed as a complete array with all constituent info:
 
 .. code-block:: console
+
    [const_tend]
      standard_name = ccpp_constituent_tendencies
      units = none
@@ -410,6 +414,7 @@ A tendency array is automatically allocated by the framework for the constituent
 OR a single constituent tendency can be passed around using the ``tendency_of`` keyword prepended to the standard_name for the constituent, along with the ``constituent = True`` property:
 
 .. code-block:: console
+
    [water_vapor_tend]
      standard_name = tendency_of_water_vapor_mixing_ratio_wrt_moist_air_and_condensed_water
      units = kg kg-1
