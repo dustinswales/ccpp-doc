@@ -124,7 +124,7 @@ The CCPP framework will manage the memory (e.g., define and allocate) variables 
 
 * The first scheme using the variable defines it as ``intent(out)``
 
-* Another scheme has the same variable defined with ``intent(in)``
+* Another scheme has the same variable defined with ``intent(in)`` or ``intent(inout)``
 
 Below are metadata snippets from two schemes that will trigger the creation of a suite variable for ``effective_radius_of_stratiform_cloud_liquid_water_particle``: 
 
