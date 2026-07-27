@@ -408,7 +408,7 @@ Registering, Initializing and Finalizing the CCPP
 
 At the beginning of each run, any required suite or constituent data needs to be allocated. Similarly, at the end of each run, it needs to be deallocated. This is done with subroutines ``ccpp_init`` and ``ccpp_final``. These subroutines should not be confused with ``ccpp_physics_init`` and ``ccpp_physics_final``, which were described in :numref:`Chapter %s <SuiteGroupCaps>`.
 
-To obtain runtime information that is need by the physics (e.g., Number of constituents), the subroutine ``ccpp_register`` can be called prior to ``ccpp_init`` and ``ccpp_physics_init`` to query for this information.
+To obtain runtime information that is need by the physics (e.g., number of constituents) and to inform the framework about the number of CCPP instances (if used), the subroutine ``ccpp_register`` must be called prior to ``ccpp_init`` and ``ccpp_physics_init`` to query for this information.
 
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 Running the Physics
