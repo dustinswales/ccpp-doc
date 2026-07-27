@@ -10,7 +10,7 @@ This chapter describes the connection of a host model with the pool of :term:`CC
 Variable Requirements on the Host Model Side
 ==================================================
 
-All variables required to communicate between the host model and the physics must be allocated by the host model. Variables needed to communicate between physics schemes can be allocated by the framework (e.g., Suite Variables); However, host models can still choose to allocate physics interstitial variables if they desire. The framework also controls several mandatory (control) variables ``errflg``, ``errmsg``, ``ccpp_suite``, ``group_name``, ``lb``, ``ub``, ``mythread``, ``nthreads``, and ``nphys_thread``, as explained in :numref:`Section %s <CCPPMandatory>`
+All variables required to communicate between the host model and the physics must be allocated by the host model. Variables needed to communicate between physics schemes can be allocated by the framework (e.g., Suite Variables); However, host models can still choose to allocate physics interstitial variables if they desire. The framework also expects several mandatory (control) variables ``errflg``, ``errmsg``, ``ccpp_suite``, ``group_name``, ``lb``, ``ub``, and ``nphys_thread``, as explained in :numref:`Section %s <CCPPMandatory>`. There are additional optional input pairs to support threading, ``mythread`` and ``nthreads``, along with support for multiple instances, ``myinstance`` and ``instance``. These opt-in pairs 
 
 At present, only two types of variable definitions are supported by the CCPP Framework:
 

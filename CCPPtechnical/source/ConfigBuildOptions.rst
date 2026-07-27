@@ -3,21 +3,18 @@
 *****************************************
 CCPP Configuration and Build Options
 *****************************************
-While the :term:`CCPP Framework` code, consisting of a single Fortran source file and associated metadata file, can be compiled and tested independently, the :term:`CCPP Physics` code can only be used within a :term:`host modeling <host model>` system that provides the variables required to execute the physics. As such, it is advisable to integrate the CCPP configuration and build process with the host model build system. Part of the build process, known as the *capgen* step since it precedes compilation, involves running a Python script that performs multiple functions. These functions include configuring the *CCPP Physics* for use with the host model and autogenerating FORTRAN code to communicate variables between the physics and the dynamical core. The *capgen* step will be discussed in detail in :numref:`Chapter %s <CCPPcapgen>`.
+The :term:`CCPP Physics` code can only be used within a :term:`host modeling <host model>` system that provides the variables required to execute the physics. As such, it is advisable to integrate the CCPP configuration and build process with the host model build system. Part of the build process, known as the *capgen* step since it precedes compilation, involves running a Python script that performs multiple functions. These functions include configuring the *CCPP Physics* for use with the host model and autogenerating FORTRAN code to communicate variables between the physics and the dynamical core. The *capgen* step will be discussed in detail in :numref:`Chapter %s <CCPPcapgen>`.
 
 The :term:`SCM` and the :term:`UFS Atmosphere` are supported for use with the CCPP. In the case of the UFS Atmosphere as the host model, build configuration options can be specified as cmake options to the ``build.sh`` script for manual compilation or through a regression test (RT) configuration file. Detailed instructions for building the UFS Atmosphere and the SCM are discussed in the
 `UFS Weather Model User Guide <https://ufs-weather-model.readthedocs.io/en/release-public-v3/BuildingAndRunning.html#building-the-weather-model>`_
 and the `SCM User Guide <https://dtcenter.org/sites/default/files/paragraph/scm-ccpp-guide-v6-0-0.pdf>`_.
-For both SCM and UFS the ``ccpp_capgen.py`` script is run automatically as a step in the build system,
-although it can be run manually for debugging purposes.
+The CCPP framework has three entry points, ``ccpp_validator.py``, ``ccpp_capgen.py``,and ``ccpp_datafile.py``. All three of these scripts are integrated into the build systems for the SCM and UFS. These scripts perform specific roles:
 
-Lists containing scheme and host metadata files, along with a list of Suite Definition Files, must be provided to ``ccpp_capgen.py``. For the ccpp-scm and ufs-weather-model repositories, these file lists are defined within the CMakeLists, just prior to the call the ``ccpp_capgen.py``. When calling ``ccpp_capgen.py``, the following sequence is performed:
+* ``ccpp_validator.py``: Parse metadata and corresponding source file lists and check for consistency. This is the CCPP validation stage.
 
-* Parse metadata and corresponding source file lists and check for consistency. This is the CCPP validation stage.
+* ``ccpp_capgen.py``:    Using Suite Definition File(s), autogenerate CCPP physics group and host Caps (a.k.a. physics drivers), along with ``datatable.xml`` for host introspection.
 
-* Using Suite Definition File(s), autogenerate CCPP physics Group and Host Caps (a.k.a. physics drivers).
-
-* ``ccpp_capgen.py`` creates a ``datatable`` that contains source and dependency files lists. These lists are added to the build target within CMakeLists.txt
+* ``ccpp_datafile.py``:  Using ``datatable.xml``, retrieve information needed by host (e.g., info on variable connections, dependency files, standard_names, etc...).
 
 :numref:`Figure %s <ccpp_static_build>` depicts the main functions of the
 ``ccpp_capgen.py`` script for the build.  Using information included in the configuration file
