@@ -152,7 +152,7 @@ Active Attribute
 
 The CCPP must be able to detect when arrays need to be allocated, and when certain tracers must be
 present in order to perform operations or tests in the auto-generated caps (e.g. unit conversions,
-Association checks for optional scheme variables, etc.). This is accomplished with the attribute ``active`` in the
+association checks for optional scheme variables, etc.). This is accomplished with the attribute ``active`` in the
 metadata for the host model variables (e.g., ``GFS_typedefs.meta`` for the :term:`UFS Atmosphere` or the :term:`SCM`).
 
 Several arrays in the host model (e.g., ``GFS_typedefs.F90`` in the UFS Atmosphere or the SCM) are
