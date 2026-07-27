@@ -190,7 +190,7 @@ Within the suite cap we will have the following code:
 Optional Scheme variables
 ==========================
 
-For scheme's with optional arguments, the CCPP framework will generate local pointers in the Group cap. These local pointers are associated within the group cap, just prior to calling the scheme. This association is only done if the ``active`` condition set in the host model metadata is satisfied (see :numref:`Section %s <ActiveAttribute>`).
+For scheme's with optional arguments, the CCPP framework will generate local pointers in the group cap. These local pointers are associated within the group cap, just prior to calling the scheme. This association is only done if the ``active`` condition set in the host model metadata is satisfied (see :numref:`Section %s <ActiveAttribute>`).
 
 .. code-block:: fortran
 
