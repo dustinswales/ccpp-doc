@@ -62,13 +62,14 @@ units between the host model and a physics scheme is detected, provided that the
 unit conversion has been implemented. Similarly, the framework can also perform type conversions 
 between host and scheme variables.
 
-If a mismatch of units is detected and an automatic unit conversion can be performed,
+If a mismatch of units or type is detected and an automatic unit conversion can be performed,
 the CCPP capgen script will document this with a log message as in the following example:
 
 .. code-block:: console
 
-   DJS: THERE ARE NO MESSAGES MADE BY CAPGEN WHEN REGISTERING VARIABLE CONVERSION.
-   DO!!!!!!
+   CCPP transform: SUITE/GROUP/run  mp_tempo_run: mean_effective_radius_for_liquid_cloud (re_cloud) [pre-call]  unit conversion: um to m
+   CCPP transform: SUITE/GROUP/run  mp_tempo_run: mean_effective_radius_for_liquid_cloud (re_cloud) [post-call]  unit conversion: m to um
+   CCPP transform: SUITE/GROUP/run  mp_tempo_run: mean_effective_radius_for_snow_flake   (re_cloudsnow) [post-call]  type conversion: R8 to kind_phys
 
 *Listing 5.2: Notifications for variable transformations.*
 
@@ -86,17 +87,16 @@ are performed in the individual Group caps, before and after calling the Scheme.
        ...
        real(kind=kind_phys), dimension(lb:ub, levs)  :: re_cloud_l
        real(kind=kind_phys), dimension(lb:ub, levs)  :: re_cloudice_l
-       real(kind=kind_dbl),  dimension(lb:ub, levs)  :: re_cloudsnow_1
+       real(kind=R8),        dimension(lb:ub, levs)  :: re_cloudsnow_1
        ...
        ! re_cloud is intent(in), re_cloudice is intent(inout), re_cloudsnow has intent(out) and is of type R8.
        re_cloud_l     = 1.0E-6_kind_phys*re_cloud
        re_cloudice_l  = 1.0E-6_kind_phys*re_cloud_ice
-       re_cloudsnow_1 = real(re_cloudsnow, type=R8)
 
        call mp_tempo_run(re_cloud=re_cloud_l, re_cloudice=re_cloudice_l, re_cloudliq=re_cloudliq_l, ..., errmsg=errmsg, errflg=errflg)
 
        re_cloudice = 1.0E+6_kind_phys* re_cloudice_l
-       re_cloudsnow = real(re_cloudsnow_1,type=kind_phys)
+       re_cloudsnow = real(re_cloudsnow_1, type=kind_phys) ! R8 ->kind_phys
     end subroutine phys_GROUP_run
     ...
   end module ccpp_SUITE_GROUP_cap
