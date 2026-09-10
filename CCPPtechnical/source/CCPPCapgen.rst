@@ -184,7 +184,35 @@ Below is an abbreviated example of how to invoke the three primary *capgen* scri
 Troubleshooting
 =============================
 
-**NEED TO CREATE COMMON CAPGEN ERRORS AND SOLUTIONS**
+The Capgen validation stage provides robust error checking between the fortran and metadata, and the host and physics. Below are some examples of common errors uncovered during the validation stage.
+
+.. code-block:: console
+
+  1 validation error(s) found.
+  ERROR: Arg 're_cloudsnow' on 'mp_tempo_run': kind mismatch (metadata='r8', Fortran='kind_phys')
+
+*Listing 8.8: Error message for Fortran and metadata kind mismatch.*
+
+.. code-block:: console
+
+   1 validation error(s) found.
+   ERROR: Arg 're_cloudsnow' on 'mp_tempo_run': rank mismatch (metadata implies Fortran rank 1 from local_name 're_cloudsnow' and dimensions ['horizontal_dimension'], Fortran declares rank 2)
+
+
+*Listing 8.9: Error message for Fortran (rank=2) and metadata (rank=-1) mismatch.*
+
+.. code-block:: console
+
+   ERROR: Arg 're_cloudsnow' on 'mp_tempo_run': rank mismatch (metadata implies Fortran rank 2 from local_name 're_cloudsnow' and dimensions ['horizontal_dimension', 'vertical_layer_dimension'], Fortran declares rank 1)
+
+*Listing 8.10: Error message for Fortran (rank=1) and metadata (rank=-2) mismatch.*
+
+.. code-block:: console
+
+   ERROR: Arg 're_cloudsnow' on 'mp_tempo_run': intent mismatch (metadata='out', Fortran='inout')
+
+*Listing 8.11: Error message for Fortran and metadata intent mismatch.*
+
 
 ========================================================
 CCPP Physics Variable Tracker
