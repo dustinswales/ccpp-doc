@@ -53,7 +53,7 @@ CCPP-compliant physics parameterizations are broken down into one or more of the
 
 * The *register* phase, which performs actions needed before the host model grid information is known. 
   Examples include querying other model components for information describing the active constituents, along with allocating internal variables needed by the CCPP framework.
-  Internal CCPP framework variables are dimensioned by the number of instances, which is set by the host. See multiple CCPP instances.
+  Internal CCPP framework variables are dimensioned by the number of instances, which is set by the host. Detailed instructions for handling multiple CCPP instances are coming soon.
 * The *init* phase, which performs actions needed to set up the scheme before the model integration
   begins. Examples of actions needed in this phase include the reading/computation of
   lookup tables, setting of constants (as described in :numref:`Section %s <UsingConstants>`), etc.
@@ -342,7 +342,7 @@ After the ``ccpp-arg-table``, there should be a metadata entry for every input a
    dimensions = (horizontal_dimension,vertical_dimension)
    dimensions = (horizontal_dimension,vertical_dimension_of_ozone_forcing_data,number_of_coefficients_in_ozone_forcing_data)
 
-* ``type`` indicates the variable type. Can be ``character``, ``integer``, ``real``, ``complex``, ``logical``, ``ddt``, or a custom type defined by the host. External (non-CCPP) types are also allowed and use the syntax: type = external:<module_name>:<type_name>. For example, type = external:mpi_f08:mpi_comm.
+* ``type`` indicates the variable type. Can be ``character``, ``integer``, ``real``, ``complex``, ``logical``, ``ddt``, or a custom type defined by the host. External (non-CCPP) types are also allowed and use the syntax: ``type = external:<module_name>:<type_name>``. For example, ``type = external:mpi_f08:mpi_comm``.
 
 * ``kind`` (*optional*) indicates the variable kind, i.e. precision. The valid kinds are defined in the file `physics/hooks/machine.F <https://github.com/NCAR/ccpp-physics/blob/main/physics/hooks/machine.F>`__.
 

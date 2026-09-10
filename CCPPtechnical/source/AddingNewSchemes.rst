@@ -31,7 +31,7 @@ Preparing a scheme for CCPP
 There are a few steps that can be taken to prepare a scheme for addition to CCPP prior to starting the process of implementing it in the CCPP Framework:
 
 1. Remove/refactor any incompatible features described in :numref:`Section %s <CodingRules>`. This includes updating Fortran code to at least Fortran 90 standards, removing ``STOP`` and ``GOTO`` statements, removing common blocks, and refactoring any other disallowed features.
-2. Make an inventory of all variables that are inputs and/or outputs to the scheme. For the SCM, check the metadata information in ``CCPP_typedefs.meta`` and ``GFS_typedefs.meta``. For existing builds, query the *capgen* data table to get a list of all the required variable ``standard_names`` (see  :numref:`Chapter %s <ccpp_datafile>`. If there are variables that are not available, see :numref:`Section %s <Adding new variables to CCPP>`.
+2. Make an inventory of all variables that are inputs and/or outputs to the scheme. For the SCM, check the metadata information in ``CCPP_typedefs.meta`` and ``GFS_typedefs.meta``. For existing builds, query the *capgen* data table to get a list of all the required variable ``standard_names`` (see  :numref:`Chapter %s <ccpp_datafile>`). If there are variables that are not available, see :numref:`Section %s <Adding new variables to CCPP>`.
 
 =============================
 Implementing a scheme in CCPP
@@ -64,9 +64,9 @@ This section gives guidance on adding new variables to the CCPP, which is often 
 
      .. note:: The instructions in this chapter assume the user is implementing this scheme for use in the CCPP Single-Column model (SCM). Other host model variables can be found in different files; see :numref:`Chapter %s <Host-side Coding>` for details
 
-The first step is to be absolutely sure that a new variable is required: the desired variable may already be included in the CCPP for use by other schemes. For the SCM, check the metadata information in ``CCPP_typedefs.meta`` and ``GFS_typedefs.meta``. For existing builds, query the *capgen* data table to get a list of all the required variable ``standard_names`` (see  :numref:`Chapter %s <ccpp_datafile>` ).
+The first step is to be absolutely sure that a new variable is required: the desired variable may already be included in the CCPP for use by other schemes. For the SCM, check the metadata information in ``CCPP_typedefs.meta`` and ``GFS_typedefs.meta``. For existing builds, query the *capgen* data table to get a list of all the required variable ``standard_names`` (see  :numref:`Chapter %s <ccpp_datafile>`).
 
-If an input variable needed by the scheme is not available, first consider if it can be calculated from the existing CCPP variables. If so, an :term:`interstitial scheme` (such as ``schemename_pre``; see  :numref:`Chapter %s <CompliantPhysParams>` for more details) can be created to calculate the variable(s). If this path is taken, **there is no need to allocate this field in the host-model**, as  the variable will be allocated by the framework as a Suite Variable (see :numref:`Section %s <SuiteVariables>`)
+If an input variable needed by the scheme is not available, first consider if it can be calculated from the existing CCPP variables. If so, an :term:`interstitial scheme` (such as ``schemename_pre``; see  :numref:`Chapter %s <CompliantPhysParams>` for more details) can be created to calculate the variable(s). If this path is taken, **there is no need to allocate this field in the host model**, as the variable will be allocated by the framework as a Suite Variable (see :numref:`Section %s <SuiteVariables>`)
 
 
      .. note:: The CCPP Framework is capable of performing automatic unit and type conversions between variables provided by the host model and variables required by the new scheme. See :numref:`Section %s <AutomaticVariableConversions>` for more details.
@@ -100,7 +100,7 @@ Any new scheme metadata, and any associated interstitial metadata files, will ne
       "${CMAKE_SOURCE_DIR}/ccpp/physics/Radiation/RRTMGP/rrtmgp_lw_main.F90"
       "${CMAKE_SOURCE_DIR}/ccpp/physics/Radiaiton/RRTMGP/new_scheme.F90")
 
-*Listing 9.1: CMakelists.txt needed to include new scheme. In cases when not using CMake for the build-system, simply append the new metadata file to the file list prior to calling* ``ccpp_capgen.py``.
+*Listing 9.1: Entries in CMakeLists.txt needed to include new scheme. In cases when not using CMake for the build-system, simply append the new metadata file to the file list prior to calling* ``ccpp_capgen.py``.
 
 It is suggested that the source code and ``.meta`` files for the new scheme should be placed in the same directory, but this is not mandatory. The metadata file can be associated with a source file in another directory by setting the ``source_path`` attribute in the metadata file. For example:
 
@@ -125,7 +125,7 @@ No further modifications of the build system are required, since the :term:`CCPP
 Time-split vs. process-split schemes
 ------------------------------------
 
-It is a requirement that all CCPP primary schemes *provide tendencies for prognostic state variables. Modifying these state variables within the parameterization is not permitted. This requirement for the parameterizations allows the **host to control how the state evolves within the physics**. For example, in a process-split physics group, the tendencies can be accumulated and applied at the end of the group; a time-split physics group can update the state in-between calls to the parameterizations.
+It is a requirement that all CCPP primary schemes *provide tendencies for prognostic state variables*. Modifying these state variables within the parameterization is not permitted. This requirement for the parameterizations allows the **host to control how the state evolves within the physics**. For example, in a process-split physics group, the tendencies can be accumulated and applied at the end of the group; a time-split physics group can update the state in-between calls to the parameterizations.
 
 .. code-block:: xml
 
@@ -171,7 +171,7 @@ The CCPP Framework (capgen) automatically handles the memory management for cons
 Registering constituents in CCPP
 ---------------------------------
 
-If a physics scheme requires a given constituent (or tracer), that constituent must be registered during that scheme's ``register`` phase. If multiple schemes are registering the same constituent and the metadata provided is identical, the framework will add it one time; otherwise, it will throw an error at runtime. The following code shows how to register constituents read in from a file (via both Fortran and metadata modifications):
+If a physics scheme requires a given constituent (or tracer), that constituent must be registered during that scheme's ``register`` phase. If multiple schemes are registering the same constituent and the metadata provided is identical, the framework will add it one time; otherwise, if the metadata differs between the duplicate constituents it will throw an error at runtime. The following code shows how to register constituents read in from a file (via both Fortran and metadata modifications):
 
 .. code-block:: fortran
 
@@ -412,7 +412,7 @@ A tendency array is automatically allocated by the framework for the constituent
 
 *Listing 9.10: CCPP metadata example for passing around the complete constituent tendency array.*
 
-OR a single constituent tendency can be passed around using the ``tendency_of`` keyword prepended to the standard_name for the constituent, along with the ``constituent = True`` property:
+OR individual constituent tendencies can be passed around using the ``tendency_of`` keyword prepended to the standard_name for the constituent, along with the ``constituent = True`` property:
 
 .. code-block:: console
 

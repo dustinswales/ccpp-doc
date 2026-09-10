@@ -10,7 +10,7 @@ This chapter describes the connection of a host model with the pool of :term:`CC
 Variable Requirements on the Host Model Side
 ==================================================
 
-All variables required to communicate between the host model and the physics must be allocated by the host model. Variables needed to communicate between physics schemes can be allocated by the framework (e.g., Suite Variables); However, host models can still choose to allocate physics interstitial variables if they desire. The framework also expects several mandatory (control) variables ``errflg``, ``errmsg``, ``ccpp_suite``, ``group_name``, ``lb``, ``ub``, and ``nphys_thread``, as explained in :numref:`Section %s <CCPPMandatory>`. There are additional optional input pairs to support threading, ``mythread`` and ``nthreads``, along with support for multiple instances, ``myinstance`` and ``instance``. These opt-in pairs 
+All variables required to communicate between the host model and the physics must be allocated by the host model. Variables needed to communicate between physics schemes can be allocated by the framework (e.g., :numref:`Suite Variables <SuiteVariables>`); However, host models can still choose to allocate physics interstitial variables if they desire. The framework also expects several mandatory (control) variables ``errflg``, ``errmsg``, ``ccpp_suite``, ``group_name``, ``lb``, ``ub``, and ``nphys_thread``, as explained in :numref:`Section %s <CCPPMandatory>`. There are additional optional input pairs to support threading, ``mythread`` and ``nthreads``, along with support for multiple instances, ``myinstance`` and ``instance``. These opt-in pairs 
 
 At present, only two types of variable definitions are supported by the CCPP Framework:
 
@@ -76,7 +76,7 @@ and :ref:`Listing 6.2 <example_vardefs_meta>` for examples of host model metadat
 
    end module example_vardefs
 
-*Listing 6.1: Example host model file with reference to metadata. In this example, only the definition of a DDT* ``ex_ddt`` *is included. The allocation of a variable of type* ``ex_ddt`` *<occurs externally in the host driver.*
+*Listing 6.1: Example host model file with reference to metadata. In this example, only the definition of a DDT* ``ex_ddt`` *is included. The allocation of a variable of type* ``ex_ddt`` *occurs externally in the host driver.*
 
 .. _example_vardefs_meta:
 
@@ -372,7 +372,7 @@ Support for multiple physics instances:
 
   end module ccpp_driver
 
-*Listing 6.11: Example host model file containing mandatory CCPP control variables. Here* **HOST** *is set when call capgen*.
+*Listing 6.11: Example host model file containing mandatory CCPP control variables. Here* **HOST** *is set when capgen is called*.
 
 .. code-block:: fortran
 
@@ -431,7 +431,7 @@ Support for multiple physics instances:
     dimensions = ()
     type = integer
 
-*Listing 6.12: Mandatory variables that* **must** **be** **provided** *by the Host model*
+*Listing 6.12: Mandatory variables that* **must be provided** *by the Host model*
 
 For the ``ccpp_register``, ``ccpp_init``, and ``ccpp_final`` phases, ``suite_name``, ``errmsg``, and ``errflg`` are the only required variables. For all other phases, ccpp_physics_init,  ccpp_physics_timestep_init, ccpp_physics_run, ccpp_physics_timestep_final, **all nine variables** are required.
 
@@ -448,7 +448,7 @@ To obtain runtime information that is need by the physics (e.g., number of const
 Running the Physics
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
-The physics is invoked by calling subroutine ``ccpp_physics_run``. This subroutine is part of the CCPP API and is auto-generated. This subroutine is capable of executing the physics with varying granularity, that is, a single group, or an entire suite can be run with a single subroutine call. Typical calls to ``ccpp_physics_run`` are below:
+The physics is invoked by calling subroutine ``ccpp_physics_run``. This subroutine is part of the CCPP API and is auto-generated. This subroutine is capable of executing the physics with varying granularity; that is, a single group, or an entire suite can be run with a single subroutine call. Typical calls to ``ccpp_physics_run`` are below:
 
 .. code-block:: fortran
 
@@ -556,7 +556,7 @@ The purpose of the host model *driver* is to abstract away the communication bet
 
 * Providing interfaces to call the CCPP
 
-  * The *drvier* must provide functions or subroutines that can be called at the appropriate places in the host model time integration loop and that internally call ``ccpp_register``,  ``ccpp_init``, ``ccpp_physics_init``, ``ccpp_physics_timestep_init``, ``ccpp_physics_run``, ``ccpp_physics_timestep_final``, ``ccpp_physics_final``, and ``ccpp_final``, and handle any errors returned. :ref:`Listing 6.19 <example_ccpp_host_driver>` provides an example where the host driver consists of three subroutines ``physics_init`` (which consists of the suite initialization and CCPP physics init phase), ``physics_run`` (which internally performs the CCPP time step init, run, and time step final phases), and ``physics_final`` (which consists of the suite finalization and CCPP physics final phase).
+  * The *driver* must provide functions or subroutines that can be called at the appropriate places in the host model time integration loop and that internally call ``ccpp_register``,  ``ccpp_init``, ``ccpp_physics_init``, ``ccpp_physics_timestep_init``, ``ccpp_physics_run``, ``ccpp_physics_timestep_final``, ``ccpp_physics_final``, and ``ccpp_final``, and handle any errors returned. :ref:`Listing 6.19 <example_ccpp_host_driver>` provides an example where the host driver consists of three subroutines ``physics_init`` (which consists of the suite initialization and CCPP physics init phase), ``physics_run`` (which internally performs the CCPP time step init, run, and time step final phases), and ``physics_final`` (which consists of the suite finalization and CCPP physics final phase).
 
 .. _example_ccpp_host_driver:
 

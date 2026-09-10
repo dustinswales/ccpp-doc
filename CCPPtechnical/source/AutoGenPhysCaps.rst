@@ -103,13 +103,13 @@ are performed in the individual Group caps, before and after calling the Scheme.
 
 *Listing 5.3: Group cap code demonstrating variable transformations required by subroutine* ``mp_tempo_run``.
 
-If a required unit conversion has not been implemented the CCPP capgen script will generate an error message as follows:
+If a required unit conversion has not been implemented, the CCPP capgen script will generate an error message as follows:
 
 .. code-block:: console
 
       Variable 'prsl' (standard_name='air_pressure'): host units 'Pa' differ from scheme 'mp_tempo' units 'PaPaPa' but no unit conversion is known; add a conversion to metadata/unit_conversion.py or fix the metadata
 
-All automatic unit conversions are implemented in ``ccpp-framework/capgen/metadata/unit_conversion.py``,
+All automatic unit conversions are implemented in ``ccpp-framework/capgen/metadata/unit_conversion.py``;
 new unit conversions can be added to this file by following the existing examples.
 
 .. _VerticalFlipping:
@@ -166,7 +166,7 @@ The CCPP framework can handle instances where a scheme has a different vertical 
 Suite Variables
 ==========================
 
-The CCPP framework will manage the memory (e.g., define and allocate) variables which are only needed within the physics. These are referred to as **suite variables** and are created if certain conditions are met:
+The CCPP framework will manage the memory (e.g., define and allocate) for variables which are only needed within the physics. These are referred to as **suite variables** and are created if certain conditions are met:
 
 * Variable is not defined in host metadata
 
@@ -208,7 +208,7 @@ Below are metadata snippets from two schemes that will trigger the creation of a
     kind = kind_phys
     intent = in
 
-*Listing 5.7: Example scheme metadata for ``rrtmgp_sw_run``.*
+*Listing 5.7: Example scheme metadata for* ``rrtmgp_sw_run``.
 
 Within the group cap we will have the following code:
 
@@ -239,7 +239,7 @@ Within the group cap we will have the following code:
 Optional Scheme variables
 ==========================
 
-For scheme's with optional arguments, the CCPP framework will generate local pointers in the group cap. These local pointers are associated within the group cap, just prior to calling the scheme. This association is only done if the ``active`` condition set in the host model metadata is satisfied (see :numref:`Section %s <ActiveAttribute>`).
+For schemes with optional arguments, the CCPP framework will generate local pointers in the group cap. These local pointers are associated within the group cap, just prior to calling the scheme. This association is only done if the ``active`` condition set in the host model metadata is satisfied (see :numref:`Section %s <ActiveAttribute>`).
 
 .. code-block:: fortran
 

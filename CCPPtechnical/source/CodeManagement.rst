@@ -31,7 +31,7 @@ The following is the directory structure for the ``ccpp-framework`` repository:
    ├── capgen
    │   ├── generator          # CCPP code validator and generator
    │   ├── metadata           # CCPP metadata parsing
-   │       └── parse_tools.   # Parse utilities shared between parsing and validator
+   │       └── parse_tools    # Parse utilities shared between parsing and validator
    │   ├── schema             # XML scheme for suite definition files
    │   ├── src                # CCPP framework source code
    ├── end-to-end-tests       # System testing framework for ccpp_capgen.py
