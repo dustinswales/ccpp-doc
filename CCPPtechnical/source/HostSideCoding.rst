@@ -435,7 +435,7 @@ Support for multiple physics instances:
 
 *Listing 6.12: Mandatory variables that* **must be provided** *by the Host model*
 
-For the ``ccpp_register``, ``ccpp_init``, and ``ccpp_final`` phases, ``suite_name``, ``errmsg``, and ``errflg`` are the only required variables. For all other phases, ccpp_physics_init,  ccpp_physics_timestep_init, ccpp_physics_run, ccpp_physics_timestep_final, **all nine variables** are required.
+For the ``ccpp_register``, ``ccpp_init``, and ``ccpp_final`` phases, ``suite_name``, ``ccpp_error_message ``, and ``ccpp_error_code `` are the only required variables. For all other phases, ccpp_physics_init,  ccpp_physics_timestep_init, ccpp_physics_run, ccpp_physics_timestep_final, **all seven variables** are required.
 
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 Registering, Initializing and Finalizing the CCPP
