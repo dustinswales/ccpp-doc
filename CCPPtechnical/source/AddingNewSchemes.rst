@@ -218,7 +218,7 @@ If a physics scheme requires a given constituent (or tracer), that constituent m
 
    end subroutine physics_scheme_a
 
-*Listing 9.4: CCPP metadata example for a register phase that instantiates run-time constituents*
+*Listing 9.4: Fortran code example for a register phase that instantiates run-time constituents*
 
 .. code-block:: console
 
