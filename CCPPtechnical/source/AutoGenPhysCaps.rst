@@ -112,6 +112,8 @@ If a required unit conversion has not been implemented, the CCPP capgen script w
 All automatic unit conversions are implemented in ``ccpp-framework/capgen/metadata/unit_conversion.py``;
 new unit conversions can be added to this file by following the existing examples.
 
+For an end-to-end example exercising all permutations of the automatic variable conversions, please see the **var_compat** test `here <https://github.com/NCAR/ccpp-framework/tree/feature/capgen-v1/end-to-end-tests/var_compat>`__.
+
 .. _VerticalFlipping:
 
 ==========================
@@ -159,6 +161,8 @@ The CCPP framework can handle instances where a scheme has a different vertical 
   end module ccpp_SUITE_GROUP_cap
 
 *Listing 5.5: Group cap code demonstrating vertical flipping required by subroutine* ``mp_tempo_run``.
+
+For an example on how the top_at_one attribute, please see the **var_compat** test `here <https://github.com/NCAR/ccpp-framework/tree/feature/capgen-v1/end-to-end-tests/var_compat>`__.
 
 .. _SuiteVariables:
 
@@ -233,6 +237,8 @@ Within the group cap we will have the following code:
 
 **NOTE: Suite variables are ephemeral and not available outside of the physics.** If you need to save fields for subsequent time steps, or for coupling outside the physics, the variable should be managed by the host.
 
+For an end-to-end example exercising the Suite Variable functionality, please see the **capgen** test `here <https://github.com/NCAR/ccpp-framework/tree/feature/capgen-v1/end-to-end-tests/capgen>`__.
+
 .. _OptionalVariables:
 
 ==========================
@@ -264,6 +270,8 @@ For schemes with optional arguments, the CCPP framework will generate local poin
   end module ccpp_SUITE_GROUP_cap
 
 *Listing 5.9: Group cap code demonstrating optional variable required by subroutine* ``mp_tempo_run``.
+
+For an end-to-end example demonstrating how to use optional scheme variables, please see the **var_compat** test `here <https://github.com/NCAR/ccpp-framework/tree/feature/capgen-v1/end-to-end-tests/var_compat>`__.
 
 .. _SuiteData:
 
@@ -319,6 +327,8 @@ These modules are imported directly into the *caps*.
 
 *Listing 5.11: CCPP Suite Types module associated with example in* :numref:`Section %s <OptionalVariables>` 
 
+For an end-to-end example exercising the Suite Variable functionality, please see the **capgen** test `here <https://github.com/NCAR/ccpp-framework/tree/feature/capgen-v1/end-to-end-tests/capgen>`__.
+
 .. _Constituents:
 
 ==========================
@@ -328,6 +338,8 @@ Constituents
 Memory management for constituents/tracers is handled automatically by the CCPP Framework. The relevant generated module is ``ccpp_host_constituents``.
 
 See :ref:`scheme-constituent-handling` and :ref:`host-constituent-handling` for info and instructions on how to register and use constituents. This section describes the interfaces provided by the framework for constituent handling within CCPP-compliant schemes and hosts.
+
+For an end-to-end example exercising the constituents functionality, please see the **advection** test `here <https://github.com/NCAR/ccpp-framework/tree/feature/capgen-v1/end-to-end-tests/advection>`__.
 
 The following interfaces can be called by the host model to set up or get information about constituents:
 
