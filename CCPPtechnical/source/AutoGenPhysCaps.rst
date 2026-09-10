@@ -162,7 +162,7 @@ The CCPP framework can handle instances where a scheme has a different vertical 
 
 *Listing 5.5: Group cap code demonstrating vertical flipping required by subroutine* ``mp_tempo_run``.
 
-For an example on how the top_at_one attribute, please see the **var_compat** test `here <https://github.com/NCAR/ccpp-framework/tree/feature/capgen-v1/end-to-end-tests/var_compat>`__.
+For an example of how to use the top_at_one attribute, please see the **var_compat** test `here <https://github.com/NCAR/ccpp-framework/tree/feature/capgen-v1/end-to-end-tests/var_compat>`__.
 
 .. _SuiteVariables:
 
