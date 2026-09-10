@@ -360,7 +360,7 @@ This interface is called by the host model after ``ccpp_initialize_constituents`
 ------------------------------
 ccpp_number_constituents
 ------------------------------
-This is an interface that can be used by the host model to determine how many constituents have been registered across both the host and the schemes. It includes an optional "advected" flag so the host can grab the number of advected OR non-advected constituents only if that is relevant. Usage:
+This is an interface that can be used by the host model to determine how many constituents have been registered across both the host and the schemes. It includes an optional "advected" flag so the host can grab the number of advected (if ccpp_number_constituents is called with advected=.true.) OR non-advected constituents (if ccpp_number_constituents is called with advected=.false.). Not supplying the advected flag argument will return the TOTAL number of constituents. Usage:
 
 ``call ccpp_number_constituents(num_flds, advected, errcode, errmsg)``
 
