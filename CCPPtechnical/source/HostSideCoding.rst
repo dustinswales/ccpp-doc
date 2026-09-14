@@ -324,7 +324,7 @@ The CCPP Application Programming Interface (API) is comprised of a set of clearl
 .. _CCPPMandatory:
 
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-CCPP Mandatory (control) variables for Host and Scheme Coupling
+CCPP Mandatory (Control) Variables for Host and Scheme Coupling
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
  
 Mandatory variables required by the CCPP framework are stored in a ``control`` metadata table. These variables are provided by the host model and passed directly through the CCPP API into the physics schemes. There are seven mandatory control variables:
@@ -511,7 +511,7 @@ This subroutine is part of the CCPP API and is auto-generated. A typical call to
 *Listing 6.16: Example call to* **ccpp_physics_final** *for specified group.*
 
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-Initializing and Finalizing the time step
+Initializing and Finalizing the Time Step
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 The time step initialization typically consists of updating quantities that depend on the valid time, for example solar insulation angle, aerosol emission rates and other values obtained from climatologies. Like the physics initialization and finalization steps, the time step intialization and finalization steps need access to the entire data of an MPI task and may not contain thread-dependent or block-dependent information.
