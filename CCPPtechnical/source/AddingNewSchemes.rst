@@ -84,7 +84,7 @@ If information from the previous timestep is needed, it is important to identify
 Consider allocating the new variable only when needed (i.e. when the new scheme is used and/or when a certain control flag is set). If this is a viable option, following the existing examples in ``CCPP_typedefs.F90`` and ``GFS_typedefs.meta`` for allocating the variable and setting the ``active`` attribute in the metadata correctly.
 
 ----------------------------------
-Incorporating a scheme into CCPP
+Incorporating a Scheme into CCPP
 ----------------------------------
 Any new scheme metadata, and any associated interstitial metadata files, will need to be provided to *capgen* for validation and cap generation (see :numref:`Chapter %s <CCPPCapgen>`)
 

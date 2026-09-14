@@ -6,11 +6,11 @@ Technical Aspects of CCPP *Capgen*
 
 :term:`CCPP` *capgen* consists of three primary scripts:
 
-* ccpp_validator.py           - Compare metadata files against Fortran source files
+* ``ccpp_validator.py``           - Compare metadata files against Fortran source files
 
-* ccpp_capgen.py              - Autogenerate physics caps
+* ``ccpp_capgen.py``              - Autogenerate physics caps
 
-* ccpp_datafile.py            - Query information on Capgen files, variables, and groups
+* ``ccpp_datafile.py``            - Query information on Capgen files, variables, and groups
 
 .. _ccpp_validator:
 
@@ -112,7 +112,7 @@ Both the UFS and SCM have incorporated the calls to ccpp_datafile.py in their bu
 .. _buildsystem:
 
 =============================
-Build system Integration
+Build System Integration
 =============================
 
 To connect the CCPP with a host model ``XYZ``, the host-model's build system must be modified to call any necessary CCPP scripts (e.g., ``ccpp_validator.py``, ``ccpp_capgen.py``, or ``ccpp_datafile``). The ``ccpp_capgen.py`` script is the only **mandatory** script needed to generate the CCPP caps. Including the ``ccpp_validator.py`` script in any build-system workflow is strongly encouraged, as it will notify you of errors before building the model. The ``ccpp_datafile.py`` script is useful to retrieve information needed by the build system, but not required. 
