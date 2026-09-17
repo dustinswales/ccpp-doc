@@ -320,7 +320,7 @@ Trying to access a constituent that has not been registered will result in a run
 Constituent Indexes in CCPP
 ---------------------------------
 
-The constituent array, tendency array, and object are all identically indexed. If you want to query the object for a given index, use the ``ccpp_constituent_index`` routine. For example, to get the index (returned in const_index) of water vapor:
+The constituent array, constituent tendency array (see :numref:`Section %s <Constituent Properties in CCPP>`), and constituent object are all identically indexed. If you want to query the object for a given index, use the ``ccpp_constituent_index`` routine. For example, to get the index (returned in const_index) of water vapor:
 
 .. code-block:: fortran
 
